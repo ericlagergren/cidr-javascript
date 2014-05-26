@@ -1,0 +1,132 @@
+<html>
+<head>
+	<title>cidr</title>
+</head>
+<style type="text/css">
+*{
+	margin: 0px;
+}
+html {
+	font-size: 200%;
+    font-family: serif;
+    color: #333;
+}
+body {
+	width:100%;
+	height:100%;
+	text-align: center;
+}
+form {
+	top:0px;
+	left:50%;
+	position: absolute;
+	-webkit-transform:translateX(-50%);
+	-moz-transform:translateX(-50%);
+	-ms-transform:translateX(-50%);
+	transform:translateX(-50%);
+}
+button, a.button {
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: 2px solid #333;
+    color: #333;
+    background: transparent;
+    line-height: 1em;
+    padding: 0.6em 0.9em;
+    transition: all 0.3s ease-in-out;
+    margin-top:1em;
+    font-family: serif;
+}
+button:hover, a.button:hover {
+    border-color: #333;
+    color: #fff;
+    background:#333;
+    cursor: pointer;
+}
+input, textarea {
+    font-size: 1em;
+    font-family:serif;
+    border: 1px solid #dddddd;
+    background: #f3f3f3;
+    padding: 0.9em;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    margin-top: 1em;
+    color: #333333;
+}
+input:focus, textarea:focus {
+    border-color: #c9514e;
+    outline: none;
+}
+form input, form textarea {
+    //margin-bottom: 0.5em;
+}
+p {
+    margin: .5em 0 auto;
+    clear:both;
+    word-spacing: 1px;
+}
+h1 {
+    font-weight: normal;
+    font-size: 300%;
+}
+#write {
+    text-align: center;
+    border: 1px solid #dddddd;
+    background: #f3f3f3;
+    margin: 1em auto 0 auto;
+    height: 97px;
+    font-size: 1em;
+    line-height: 97px;
+}
+</style>
+<body>
+<form name="cidrform">
+<h1>Submask:</h1>
+<p>(e.g. 255.255.0.0)</p>
+<input type="text" name="submask" autofocus="autofocus">
+<button type="button" onclick="val();">Submit</button>
+<div id="write"></div>
+</form>
+<script type="text/javascript">
+function val() {
+    var e = document.cidrform.submask.value,
+        t = document.getElementById("write");
+    if (e == "0.0.0.0") t.innerHTML = "/0";
+    if (e == "128.0.0.0") t.innerHTML = "/1";
+    if (e == "192.0.0.0") t.innerHTML = "/2";
+    if (e == "224.0.0.0") t.innerHTML = "/3";
+    if (e == "240.0.0.0") t.innerHTML = "/4";
+    if (e == "248.0.0.0") t.innerHTML = "/5";
+    if (e == "252.0.0.0") t.innerHTML = "/6";
+    if (e == "254.0.0.0") t.innerHTML = "/7";
+    if (e == "255.0.0.0") t.innerHTML = "/8";
+    if (e == "255.128.0.0") t.innerHTML = "/9";
+    if (e == "255.192.0.0") t.innerHTML = "/10";
+    if (e == "255.224.0.0") t.innerHTML = "/11";
+    if (e == "255.240.0.0") t.innerHTML = "/12";
+    if (e == "255.248.0.0") t.innerHTML = "/13";
+    if (e == "255.252.0.0") t.innerHTML = "/14";
+    if (e == "255.254.0.0") t.innerHTML = "/15";
+    if (e == "255.255.0.0") t.innerHTML = "/16";
+    if (e == "255.255.128.0") t.innerHTML = "/17";
+    if (e == "255.255.192.0") t.innerHTML = "/18";
+    if (e == "255.255.224.0") t.innerHTML = "/19";
+    if (e == "255.255.240.0") t.innerHTML = "/20";
+    if (e == "255.255.248.0") t.innerHTML = "/21";
+    if (e == "255.255.252.0") t.innerHTML = "/22";
+    if (e == "255.255.254.0") t.innerHTML = "/23";
+    if (e == "255.255.255.0") t.innerHTML = "/24";
+    if (e == "255.255.255.128") t.innerHTML = "/25";
+    if (e == "255.255.255.192") t.innerHTML = "/26";
+    if (e == "255.255.255.224") t.innerHTML = "/27";
+    if (e == "255.255.255.240") t.innerHTML = "/28";
+    if (e == "255.255.255.248") t.innerHTML = "/29";
+    if (e == "255.255.255.252") t.innerHTML = "/30";
+    if (e == "255.255.255.254") t.innerHTML = "/31";
+    if (e == "255.255.255.255") t.innerHTML = "/32"
+}
+</script>
+</body>
+</html>
