@@ -158,8 +158,8 @@ for (var i in elements) {
                     seattle = stop * network,
                     broadcast = network - 1,
                     tacoma = seattle + broadcast;
-                s.innerHTML = ipa[0] + "." + seattle + ".0.0";
-                g.innerHTML = ipa[0] + "." + tacoma + ".255.255";
+                s.innerHTML = ipa[0] + "." + seattle + ".0" + ".0";
+                g.innerHTML = ipa[0] + "." + tacoma + ".255" +".255";
                 k.innerHTML = (Math.floor(Math.pow(2, (p - 8)))) + " " + "subnets";
             }; 
             if (p % 8 !== 0) {
@@ -183,8 +183,8 @@ for (var i in elements) {
                     seattle = stop * network,
                     broadcast = network - 1,
                     tacoma = seattle + broadcast;
-                s.innerHTML = ipa[0] + "." + ipa[1] + seattle + ".0";
-                g.innerHTML = ipa[0] + "." + ipa[1] + tacoma + ".255";
+                s.innerHTML = ipa[0] + "." + ipa[1] + "." + seattle + ".0";
+                g.innerHTML = ipa[0] + "." + ipa[1] + "." + tacoma + ".255";
                 k.innerHTML = (Math.floor(Math.pow(2, (p - 16)))) + " " + "subnets";
             }; 
             if (p % 8 !== 0) {
