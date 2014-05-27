@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title>Subnet Calculator // About</title>
+</head>
+<body>
+<h1>Subnet Calculator</h1>
+<h2>What it is</h2>
+<p>My subnet calculator will perform any computation on a submask, CIDR value, or IPv4 address. For example, it'll convert a submask to CIDR notation (e.g. 255.255.252.0 -> /22). Among other things, it'll also tell you the maximum number of hosts per network, the class of network, and number of subnets.<p>
+<h2>But Eric...</h2>
+<h3>Why is '# Hosts' two values smaller than what it should be?</h3>
+<p>Because I subtracted two because the '# Hosts' is the number of <em>valid</em> hosts. The Network ID and Broadcast ID aren't valid hosts, thus they were removed.</p>
+<h3>Why don't you include the range?</h3>
+<p>Because (1) I haven't added it yet, and (2) the range is Network ID -1 to Broadcast ID -1. So, a Network ID of 192.168.0.0 and a Broadcast ID of 192.168.0.255 (I made those numbers up) will have a range of 192.168.0.1 to 192.168.0.254.</p>
+<p>It'll come soon enough, but my JavaScript is a mess and cleaning will happen when I have free time<./p>
+<h2>Any other inquiries</h2>
+<p><a href="http://www.ericlagergren.com/contact">ericlagergren.com/contact</a></p>
+
+</body>
+</html>
