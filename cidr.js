@@ -1,1 +1,444 @@
-function val(){(function(){var e=document.getElementsByClassName("ugh");for(var t in e){if(e.hasOwnProperty(t)){e[t].className="meow"}}})();(function(){var e=document.cidrform.cidr.value,t=document.getElementById("ij"),n=document.getElementById("sm");if(e==="/0"||e==0){t.innerHTML="0.0.0.0";n.innerHTML=0}if(e==="/1"||e==1){t.innerHTML="128.0.0.0";n.innerHTML=1}if(e==="/2"||e==2){t.innerHTML="192.0.0.0";n.innerHTML=2}if(e==="/3"||e==3){t.innerHTML="224.0.0.0";n.innerHTML=3}if(e==="/4"||e==4){t.innerHTML="240.0.0.0";n.innerHTML=4}if(e==="/5"||e==5){t.innerHTML="248.0.0.0";n.innerHTML=5}if(e==="/6"||e==6){t.innerHTML="252.0.0.0";n.innerHTML=8}if(e==="/7"||e==7){t.innerHTML="254.0.0.0";n.innerHTML=7}if(e==="/8"||e==8){t.innerHTML="255.0.0.0";n.innerHTML=8}if(e==="/9"||e==9){t.innerHTML="255.128.0.0";n.innerHTML=9}if(e==="/10"||e==10){t.innerHTML="255.192.0.0";n.innerHTML=10}if(e==="/11"||e==11){t.innerHTML="255.224.0.0";n.innerHTML=11}if(e==="/12"||e==12){t.innerHTML="255.240.0.0";n.innerHTML=12}if(e==="/13"||e==13){t.innerHTML="255.248.0.0";n.innerHTML=13}if(e==="/14"||e==14){t.innerHTML="255.252.0.0";n.innerHTML=14}if(e==="/15"||e==15){t.innerHTML="255.254.0.0";n.innerHTML=15}if(e==="/16"||e==16){t.innerHTML="255.255.0.0";n.innerHTML=16}if(e==="/17"||e==17){t.innerHTML="255.255.128.0";n.innerHTML=17}if(e==="/18"||e==18){t.innerHTML="255.255.192.0";n.innerHTML=18}if(e==="/19"||e==19){t.innerHTML="255.255.224.0";n.innerHTML=19}if(e==="/20"||e==20){t.innerHTML="255.255.240.0";n.innerHTML=20}if(e==="/21"||e==21){t.innerHTML="255.255.248.0";n.innerHTML=21}if(e==="/22"||e==22){t.innerHTML="255.255.252.0";n.innerHTML=22}if(e==="/23"||e==23){t.innerHTML="255.255.254.0";n.innerHTML=23}if(e==="/24"||e==24){t.innerHTML="255.255.255.0";n.innerHTML=24}if(e==="/25"||e==25){t.innerHTML="255.255.255.128";n.innerHTML=25}if(e==="/26"||e==26){t.innerHTML="255.255.255.192";n.innerHTML=26}if(e==="/27"||e==27){t.innerHTML="255.255.255.224";n.innerHTML=27}if(e==="/28"||e==28){t.innerHTML="255.255.255.240";n.innerHTML=28}if(e==="/29"||e==29){t.innerHTML="255.255.255.248";n.innerHTML=29}if(e==="/30"||e==30){t.innerHTML="255.255.255.252";n.innerHTML=30}if(e==="/31"||e==31){t.innerHTML="255.255.255.254";n.innerHTML=31}if(e==="/32"||e==32){t.innerHTML="255.255.255.255";n.innerHTML=32}})();(function(){var e=document.cidrform.submask.value,t=document.getElementById("sm"),n=document.getElementById("ij");if(e=="0.0.0.0"){t.innerHTML=0;n.innerHTML=e}if(e=="128.0.0.0"){t.innerHTML=1;n.innerHTML=e}if(e=="192.0.0.0"){t.innerHTML=2;n.innerHTML=e}if(e=="224.0.0.0"){t.innerHTML=3;n.innerHTML=e}if(e=="240.0.0.0"){t.innerHTML=4;n.innerHTML=e}if(e=="248.0.0.0"){t.innerHTML=5;n.innerHTML=e}if(e=="252.0.0.0"){t.innerHTML=8;n.innerHTML=e}if(e=="254.0.0.0"){t.innerHTML=7;n.innerHTML=e}if(e=="255.0.0.0"){t.innerHTML=8;n.innerHTML=e}if(e=="255.128.0.0"){t.innerHTML=9;n.innerHTML=e}if(e=="255.192.0.0"){t.innerHTML=10;n.innerHTML=e}if(e=="255.224.0.0"){t.innerHTML=11;n.innerHTML=e}if(e=="255.240.0.0"){t.innerHTML=12;n.innerHTML=e}if(e=="255.248.0.0"){t.innerHTML=13;n.innerHTML=e}if(e=="255.252.0.0"){t.innerHTML=14;n.innerHTML=e}if(e=="255.254.0.0"){t.innerHTML=15;n.innerHTML=e}if(e=="255.255.0.0"){t.innerHTML=16;n.innerHTML=e}if(e=="255.255.128.0"){t.innerHTML=17;n.innerHTML=e}if(e=="255.255.192.0"){t.innerHTML=18;n.innerHTML=e}if(e=="255.255.224.0"){t.innerHTML=19;n.innerHTML=e}if(e=="255.255.240.0"){t.innerHTML=20;n.innerHTML=e}if(e=="255.255.248.0"){t.innerHTML=21;n.innerHTML=e}if(e=="255.255.252.0"){t.innerHTML=22;n.innerHTML=e}if(e=="255.255.254.0"){t.innerHTML=23;n.innerHTML=e}if(e=="255.255.255.0"){t.innerHTML=24;n.innerHTML=e}if(e=="255.255.255.128"){t.innerHTML=25;n.innerHTML=e}if(e=="255.255.255.192"){t.innerHTML=26;n.innerHTML=e}if(e=="255.255.255.224"){t.innerHTML=27;n.innerHTML=e}if(e=="255.255.255.240"){t.innerHTML=28;n.innerHTML=e}if(e=="255.255.255.248"){t.innerHTML=29;n.innerHTML=e}if(e=="255.255.255.252"){t.innerHTML=30;n.innerHTML=e}if(e=="255.255.255.254"){t.innerHTML=31;n.innerHTML=e}if(e=="255.255.255.255"){t.innerHTML=32;n.innerHTML=e}})();(function(){var e=document.getElementById("sm").innerHTML,t=document.getElementById("ah"),n=" "+"hosts";e>=2?t.innerHTML=Math.pow(2,32-e)-2+n:t.innerHTML=0+n})();(function(){var e=document.cidrform.ip.value.split("."),e=parseInt(e[0]),t=document.getElementById("ab");if(e>=0&&e<128)t.innerHTML="Class A";if(e>=128&&e<192)t.innerHTML="Class B";if(e>=192&&e<224)t.innerHTML="Class C";if(e>=224&&e<240)t.innerHTML="Class D";if(e>=240&&e<256)t.innerHTML="Class E"})();(function(){var e=document.cidrform.ip.value,t=document.getElementById("cd"),n=document.getElementById("ef"),r=document.getElementById("gh"),i=document.getElementById("sm").innerHTML,s=document.getElementById("ij").innerHTML;var o=e.split("."),u=s.split("."),a=o[0],f=o[1],l=o[2],c=o[3],h=u[0],p=u[1],d=u[2],v=u[3];for(var m=0;m<u.length;m++){if(u[m]!="255"){var g=u[m];break}}if(g==u[0]){if(i%8==0){var y=128,b=Math.floor(o[0]/y),w=b*y,E=y-1,S=w+E;t.innerHTML=w+"0.0.0";n.innerHTML=S+"255.255.255";r.innerHTML=Math.floor(Math.pow(2,i))+" "+"subnets"}if(i%8!==0){var x=i%8,T=8-x,y=Math.pow(2,T),E=y-1,b=Math.floor(o[0]/y),w=b*y,S=w+E;t.innerHTML=w+"."+o[1]+"."+o[2]+"."+o[3];n.innerHTML=S+"."+o[1]+"."+o[2]+"."+o[3];r.innerHTML=Math.floor(Math.pow(2,i))+" "+"subnets"}var g=null}if(g==u[1]){if(i%8==0){var y=128,b=Math.floor(o[1]/y),w=b*y,E=y-1,S=w+E;t.innerHTML=o[0]+"."+w+".0.0";n.innerHTML=o[0]+"."+S+".255.255";r.innerHTML=Math.floor(Math.pow(2,i-8))+" "+"subnets"}if(i%8!==0){var x=i%8,T=8-x,y=Math.pow(2,T),E=y-1,b=Math.floor(o[1]/y),w=b*y,S=w+E;t.innerHTML=o[0]+"."+w+"."+o[2]+"."+o[3];n.innerHTML=o[0]+"."+S+"."+o[2]+"."+o[3];r.innerHTML=Math.floor(Math.pow(2,i-8))+" "+"subnets"}var g=null}if(g==u[2]){if(i%8==0){var y=128,b=Math.floor(o[2]/y),w=b*y,E=y-1,S=w+E;t.innerHTML=o[0]+"."+o[1]+w+".0";n.innerHTML=o[0]+"."+o[1]+S+".255";r.innerHTML=Math.floor(Math.pow(2,i-16))+" "+"subnets"}if(i%8!==0){var x=i%8,T=8-x,y=Math.pow(2,T),E=y-1,b=Math.floor(o[2]/y),w=b*y,S=w+E;t.innerHTML=o[0]+"."+o[1]+"."+w+"."+o[3];n.innerHTML=o[0]+"."+o[1]+"."+S+"."+o[3];r.innerHTML=Math.floor(Math.pow(2,i-16))+" "+"subnets"}var g=null}if(g==u[3]){if(i%8==0){var y=128,b=Math.floor(o[3]/y),w=b*y,E=y-1,S=w+E;t.innerHTML=o[0]+"."+o[1]+o[2]+".0";n.innerHTML=o[0]+"."+o[1]+o[2]+".255";r.innerHTML=Math.floor(Math.pow(2,i-24))+" "+"subnets"}if(i%8!==0){var x=i%8,T=8-x,y=Math.pow(2,T),E=y-1,b=Math.floor(o[3]/y),w=b*y,S=w+E;t.innerHTML=o[0]+"."+o[1]+"."+o[2]+"."+w;n.innerHTML=o[0]+"."+o[1]+"."+o[2]+"."+S;r.innerHTML=Math.floor(Math.pow(2,i-24))+" "+"subnets"}var g=null}})();(function(){var e=document.getElementById("gh");if(e.innerHTML=="0 subnets"){e.innerHTML="1 subnets"}})();(function(){var e=document.getElementById("sm");document.getElementById("sm").innerHTML="/"+e.innerHTML})()}
+function val() {
+    (function() {
+        var b = document.getElementsByClassName("ugh");
+        for (var a in b) {
+            if (b.hasOwnProperty(a)) {
+                b[a].className = "meow"
+            }
+        }
+    }());
+    (function() {
+        var c = document.cidrform.cidr.value,
+            a = document.getElementById("ij"),
+            b = document.getElementById("sm");
+        if (c === "/0" || c == 0) {
+            a.innerHTML = "0.0.0.0";
+            b.innerHTML = 0
+        }
+        if (c === "/1" || c == 1) {
+            a.innerHTML = "128.0.0.0";
+            b.innerHTML = 1
+        }
+        if (c === "/2" || c == 2) {
+            a.innerHTML = "192.0.0.0";
+            b.innerHTML = 2
+        }
+        if (c === "/3" || c == 3) {
+            a.innerHTML = "224.0.0.0";
+            b.innerHTML = 3
+        }
+        if (c === "/4" || c == 4) {
+            a.innerHTML = "240.0.0.0";
+            b.innerHTML = 4
+        }
+        if (c === "/5" || c == 5) {
+            a.innerHTML = "248.0.0.0";
+            b.innerHTML = 5
+        }
+        if (c === "/6" || c == 6) {
+            a.innerHTML = "252.0.0.0";
+            b.innerHTML = 8
+        }
+        if (c === "/7" || c == 7) {
+            a.innerHTML = "254.0.0.0";
+            b.innerHTML = 7
+        }
+        if (c === "/8" || c == 8) {
+            a.innerHTML = "255.0.0.0";
+            b.innerHTML = 8
+        }
+        if (c === "/9" || c == 9) {
+            a.innerHTML = "255.128.0.0";
+            b.innerHTML = 9
+        }
+        if (c === "/10" || c == 10) {
+            a.innerHTML = "255.192.0.0";
+            b.innerHTML = 10
+        }
+        if (c === "/11" || c == 11) {
+            a.innerHTML = "255.224.0.0";
+            b.innerHTML = 11
+        }
+        if (c === "/12" || c == 12) {
+            a.innerHTML = "255.240.0.0";
+            b.innerHTML = 12
+        }
+        if (c === "/13" || c == 13) {
+            a.innerHTML = "255.248.0.0";
+            b.innerHTML = 13
+        }
+        if (c === "/14" || c == 14) {
+            a.innerHTML = "255.252.0.0";
+            b.innerHTML = 14
+        }
+        if (c === "/15" || c == 15) {
+            a.innerHTML = "255.254.0.0";
+            b.innerHTML = 15
+        }
+        if (c === "/16" || c == 16) {
+            a.innerHTML = "255.255.0.0";
+            b.innerHTML = 16
+        }
+        if (c === "/17" || c == 17) {
+            a.innerHTML = "255.255.128.0";
+            b.innerHTML = 17
+        }
+        if (c === "/18" || c == 18) {
+            a.innerHTML = "255.255.192.0";
+            b.innerHTML = 18
+        }
+        if (c === "/19" || c == 19) {
+            a.innerHTML = "255.255.224.0";
+            b.innerHTML = 19
+        }
+        if (c === "/20" || c == 20) {
+            a.innerHTML = "255.255.240.0";
+            b.innerHTML = 20
+        }
+        if (c === "/21" || c == 21) {
+            a.innerHTML = "255.255.248.0";
+            b.innerHTML = 21
+        }
+        if (c === "/22" || c == 22) {
+            a.innerHTML = "255.255.252.0";
+            b.innerHTML = 22
+        }
+        if (c === "/23" || c == 23) {
+            a.innerHTML = "255.255.254.0";
+            b.innerHTML = 23
+        }
+        if (c === "/24" || c == 24) {
+            a.innerHTML = "255.255.255.0";
+            b.innerHTML = 24
+        }
+        if (c === "/25" || c == 25) {
+            a.innerHTML = "255.255.255.128";
+            b.innerHTML = 25
+        }
+        if (c === "/26" || c == 26) {
+            a.innerHTML = "255.255.255.192";
+            b.innerHTML = 26
+        }
+        if (c === "/27" || c == 27) {
+            a.innerHTML = "255.255.255.224";
+            b.innerHTML = 27
+        }
+        if (c === "/28" || c == 28) {
+            a.innerHTML = "255.255.255.240";
+            b.innerHTML = 28
+        }
+        if (c === "/29" || c == 29) {
+            a.innerHTML = "255.255.255.248";
+            b.innerHTML = 29
+        }
+        if (c === "/30" || c == 30) {
+            a.innerHTML = "255.255.255.252";
+            b.innerHTML = 30
+        }
+        if (c === "/31" || c == 31) {
+            a.innerHTML = "255.255.255.254";
+            b.innerHTML = 31
+        }
+        if (c === "/32" || c == 32) {
+            a.innerHTML = "255.255.255.255";
+            b.innerHTML = 32
+        }
+    }());
+    (function() {
+        var c = document.cidrform.submask.value,
+            b = document.getElementById("sm"),
+            a = document.getElementById("ij");
+        if (c == "0.0.0.0") {
+            b.innerHTML = 0;
+            a.innerHTML = c
+        }
+        if (c == "128.0.0.0") {
+            b.innerHTML = 1;
+            a.innerHTML = c
+        }
+        if (c == "192.0.0.0") {
+            b.innerHTML = 2;
+            a.innerHTML = c
+        }
+        if (c == "224.0.0.0") {
+            b.innerHTML = 3;
+            a.innerHTML = c
+        }
+        if (c == "240.0.0.0") {
+            b.innerHTML = 4;
+            a.innerHTML = c
+        }
+        if (c == "248.0.0.0") {
+            b.innerHTML = 5;
+            a.innerHTML = c
+        }
+        if (c == "252.0.0.0") {
+            b.innerHTML = 8;
+            a.innerHTML = c
+        }
+        if (c == "254.0.0.0") {
+            b.innerHTML = 7;
+            a.innerHTML = c
+        }
+        if (c == "255.0.0.0") {
+            b.innerHTML = 8;
+            a.innerHTML = c
+        }
+        if (c == "255.128.0.0") {
+            b.innerHTML = 9;
+            a.innerHTML = c
+        }
+        if (c == "255.192.0.0") {
+            b.innerHTML = 10;
+            a.innerHTML = c
+        }
+        if (c == "255.224.0.0") {
+            b.innerHTML = 11;
+            a.innerHTML = c
+        }
+        if (c == "255.240.0.0") {
+            b.innerHTML = 12;
+            a.innerHTML = c
+        }
+        if (c == "255.248.0.0") {
+            b.innerHTML = 13;
+            a.innerHTML = c
+        }
+        if (c == "255.252.0.0") {
+            b.innerHTML = 14;
+            a.innerHTML = c
+        }
+        if (c == "255.254.0.0") {
+            b.innerHTML = 15;
+            a.innerHTML = c
+        }
+        if (c == "255.255.0.0") {
+            b.innerHTML = 16;
+            a.innerHTML = c
+        }
+        if (c == "255.255.128.0") {
+            b.innerHTML = 17;
+            a.innerHTML = c
+        }
+        if (c == "255.255.192.0") {
+            b.innerHTML = 18;
+            a.innerHTML = c
+        }
+        if (c == "255.255.224.0") {
+            b.innerHTML = 19;
+            a.innerHTML = c
+        }
+        if (c == "255.255.240.0") {
+            b.innerHTML = 20;
+            a.innerHTML = c
+        }
+        if (c == "255.255.248.0") {
+            b.innerHTML = 21;
+            a.innerHTML = c
+        }
+        if (c == "255.255.252.0") {
+            b.innerHTML = 22;
+            a.innerHTML = c
+        }
+        if (c == "255.255.254.0") {
+            b.innerHTML = 23;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.0") {
+            b.innerHTML = 24;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.128") {
+            b.innerHTML = 25;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.192") {
+            b.innerHTML = 26;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.224") {
+            b.innerHTML = 27;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.240") {
+            b.innerHTML = 28;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.248") {
+            b.innerHTML = 29;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.252") {
+            b.innerHTML = 30;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.254") {
+            b.innerHTML = 31;
+            a.innerHTML = c
+        }
+        if (c == "255.255.255.255") {
+            b.innerHTML = 32;
+            a.innerHTML = c
+        }
+    }());
+    (function() {
+        var c = document.getElementById("sm").innerHTML,
+            a = document.getElementById("ah"),
+            b = " hosts";
+        (c >= 2) ? a.innerHTML = (Math.pow(2, (32 - c)) - 2) + b : a.innerHTML = 0 + b
+    }());
+    (function() {
+        var b = document.cidrform.ip.value.split("."),
+            b = parseInt(b[0]),
+            a = document.getElementById("ab");
+        if ((b >= 0) && (b < 128)) {
+            a.innerHTML = "Class A"
+        }
+        if ((b >= 128) && (b < 192)) {
+            a.innerHTML = "Class B"
+        }
+        if ((b >= 192) && (b < 224)) {
+            a.innerHTML = "Class C"
+        }
+        if ((b >= 224) && (b < 240)) {
+            a.innerHTML = "Class D"
+        }
+        if ((b >= 240) && (b < 256)) {
+            a.innerHTML = "Class E"
+        }
+    }());
+    (function() {
+        var h = document.cidrform.ip.value,
+            q = document.getElementById("cd"),
+            B = document.getElementById("ef"),
+            z = document.getElementById("gh"),
+            r = document.getElementById("sm").innerHTML,
+            n = document.getElementById("ij").innerHTML;
+        var a = h.split("."),
+            t = n.split("."),
+            j = a[0],
+            y = a[1],
+            d = a[2],
+            f = a[3],
+            C = t[0],
+            D = t[1],
+            o = t[2],
+            b = t[3];
+        for (var A = 0; A < t.length; A++) {
+            if (t[A] != "255") {
+                var m = t[A];
+                break
+            }
+        }
+        if (m == t[0]) {
+            if (r % 8 == 0) {
+                var F = 128,
+                    x = (Math.floor(a[0] / F)),
+                    e = x * F,
+                    l = F - 1,
+                    c = e + l;
+                q.innerHTML = e + "0.0.0";
+                B.innerHTML = c + "255.255.255";
+                z.innerHTML = (Math.floor(Math.pow(2, r))) + " subnets"
+            }
+            if (r % 8 !== 0) {
+                var v = r % 8,
+                    E = 8 - v,
+                    F = (Math.pow(2, E)),
+                    l = F - 1,
+                    x = (Math.floor(a[0] / F)),
+                    e = x * F,
+                    c = e + l;
+                q.innerHTML = e + "." + a[1] + "." + a[2] + "." + a[3];
+                B.innerHTML = c + "." + a[1] + "." + a[2] + "." + a[3];
+                z.innerHTML = (Math.floor(Math.pow(2, r))) + " subnets"
+            }
+            var m = null
+        }
+        if (m == t[1]) {
+            if (r % 8 == 0) {
+                var F = 128,
+                    x = (Math.floor(a[1] / F)),
+                    e = x * F,
+                    l = F - 1,
+                    c = e + l;
+                q.innerHTML = a[0] + "." + e + ".0.0";
+                B.innerHTML = a[0] + "." + c + ".255.255";
+                z.innerHTML = (Math.floor(Math.pow(2, (r - 8)))) + " subnets"
+            }
+            if (r % 8 !== 0) {
+                var v = r % 8,
+                    E = 8 - v,
+                    F = (Math.pow(2, E)),
+                    l = F - 1,
+                    x = (Math.floor(a[1] / F)),
+                    e = x * F,
+                    c = e + l;
+                q.innerHTML = a[0] + "." + e + "." + a[2] + "." + a[3];
+                B.innerHTML = a[0] + "." + c + "." + a[2] + "." + a[3];
+                z.innerHTML = (Math.floor(Math.pow(2, (r - 8)))) + " subnets"
+            }
+            var m = null
+        }
+        if (m == t[2]) {
+            if (r % 8 == 0) {
+                var F = 128,
+                    x = (Math.floor(a[2] / F)),
+                    e = x * F,
+                    l = F - 1,
+                    c = e + l;
+                q.innerHTML = a[0] + "." + a[1] + e + ".0";
+                B.innerHTML = a[0] + "." + a[1] + c + ".255";
+                z.innerHTML = (Math.floor(Math.pow(2, (r - 16)))) + " subnets"
+            }
+            if (r % 8 !== 0) {
+                var v = r % 8,
+                    E = 8 - v,
+                    F = (Math.pow(2, E)),
+                    l = F - 1,
+                    x = (Math.floor(a[2] / F)),
+                    e = x * F,
+                    c = e + l;
+                q.innerHTML = a[0] + "." + a[1] + "." + e + ".0";
+                B.innerHTML = a[0] + "." + a[1] + "." + c + ".255";
+                z.innerHTML = (Math.floor(Math.pow(2, (r - 16)))) + " subnets"
+            }
+            var m = null
+        }
+        if (m == t[3]) {
+            if (r % 8 == 0) {
+                var F = 128,
+                    x = (Math.floor(a[3] / F)),
+                    e = x * F,
+                    l = F - 1,
+                    c = e + l;
+                q.innerHTML = a[0] + "." + a[1] + a[2] + ".0";
+                B.innerHTML = a[0] + "." + a[1] + a[2] + ".255";
+                z.innerHTML = (Math.floor(Math.pow(2, (r - 24)))) + " subnets"
+            }
+            if (r % 8 !== 0) {
+                var v = r % 8,
+                    E = 8 - v,
+                    F = (Math.pow(2, E)),
+                    l = F - 1,
+                    x = (Math.floor(a[3] / F)),
+                    e = x * F,
+                    c = e + l;
+                q.innerHTML = a[0] + "." + a[1] + "." + a[2] + "." + e;
+                B.innerHTML = a[0] + "." + a[1] + "." + a[2] + "." + c;
+                z.innerHTML = (Math.floor(Math.pow(2, (r - 24)))) + " subnets"
+            }
+            var m = null
+        }
+    }());
+    (function() {
+        var a = document.getElementById("gh");
+        if (a.innerHTML == "0 subnets") {
+            a.innerHTML = "1 subnets"
+        }
+    }());
+    (function() {
+        var a = document.getElementById("sm");
+        document.getElementById("sm").innerHTML = "/" + a.innerHTML
+    }())
+};

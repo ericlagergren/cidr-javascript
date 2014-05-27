@@ -195,8 +195,8 @@ for (var i in elements) {
                 stop = (Math.floor(ipa[2] / network)),
                 seattle = stop * network,
                 tacoma = seattle + broadcast;
-            s.innerHTML = ipa[0] + "." + ipa[1] + "." + seattle + "." + ipa[3];
-            g.innerHTML = ipa[0] + "." + ipa[1] + "." + tacoma + "." + ipa[3];
+            s.innerHTML = ipa[0] + "." + ipa[1] + "." + seattle + ".0";
+            g.innerHTML = ipa[0] + "." + ipa[1] + "." + tacoma + ".255";
             k.innerHTML = (Math.floor(Math.pow(2, (p - 16)))) + " " + "subnets";
             };
             var remember = null;
