@@ -24,6 +24,7 @@ form {
 	-moz-transform:translateX(-50%);
 	-ms-transform:translateX(-50%);
 	transform:translateX(-50%);
+    width: 97%;
 }
 button, a.button {
     font-size: 1em;
@@ -51,7 +52,7 @@ input, textarea {
     background: #f3f3f3;
     padding: 0.9em;
     transition: all 0.3s ease-in-out;
-    width: 100%;
+    //width: 100%;
     margin-top: 1em;
     color: #333333;
 }
@@ -71,61 +72,194 @@ h1 {
     font-weight: normal;
     font-size: 300%;
 }
-#write {
+.wrap {
+    margin: 0 auto;
+}
+#ab, #cd, #ef, #gh, #sm, #ah {
     text-align: center;
     border: 1px solid #dddddd;
     background: #f3f3f3;
-    margin: 1em auto 0 auto;
+    margin: 1em 0 0 0;
     height: 97px;
     font-size: 1em;
     line-height: 97px;
+    width: 200px;
+    display: inline-block;
+}
+.meow {
+    width: auto!important;
+    padding: 0 15px 0 15px;
+}
+.clearfix:after {
+    content:"";
+    display:block;
+    clear:both;
+    visibility:hidden;
+    line-height:0;
+    height:0
 }
 </style>
 <body>
-<form name="cidrform">
-<h1>Submask:</h1>
-<p>(e.g. 255.255.0.0)</p>
-<input type="text" name="submask" autofocus="autofocus">
-<button type="button" onclick="val();">Submit</button>
-<div id="write"></div>
+<form name="cidrform" onsubmit="val(); return false;">
+<h1>CIDR Calculator</h1>
+<input class="clearfix" type="text" name="submask" placeholder="255.255.255.0" autofocus="autofocus">
+<input class="clearfix" type="text" name="ip" placeholder="192.168.1.1">
+<div style="width:100%;"><button class="clearfix" type="button" onkeypress="val(); return false;" onclick="val();">Submit</button></div>
+<div class="wrap clearfix">
+<div class="ugh" id="sm">CIDR</div>
+<div class="ugh" id="ah"># Hosts</div>
+<div class="ugh" id="gh"># Subnets</div>
+<div class="ugh" id="ab">Class</div>
+<div class="ugh" id="cd">Network ID</div>
+<div class="ugh" id="ef">Broadcast ID</div>
+</div>
 </form>
 <script type="text/javascript">
 function val() {
-    var e = document.cidrform.submask.value,
-        t = document.getElementById("write");
-    if (e == "0.0.0.0") t.innerHTML = "/0";
-    if (e == "128.0.0.0") t.innerHTML = "/1";
-    if (e == "192.0.0.0") t.innerHTML = "/2";
-    if (e == "224.0.0.0") t.innerHTML = "/3";
-    if (e == "240.0.0.0") t.innerHTML = "/4";
-    if (e == "248.0.0.0") t.innerHTML = "/5";
-    if (e == "252.0.0.0") t.innerHTML = "/6";
-    if (e == "254.0.0.0") t.innerHTML = "/7";
-    if (e == "255.0.0.0") t.innerHTML = "/8";
-    if (e == "255.128.0.0") t.innerHTML = "/9";
-    if (e == "255.192.0.0") t.innerHTML = "/10";
-    if (e == "255.224.0.0") t.innerHTML = "/11";
-    if (e == "255.240.0.0") t.innerHTML = "/12";
-    if (e == "255.248.0.0") t.innerHTML = "/13";
-    if (e == "255.252.0.0") t.innerHTML = "/14";
-    if (e == "255.254.0.0") t.innerHTML = "/15";
-    if (e == "255.255.0.0") t.innerHTML = "/16";
-    if (e == "255.255.128.0") t.innerHTML = "/17";
-    if (e == "255.255.192.0") t.innerHTML = "/18";
-    if (e == "255.255.224.0") t.innerHTML = "/19";
-    if (e == "255.255.240.0") t.innerHTML = "/20";
-    if (e == "255.255.248.0") t.innerHTML = "/21";
-    if (e == "255.255.252.0") t.innerHTML = "/22";
-    if (e == "255.255.254.0") t.innerHTML = "/23";
-    if (e == "255.255.255.0") t.innerHTML = "/24";
-    if (e == "255.255.255.128") t.innerHTML = "/25";
-    if (e == "255.255.255.192") t.innerHTML = "/26";
-    if (e == "255.255.255.224") t.innerHTML = "/27";
-    if (e == "255.255.255.240") t.innerHTML = "/28";
-    if (e == "255.255.255.248") t.innerHTML = "/29";
-    if (e == "255.255.255.252") t.innerHTML = "/30";
-    if (e == "255.255.255.254") t.innerHTML = "/31";
-    if (e == "255.255.255.255") t.innerHTML = "/32"
+    (function() {
+        var elements = document.getElementsByClassName('ugh');
+for (var i in elements) {
+  if (elements.hasOwnProperty(i)) {
+    elements[i].className = 'meow';
+  }
+}
+    }());
+    (function() {
+        var e = document.cidrform.submask.value,
+            t = document.getElementById("sm");
+        if (e == "0.0.0.0") t.innerHTML = 0;
+        if (e == "128.0.0.0") t.innerHTML = 1;
+        if (e == "192.0.0.0") t.innerHTML = 2;
+        if (e == "224.0.0.0") t.innerHTML = 3;
+        if (e == "240.0.0.0") t.innerHTML = 4;
+        if (e == "248.0.0.0") t.innerHTML = 5;
+        if (e == "252.0.0.0") t.innerHTML = 8;
+        if (e == "254.0.0.0") t.innerHTML = 7;
+        if (e == "255.0.0.0") t.innerHTML = 8;
+        if (e == "255.128.0.0") t.innerHTML = 9;
+        if (e == "255.192.0.0") t.innerHTML = 10;
+        if (e == "255.224.0.0") t.innerHTML = 11;
+        if (e == "255.240.0.0") t.innerHTML = 12;
+        if (e == "255.248.0.0") t.innerHTML = 13;
+        if (e == "255.252.0.0") t.innerHTML = 14;
+        if (e == "255.254.0.0") t.innerHTML = 15;
+        if (e == "255.255.0.0") t.innerHTML = 16;
+        if (e == "255.255.128.0") t.innerHTML = 17;
+        if (e == "255.255.192.0") t.innerHTML = 18;
+        if (e == "255.255.224.0") t.innerHTML = 19;
+        if (e == "255.255.240.0") t.innerHTML = 20;
+        if (e == "255.255.248.0") t.innerHTML = 21;
+        if (e == "255.255.252.0") t.innerHTML = 22;
+        if (e == "255.255.254.0") t.innerHTML = 23;
+        if (e == "255.255.255.0") t.innerHTML = 24;
+        if (e == "255.255.255.128") t.innerHTML = 25;
+        if (e == "255.255.255.192") t.innerHTML = 26;
+        if (e == "255.255.255.224") t.innerHTML = 27;
+        if (e == "255.255.255.240") t.innerHTML = 28;
+        if (e == "255.255.255.248") t.innerHTML = 29;
+        if (e == "255.255.255.252") t.innerHTML = 30;
+        if (e == "255.255.255.254") t.innerHTML = 31;
+        if (e == "255.255.255.255") t.innerHTML = 32;
+    }());
+    (function() {
+        var p = document.getElementById("sm").innerHTML,
+            m = document.getElementById("ah"),
+            h = " " + "hosts";
+        (p >= 2) ? m.innerHTML = (Math.pow(2, (32 - p)) - 2) + h : m.innerHTML = 0 + h;
+    }());
+    (function() {
+        var p = document.cidrform.ip.value.split("."),
+            p = parseInt(p[0]),
+            g = document.getElementById("ab");
+        if ((p >= 0) && (p < 128)) g.innerHTML = "Class A";
+        if ((p >= 128) && (p < 192)) g.innerHTML = "Class B";
+        if ((p >= 192) && (p < 224)) g.innerHTML = "Class C";
+        if ((p >= 224) && (p < 240)) g.innerHTML = "Class D";
+        if ((p >= 240) && (p < 256)) g.innerHTML = "Class E";
+    }());
+    (function() {
+        var w = document.cidrform.ip.value,
+            s = document.getElementById("cd"),
+            g = document.getElementById("ef"),
+            k = document.getElementById("gh"),
+            p = document.getElementById("sm").innerHTML,
+            u = document.cidrform.submask.value;
+
+        var ipa = w.split("."),
+            sma = u.split("."),
+            zero = ipa[0],
+            one = ipa[1],
+            two = ipa[2],
+            three = ipa[3],
+            smzero = sma[0],
+            smone = sma[1],
+            smtwo = sma[2],
+            smthree = sma[3];
+
+        for (var i = 0; i < sma.length; i++) {
+            if (sma[i] != "255") {
+                var remember = sma[i],
+                    myInt = 256 - parseInt(sma[i], 10);
+                break;
+            }
+        };
+
+
+        if (remember == sma[0]) {
+            var eric = 256 - (parseInt(sma[0], 10));
+            var number = (Math.floor((parseInt(ipa[0], 10)) / eric));
+            ipa[0] = number * eric;
+            s.innerHTML = ipa[0] + "." + ipa[1] + "." + ipa[2] + "." + ipa[3];
+            g.innerHTML = ipa[0] + "." + ipa[1] + "." + ipa[2] + "." + ipa[3];
+            k.innerHTML = (Math.floor((Math.pow(2, p)) - 0)) + " " + "subnets";
+        };
+        if (remember == sma[1]) {
+            var eric = 256 - (parseInt(sma[1], 10));
+            var number = (Math.floor((parseInt(ipa[1], 10)) / eric));
+            ipa[1] = number * eric;
+            s.innerHTML = ipa[0] + "." + ipa[1] + "." + ipa[2] + "." + ipa[3];
+            g.innerHTML = ipa[0] + "." + ipa[1] + "." + ipa[2] + "." + ipa[3];
+            k.innerHTML = (Math.floor((Math.pow(2, (p - 8))) - 0)) + " " + "subnets";
+        };
+        if (remember == sma[2]) {
+            var eric = 256 - (parseInt(sma[2], 10));
+            var number = (Math.floor((parseInt(ipa[2], 10)) / eric));
+            ipa[2] = number * eric;
+            s.innerHTML = ipa[0] + "." + ipa[1] + "." + ipa[2] + "." + ipa[3];
+            g.innerHTML = ipa[0] + "." + ipa[1] + "." + ipa[2] + "." + ipa[3];
+            k.innerHTML = (Math.floor((Math.pow(2, (p - 16))) - 0)) + " " + "subnets";
+        };
+        if (remember == sma[3]) {
+            var eric = 256 - (parseInt(sma[3], 10));
+            var number = (Math.floor((parseInt(ipa[3], 10)) / eric));
+            ipa[3] = number * eric;
+            s.innerHTML = ipa[0] + "." + ipa[1] + "." + ipa[2] + "." + ipa[3];
+            g.innerHTML = ipa[0] + "." + ipa[1] + "." + ipa[2] + "." + ipa[3];
+            k.innerHTML = (Math.floor((Math.pow(2, (p - 24))) - 0)) + " " + "subnets";
+        };
+
+
+
+
+
+
+    }());
+
+
+
+    (function () {
+        var lk = document.getElementById("gh");
+        if (lk.innerHTML == "0 subnets") {
+            lk.innerHTML = "1 subnets";
+        };
+    }());
+    (function() {
+        var k = document.getElementById("sm");
+        document.getElementById("sm").innerHTML = "/" + k.innerHTML;
+
+    }());
+
+
 }
 </script>
 </body>
