@@ -129,12 +129,12 @@ for (var i in elements) {
         if (remember == sma[0]) {
             if (p % 8 == 0) {
                 var network = 128,
-                    stop = (Math.floor(ipa[0] / network)),
-                    seattle = stop * network,
+                    stop = (Math.floor(ipa[0] / network)); alert(stop);
+                var seattle = stop * network,
                     broadcast = network - 1,
                     tacoma = seattle + broadcast;
-                s.innerHTML = seattle + "0.0.0";
-                g.innerHTML = tacoma + "255.255.255";
+                s.innerHTML = seattle + ".0.0.0";
+                g.innerHTML = tacoma + ".255.255.255";
                 k.innerHTML = (Math.floor(Math.pow(2, p))) + " " + "subnets";
             }; 
             if (p % 8 !== 0) {
@@ -158,8 +158,8 @@ for (var i in elements) {
                     seattle = stop * network,
                     broadcast = network - 1,
                     tacoma = seattle + broadcast;
-                s.innerHTML = ipa[0] + "." + seattle + ".0" + ".0";
-                g.innerHTML = ipa[0] + "." + tacoma + ".255" +".255";
+                s.innerHTML = ipa[0] + "." + seattle + ".0.0";
+                g.innerHTML = ipa[0] + "." + tacoma + ".255.255";
                 k.innerHTML = (Math.floor(Math.pow(2, (p - 8)))) + " " + "subnets";
             }; 
             if (p % 8 !== 0) {
@@ -183,8 +183,8 @@ for (var i in elements) {
                     seattle = stop * network,
                     broadcast = network - 1,
                     tacoma = seattle + broadcast;
-                s.innerHTML = ipa[0] + "." + ipa[1] + "." + seattle + ".0";
-                g.innerHTML = ipa[0] + "." + ipa[1] + ".255.255";
+                s.innerHTML = ipa[0] + "." + ipa[1] + seattle + ".0";
+                g.innerHTML = ipa[0] + "." + ipa[1] + tacoma + ".255";
                 k.innerHTML = (Math.floor(Math.pow(2, (p - 16)))) + " " + "subnets";
             }; 
             if (p % 8 !== 0) {
@@ -195,8 +195,8 @@ for (var i in elements) {
                 stop = (Math.floor(ipa[2] / network)),
                 seattle = stop * network,
                 tacoma = seattle + broadcast;
-            s.innerHTML = ipa[0] + "." + ipa[1] + "." + seattle + ".0";
-            g.innerHTML = ipa[0] + "." + ipa[1] + "." + tacoma + ".255";
+            s.innerHTML = ipa[0] + "." + ipa[1] + "." + seattle + "." + ipa[3];
+            g.innerHTML = ipa[0] + "." + ipa[1] + "." + tacoma + "." + ipa[3];
             k.innerHTML = (Math.floor(Math.pow(2, (p - 16)))) + " " + "subnets";
             };
             var remember = null;
