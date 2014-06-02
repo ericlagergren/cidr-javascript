@@ -160,10 +160,26 @@ function val() {
 
   }
 
+  function onBits(bits) {
+    var c = "1";
+    for (var i = ''; i.length < bits;)
+      i += c;
+    return i;
+  }
+
+  function offBits(bits) {
+    var c = "0";
+    for (var i = ''; i.length < (32 - bits);)
+      i += c;
+    return i;
+  }
+
   tablecidr = document.getElementById("tablecidr");
   tablecidr.innerHTML = cidr;
   tablenumhosts = document.getElementById("tablenumhosts");
   tablenumhosts.innerHTML = hostsOutput + " hosts " + "(" + (hostsOutput - 2) + " usable)";
+  tablebinary = document.getElementById("tablebinary");
+  tablebinary.innerHTML = onBits(cidr) + offBits(cidr);
 
   document.getElementById("tablesubmask").innerHTML = submask;
   document.getElementById("tableipclass").innerHTML = classOutput;
@@ -183,6 +199,7 @@ function val() {
   //addPunctuation()
   tablecidr.innerHTML = "/" + tablecidr.innerHTML;
   tablenumhosts.innerHTML = tablenumhosts.innerHTML.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  tablebinary.innerHTML = tablebinary.innerHTML.replace(/\B(?=(\d{8})+(?!\d))/g, ".");
 
 }
 

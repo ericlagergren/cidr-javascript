@@ -1,4 +1,4 @@
-function val() {
+/*function val() {
 // Array variables
 
 var array = ["0.0.0.0:0", "128.0.0.0:1", "192.0.0.0:2", "224.0.0.0:3", "240.0.0.0:4", "248.0.0.0:5", "252.0.0.0:6", "254.0.0.0:7", "255.0.0.0:8", "255.128.0.0:9", "255.192.0.0:10", "255.224.0.0:11", "255.240.0.0:12", "255.248.0.0:13", "255.252.0.0:14", "255.254.0.0:15", "255.255.0.0:16", "255.255.128.0:17", "255.255.192.0:18", "255.255.224.0:19", "255.255.240.0:20", "255.255.248.0:21", "255.255.252.0:22", "255.255.254.0:23", "255.255.255.0:24", "255.255.255.128:25", "255.255.255.192:26", "255.255.255.224:27", "255.255.255.240:28", "255.255.255.248:29", "255.255.255.252:30", "255.255.255.254:31", "255.255.255.255:32"];
@@ -124,7 +124,7 @@ function calculateHosts(hv) {
 	if (hv <= 65534) {
 		hv = (Math.pow(n, ((32 - hv)/hv)) -2)
 	}
-}*/
+}*//*
 
 // Output variables
 var hostsOutput = calculateHosts(cidr),
@@ -157,7 +157,7 @@ document.form.netidop.innerHTML = netFinal;
 document.form.bcastidop.innerHTML = bcastIdOutput;
 document.form.subnetsop.innerHTML = subnetsOutput;
 document.form.wildcardop.innerHTML = wildcardOutput;
-document.form.datrangeyo.innerHTML = datRangeYo();*/
+document.form.datrangeyo.innerHTML = datRangeYo();*//*
 
 document.getElementById("tablecidr").innerHTML = cidr;
 document.getElementById("tablesubmask").innerHTML = submask;
@@ -173,15 +173,6 @@ var netrange = datRangeYo();
 
 document.getElementById("hidden").innerHTML = "cidr number: " + cidr + " submask: " + submask + " class: " + classOutput + " hosts: " + hostsOutput + " usable hosts: " + (hostsOutput - 2) + " network id " + netFinal + " broadcast address: " + bcastIdOutput + " subnets: " + subnetsOutput + " wildcard: " + wildcardOutput + " network range: " + netrange;
 
-
-var data = [["name1", "city1", "some other info"], ["name2", "city2", "more info"]];
-var csvContent = "data:text/csv;charset=utf-8,";
-data.forEach(function(infoArray, index){
-
-   dataString = infoArray.join(",");
-   csvContent += index < infoArray.length ? dataString+ "\n" : dataString;
-
-}); 
 
 // Automagically runs at end to do stuff
 function addPunctuation() {
@@ -203,4 +194,4 @@ function downloadInnerHtml() {
     link.setAttribute('download', "subnetting.txt");
     link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
     link.click(); 
-}
+}*/
