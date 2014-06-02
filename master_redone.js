@@ -38,14 +38,7 @@ function val() {
     wildcardOutput,
     tablecidr,
     tablenumhosts,
-
-    netrange,
-
-    data = [
-      ["name1", "city1", "some other info"],
-      ["name2", "city2", "more info"]
-    ],
-    csvContent = "data:text/csv;charset=utf-8,";
+    netrange;
 
   function getPair(arr, search) {
     var rtn = arr.filter(function(v, i) {
@@ -118,9 +111,9 @@ function val() {
   // input backwards because I'm weird (NO MORE!)
   // now its just weirder thanks to bitwise operations and ternary operators
 
-  function calculateSubnets(tupni) {
-    var valToSubtractFromTupni = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
-    return ~~Math.pow(2, (tupni - valToSubtractFromTupni)) + " subnets"; //double bitwise NOT is same as Math.floor
+  function calculateSubnets(input) {
+    var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
+    return ~~Math.pow(2, (input - valToSubtractFromInput)) + " subnets"; //double bitwise NOT is same as Math.floor
   }
 
   function findClass(ip) {
@@ -158,12 +151,12 @@ function val() {
   }).join("."); //getWildcard(submask);
 
   function datRangeYo() {
-    var splitDatUno = theBigString[0].split("."),
-      splitDatDos = theBigString[1].split("."),
-      iDontKnowSpanish = (parseInt(splitDatUno[3], 10) + 1),
-      pardonTheHorribleVariableNames = (parseInt(splitDatDos[3], 10) - 1),
-      joinThemStringz = splitDatUno.slice(0,-1).join(".") + "." + iDontKnowSpanish + " - " + splitDatDos.slice(0,-1).join(".") + "." + pardonTheHorribleVariableNames;
-    return joinThemStringz;
+    var networkOctet = theBigString[0].split("."),
+      broadcastOctet = theBigString[1].split("."),
+      firstUsable = (parseInt(networkOctet[3], 10) + 1),
+      lastUsable = (parseInt(broadcastOctet[3], 10) - 1),
+      fullUsableRange = networkOctet.slice(0,-1).join(".") + "." + firstUsable + " - " + broadcastOctet.slice(0,-1).join(".") + "." + lastUsable;
+    return fullUsableRange;
 
   }
 
@@ -187,12 +180,6 @@ function val() {
     " network id " + netFinal + " broadcast address: " + bcastIdOutput + " subnets: " + subnetsOutput +
     " wildcard: " + wildcardOutput + " network range: " + netrange;
 
-  data.forEach(function(infoArray, index) {
-    var dataString;
-    dataString = infoArray.join(",");
-    csvContent += index < infoArray.length ? dataString + "\n" : dataString;
-  });
-
   //addPunctuation()
   tablecidr.innerHTML = "/" + tablecidr.innerHTML;
   tablenumhosts.innerHTML = tablenumhosts.innerHTML.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -209,13 +196,15 @@ function downloadInnerHtml() {
   link.click();
 }
 
+
+// changed 'e' to 'evt' because Internet Explorer
 window.onload = function() {
-  document.getElementsByTagName("form")[0].onsubmit = function(e) {
-    e.preventDefault();
+  document.getElementsByTagName("form")[0].onsubmit = function(evt) {
+    evt.preventDefault();
     val();
   };
-  document.getElementById("download").onclick = function(e) {
-    e.preventDefault();
+  document.getElementById("download").onclick = function(evt) {
+    evt.preventDefault();
     downloadInnerHtml();
   };
 };
