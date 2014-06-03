@@ -1,0 +1,151 @@
+* {
+    margin: 0px;
+}
+html {
+    font-size: 150%;
+    font-family: serif;
+    color: #333;
+    background-color: #F5F5F5;
+}
+a {
+    color: #333
+}
+a:hover {
+    color: #c9514e;
+}
+body {
+    width:100%;
+    height:100%;
+    text-align: center;
+}
+form {
+    top:0px;
+    left:50%;
+    position: absolute;
+    -webkit-transform:translateX(-50%);
+    -moz-transform:translateX(-50%);
+    -ms-transform:translateX(-50%);
+    transform:translateX(-50%);
+    width: 97%;
+}
+button, a.button, input[type="submit"] {
+    font-size: 150%;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: 2px solid #c9514e;
+    color: #c9514e;
+    background: transparent;
+    line-height: 1em;
+    padding: 0.6em 0.9em;
+    transition: all 0.3s ease-in-out;
+    margin-top:1em;
+    font-family: serif;
+}
+button:hover, a.button:hover, input[type="submit"]:hover {
+    border-color: #c9514e;
+    color: #fff;
+    background: #c9514e;
+    cursor: pointer;
+}
+input, textarea {
+    font-size: 1em;
+    font-family:serif;
+    border: 1px solid #dddddd;
+    background: #f3f3f3;
+    padding: 0.9em;
+    transition: all 0.3s ease-in-out;
+    //width: 100%;
+    margin-top: 1em;
+    color: #333333;
+}
+input:focus, textarea:focus {
+    border-color: #c9514e;
+    outline: none;
+}
+form input, form textarea {
+    //margin-bottom: 0.5em;
+}
+p {
+    margin: .5em 0 auto;
+    clear:both;
+    word-spacing: 1px;
+}
+h1 {
+    font-weight: normal;
+    font-size: 300%;
+    margin-top: .25em;
+}
+.wrap {
+    margin: 1em auto 0 auto;
+    height: 100%;
+    width: 80%;
+}
+.output {
+    text-align: center;
+    border: 1px solid #dddddd;
+    background: #f3f3f3;
+    margin: 1em 0 0 0;
+    height: 72px;
+    font-size: 80%;
+    line-height: 72px;
+    min-width: 150px;
+    display: inline-block;
+    padding:0 10px 0 10px;
+}
+.clearfix:after {
+    content:"";
+    display:block;
+    clear:both;
+    visibility:hidden;
+    line-height:0;
+    height:0
+}
+hr {
+    margin: 2em 0 2em 0;
+}
+table {
+    text-align: left;
+    margin: .5em auto 0 auto;
+    border: 1px solid #000000;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+th {
+    padding:20px;
+    border: 1px solid #000000;
+    background: #eee;
+}
+td {
+    border: 1px solid #000000;
+    padding: 20px;
+    min-width: 150px;
+}
+.left,
+.right {
+  width: 50%;
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+@media screen and (max-width: 400px) {
+    table {
+        font-size: 80%;
+        float: none;
+        margin-top: 2em;
+    }
+    td {
+        min-width: 0px;
+        padding: 5px;
+    }
+    .left,
+    .right {
+      width: 100%;
+      float: none;
+    }
+    .half {
+      font-size: 100%;
+    }
+}
