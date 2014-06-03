@@ -1,1 +1,0 @@
-I made this calculator with JavaScript. Enjoy. It was a pain in the ass.
