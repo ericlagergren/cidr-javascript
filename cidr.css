@@ -48,6 +48,10 @@ button:hover, a.button:hover, input[type="submit"]:hover {
     background: #c9514e;
     cursor: pointer;
 }
+input {
+    -webkit-appearance: none;
+    border-radius: 0;
+}
 input, textarea {
     font-size: 1em;
     font-family:serif;
@@ -131,6 +135,8 @@ td {
 .right {
   float: right;
 }
+
+
 @media screen and (max-width: 400px) {
     table {
         font-size: 80%;
