@@ -122,7 +122,7 @@ th {
 }
 td {
     border: 1px solid #000000;
-    padding: 20px;
+    padding: 15px;
     min-width: 150px;
 }
 .left,
@@ -135,9 +135,10 @@ td {
 .right {
   float: right;
 }
-
-
-@media screen and (max-width: 320px) {
+.mobilebutton {
+    display: none;
+}
+@media screen and (max-width: 400px) {
     table {
         font-size: 80%;
         float: none;
@@ -154,5 +155,11 @@ td {
     }
     .half {
       font-size: 100%;
+    }
+    .mobilebutton {
+        display: block;
+    }
+    .desktopbutton {
+        display: none;
     }
 }
