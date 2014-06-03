@@ -137,7 +137,7 @@ td {
 }
 
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 320px) {
     table {
         font-size: 80%;
         float: none;
