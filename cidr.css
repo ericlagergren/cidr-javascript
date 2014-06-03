@@ -114,6 +114,7 @@ table {
     border: 1px solid #000000;
     word-wrap: break-word;
     word-break: break-word;
+    font-size: 80%;
 }
 th {
     padding:20px;
@@ -140,7 +141,6 @@ td {
 }
 @media screen and (max-width: 400px) {
     table {
-        font-size: 80%;
         float: none;
         margin-top: 2em;
     }
