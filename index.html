@@ -19,29 +19,18 @@
       <h1>Subnetting Calculator</h1>
       <p><a href="/about">about</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
       </p>
-      <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24" autofocus="autofocus">
-      <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1">
-      <!--<input class="clearfix" type="text" name="hosts" placeholder="12 hosts">-->
+      <label for="submask">Submask or CIDR:</label>
+      <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24" autofocus="autofocus"><br>
+      <label for="ip">IPv4 Address:</label>
+      <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1"><br>
+      <label for="numhost">Num. Req. Hosts<sup><a href="/about/#hosts">*</a></sup> (optional):</label>
+      <input class="clearfix" type="text" name="numhost" placeholder="500">
       <div>
-        <!--<button class="clearfix" type="button" onkeypress="val(); return false;" onclick="val();">Submit</button>-->
         <input class="desktopbutton" type="submit" value="submit" />
         <a href="#info" class="mobilebutton" onclick="scrollIntoView();"><input type="submit" value="submit" /></a>
-        <br>
-        <!-- button class="clearfix" type="button" onclick="downloadInnerHtml();">DOWNLOAD .txt</button> -->
-        <button class="clearfix desktopbutton half" type="button" id="download">DOWNLOAD .txt</button>
+        <button class="clearfix desktopbutton half" type="button" id="download">DOWNLOAD</button>
       </div>
     </div>
-    <!--<div class="wrap clearfix">-->
-    <!--<output class="output" name="cidrop">CIDR</output>
-<output class="output" name="submaskop">Submask</output>
-<output class="output" name="wildcardop">Wildcard Mask</output>
-<output class="output" name="hostsop"># Hosts</output>
-<output class="output" name="subnetsop"># Subnets</output>
-<output class="output" name="classop">Class</output>
-<output class="output" name="netidop">Network ID</output>
-<output class="output" name="bcastidop">Broadcast ID</output>
-<output class="output" name="datrangeyo">Usable Range</output>
-<hr>-->
     <div class="right" id="info">
       <table>
         <tbody id="tbody">
@@ -85,13 +74,16 @@
             <td class="dl">Usable Host Range</td>
             <td class="dl" id="tablenetworkrange"></td>
           </tr>
+          <tr>
+            <td class="dl special">CIDR/Submask for Req. Hosts</td>
+            <td class="dl special" id="tablesubmaskforhosts"></td>
+          </tr>
         </tbody>
       </table>
       <div id="hidden" style="display:none;"></div>
     </div>
-    <!--</div>-->
   </form>
-  <script src="/src/expiremental.js"></script>
+  <script src="/src/master_redone.js"></script>
 </body>
 
 </html>
