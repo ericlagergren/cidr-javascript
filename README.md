@@ -7,6 +7,3 @@
 
 <h2>Any other inquiries</h2>
 <p><a href="http://www.ericlagergren.com/contact">ericlagergren.com/contact</a></p>
-
-</body>
-</html>
