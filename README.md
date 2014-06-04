@@ -1,4 +1,4 @@
 cidr-javascript
 ===============
 
-calculates cidr notation for submask
+<h1>Go to branch gh-pages for source code</h1>
