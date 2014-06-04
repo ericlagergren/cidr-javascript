@@ -1,3 +1,5 @@
+/* COPYRIGHT 2014 ERIC LAGERGREN  LICENSED UNDER THE MIT LICENSE */
+/* LICENSE CAN BE FOUND http://opensource.org/licenses/MIT OR subnetting.ericlagergren.com/license.txt */
 function val() {
   // Array variables
   var array = ["0.0.0.0:0", "128.0.0.0:1", "192.0.0.0:2", "224.0.0.0:3",

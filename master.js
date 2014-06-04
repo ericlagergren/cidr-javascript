@@ -1,3 +1,6 @@
+/* COPYRIGHT 2014 ERIC LAGERGREN  LICENSED UNDER THE MIT LICENSE */
+/* LICENSE CAN BE FOUND http://opensource.org/licenses/MIT OR subnetting.ericlagergren.com/license.txt */
+
 /*function val() {
 // Array variables
 
