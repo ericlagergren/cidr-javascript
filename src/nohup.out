@@ -1,5 +1,0 @@
-/usr/share/terminator/terminatorlib/window.py:47: GtkWarning: Unable to locate theme engine in module_path: "pixmap",
-  gtk.Window.__init__(self)
-
-** (terminator:13448): WARNING **: Binding '<Shift><Control><Alt>a' failed!
-Unable to bind hide_window key, another instance/window has it.
