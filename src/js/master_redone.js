@@ -18,7 +18,8 @@ function val() {
     submask = submaskArray[0];
     cidr = submaskArray[1];
     submaskSplit = submask.split(".");
-    for (var i = 0; i < submaskSplit.length; i++) {
+    submaskSplitLength = submaskSplit.length;
+    for (var i = 0; i < submaskSplitLength; i++) {
         if (submaskSplit[i] !== "255") {
             index = i;
             break
