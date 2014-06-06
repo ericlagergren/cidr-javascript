@@ -2,5 +2,6 @@ CACHE MANIFEST
 
 # Cache manifest version 1.0
 
-NETWORK:
-*
+http://subnetting.ericlagergren.com/src/js/closure.js
+http://subnetting.ericlagergren.com/index.html
+http://subnetting.ericlagergren.com/assets/css/style.css
