@@ -13,17 +13,17 @@
     <meta name="robots" content="index, follow">
     <meta name="bitly-verification" content="7c235b444737"/>
     <meta name="author" content="Eric Lagergren">
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <script src="/assets/js/google-analytics.js"></script>
+    <link href="/dev/css/style.css" rel="stylesheet">
+    <!--<script src="/assets/js/google-analytics.js"></script>-->
 </head>
 
 <body>
-  <form name="form" onsubmit="x(); return false;">
+  <form name="form" onsubmit="val(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
       <nav><a href="/about">about</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
       </nav>
-      <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24" autofocus="autofocus">
+      <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24">
       <label for="submask">Submask or CIDR</label>
       <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1">
       <label for="ip">IPv4 Address</label>
@@ -80,14 +80,14 @@
             <td class="dl" id="tablenetworkrange"></td>
           </tr>
         </tbody>
-          <caption>
+         <!-- <caption>
             <button class="desktopbutton half nobutton clearfix dlb" type="button" id="download">DOWNLOAD AS .TXT</button>
-          </caption>
+        </caption>-->
       </table>
       <div id="hidden" style="display:none;"></div>
     </div>
   </form>
-  <script src="/src/js/closure.js"></script>
+  <script src="/dev/js/master_redone.js"></script>
 </body>
 
 </html>
