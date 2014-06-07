@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html> <!--manifest="cache.manifest"-->
+<html manifest="cache.appcache">
 <head>
   <title>Subnetting Calculator</title>
     <meta charset="utf-8">
@@ -18,17 +18,17 @@
 </head>
 
 <body>
-  <form name="form" onsubmit="val(); return false;">
+  <form name="form" onsubmit="y(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
-      <nav><a href="/about">about</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
+      <nav><a href="/about">about</a> // <a href="/about/#first">first time</a> // <a href="/license">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
       </nav>
       <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24">
       <label for="submask">Submask or CIDR</label>
       <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1">
       <label for="ip">IPv4 Address</label>
       <input class="clearfix" type="text" name="numhost" placeholder="500">
-      <label for="numhost">Num. Req. Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
+      <label for="numhost">Number of Required Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
       <input class="desktopbutton clearfix" type="submit" value="submit" />
       <a href="#info" class=" clearfix mobilebutton" onclick="scrollIntoView();"><input type="submit" value="submit" /></a>
     </div>
@@ -80,14 +80,12 @@
             <td class="dl" id="tablenetworkrange"></td>
           </tr>
         </tbody>
-         <!-- <caption>
-            <button class="desktopbutton half nobutton clearfix dlb" type="button" id="download">DOWNLOAD AS .TXT</button>
-        </caption>-->
+
       </table>
       <div id="hidden" style="display:none;"></div>
     </div>
   </form>
-  <script src="/dev/js/master_redone.js"></script>
+  <script src="/src/js/closure.js"></script>
   <script src="/assets/js/webapp.js"></script>
 </body>
 

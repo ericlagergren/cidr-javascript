@@ -1,24 +1,34 @@
 <plaintext>
-<form name="form" onsubmit="val(); return false;">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Subnetting Calculator</title>
+    <meta charset="utf-8">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <form name="form" onsubmit="y(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
-      <p><a href="/about">about</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
-      </p>
-      <label for="submask">Submask or CIDR:</label>
-      <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24" autofocus="autofocus"><br>
-      <label for="ip">IPv4 Address:</label>
-      <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1"><br>
-      <label for="numhost">Num. Req. Hosts<sup><a href="/about/#hosts">*</a></sup> (optional):</label>
+      <nav><a href="/about">about</a> // <a href="/about/#first">first time</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
+      </nav>
+      <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24">
+      <label for="submask">Submask or CIDR</label>
+      <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1">
+      <label for="ip">IPv4 Address</label>
       <input class="clearfix" type="text" name="numhost" placeholder="500">
-      <div>
-        <input class="desktopbutton" type="submit" value="submit" />
-        <a href="#info" class="mobilebutton" onclick="scrollIntoView();"><input type="submit" value="submit" /></a>
-        <button class="clearfix desktopbutton half" type="button" id="download">DOWNLOAD</button>
-      </div>
+      <label for="numhost">Number of Required Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
+      <input class="desktopbutton clearfix" type="submit" value="submit" />
+      <a href="#info" class=" clearfix mobilebutton" onclick="scrollIntoView();"><input type="submit" value="submit" /></a>
     </div>
     <div class="right" id="info">
       <table>
         <tbody id="tbody">
+          <tr>
+            <td class="dl special">CIDR/Submask for Req. Hosts</td>
+            <td class="dl special" id="tablesubmaskforhosts"></td>
+          </tr>
           <tr>
             <td class="dl">CIDR</td>
             <td class="dl" id="tablecidr"></td>
@@ -59,13 +69,13 @@
             <td class="dl">Usable Host Range</td>
             <td class="dl" id="tablenetworkrange"></td>
           </tr>
-          <tr>
-            <td class="dl special">CIDR/Submask for Req. Hosts</td>
-            <td class="dl special" id="tablesubmaskforhosts"></td>
-          </tr>
         </tbody>
       </table>
       <div id="hidden" style="display:none;"></div>
     </div>
   </form>
+  <script src="/src/js/master.js"></script>
+</body>
+
+</html>
 </plaintext>
