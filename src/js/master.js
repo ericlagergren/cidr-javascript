@@ -188,3 +188,6 @@ window.onload = function() {
         downloadInnerHtml()
     }*/
 };
+function scrollIntoView() {
+    document.getElementById('youridhere').scrollIntoView(alignToTop);
+}
