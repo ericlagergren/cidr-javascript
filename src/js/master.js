@@ -189,5 +189,5 @@ window.onload = function() {
     }*/
 };
 function scrollIntoView() {
-    document.getElementById('youridhere').scrollIntoView(alignToTop);
+    document.getElementById('info').scrollIntoView(alignToTop);
 }

@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Cache manifest version 1.5
+# Cache manifest version 1.2
 
 CACHE:
 
@@ -14,6 +14,6 @@ license/index.html
 
 NETWORK:
 
-http://www.ericlagergren.com/assets/js/google-analytics.js
+http://subnetting.ericlagergren.com/assets/js/google-analytics.js
 http://localhost:4000/assets/js/google-analytics.js
 http://www.google-analytics.com/analytics.js
