@@ -164,21 +164,17 @@ function val() {
     tablebinary.innerHTML = tablebinary.innerHTML.replace(/\B(?=(\d{8})+(?!\d))/g, ".")
 }
 
-function downloadInnerHtml() {
+/*function downloadInnerHtml() {
     var elHtml = document.getElementById("hidden").innerHTML,
         link = document.createElement("a"),
         mimeType = "text/plain";
     link.setAttribute("download", "subnetting.txt");
     link.setAttribute("href", "data:" + mimeType + ";charset=utf-8," + encodeURIComponent(elHtml));
     link.click()
-}
+}*/
 window.onload = function() {
     document.getElementsByTagName("form")[0].onsubmit = function(evt) {
         evt.preventDefault();
         val()
     };
-    document.getElementById("download").onclick = function(evt) {
-        evt.preventDefault();
-        downloadInnerHtml()
-    }
 };
