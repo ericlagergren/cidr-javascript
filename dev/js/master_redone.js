@@ -15,7 +15,7 @@ function val() {
         return rtn ? rtn.split(":") : -1
     }
     submaskArray = getPair(array, submaskInput);
-    if (!submaskInput) {
+    if (submaskInput === "") {
         cidr = submaskFromHosts(hostInput);
         submask = getPair(array, cidr)[0];
     } else {
