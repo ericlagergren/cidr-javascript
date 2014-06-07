@@ -13,7 +13,4 @@ about/index.html
 license/index.html
 
 NETWORK:
-
-http://subnetting.ericlagergren.com/assets/js/google-analytics.js
-http://localhost:4000/assets/js/google-analytics.js
-http://www.google-analytics.com/analytics.js
+*
