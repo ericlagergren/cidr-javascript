@@ -9,14 +9,19 @@ function val() {
         submaskArray, submask, cidr, submaskSplit, index, theBigString, hostsOutput, subnetsOutput, classOutput, netInit, netBeta, netFinal, bcastIdOutput, wildcardOutput, tablecidr, tablenumhosts, netrange;
 
     function getPair(arr, search) {
-        var rtn = arr.filter(function(v, i) {
+        var rtn = arr.filter(function(v) {
             return new RegExp("\\b" + search + "\\b").test(v)
         })[0];
         return rtn ? rtn.split(":") : -1
     }
     submaskArray = getPair(array, submaskInput);
-    submask = submaskArray[0];
-    cidr = submaskArray[1];
+    if (submaskInput === "") {
+        cidr = submaskFromHosts(hostInput);
+        submask = getPair(array, cidr)[0];
+    } else {
+        submask = submaskArray[0];
+        cidr = submaskArray[1];
+    }
     submaskSplit = submask.split(".");
     submaskSplitLength = submaskSplit.length;
     for (var i = 0; i < submaskSplitLength; i++) {
@@ -166,15 +171,20 @@ function val() {
 
 /*function downloadInnerHtml() {
     var elHtml = document.getElementById("hidden").innerHTML,
-        link = document.createElement("a"),
-        mimeType = "text/plain";
-    link.setAttribute("download", "subnetting.txt");
-    link.setAttribute("href", "data:" + mimeType + ";charset=utf-8," + encodeURIComponent(elHtml));
-    link.click()
+        pom = document.createElement("a");
+        alert("working so far");
+        //mimeType = "text/plain";
+         pom.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(elHtml));
+    pom.setAttribute("download", "subnetting.txt");
+    pom.click()
 }*/
 window.onload = function() {
     document.getElementsByTagName("form")[0].onsubmit = function(evt) {
         evt.preventDefault();
         val()
     };
+    /*document.getElementById("download").onclick = function(evt) {
+        evt.preventDefault();
+        downloadInnerHtml()
+    }*/
 };
