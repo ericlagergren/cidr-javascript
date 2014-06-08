@@ -79,7 +79,7 @@ function val() {
 
     function findClass(ip) {
         if ((ipInput.length - 1) === 3) {
-            if (!ip || ip < 0) {
+            if (!ip || ip < 0 || typeof ip === 'undefined') {
                 return "No Valid IP Entered"
             }
             if (ip < 128) {
@@ -164,12 +164,13 @@ function val() {
 
     document.getElementById("tablenumsubnets").innerHTML = subnetsOutput;
     document.getElementById("tablewildcardmask").innerHTML = wildcardOutput;
-    if (typeof ipInput[index] === 'undefined') {
+    if (typeof ipInput[index] === 'undefined' || ipInput[0] > 255 || ipInput[1] > 255 || ipInput[2] > 255 || ipInput[3] > 255 || ipInput[0].length > 3 || ipInput[1].length > 3 || ipInput[2].length > 3 || ipInput[3].length > 3) {
         invalidIp = "No Valid IP Entered";
         document.getElementById("tablenetworkrange").innerHTML = invalidIp;
         document.getElementById("tablenetworkid").innerHTML = invalidIp;
         document.getElementById("tablebroadcastaddress").innerHTML = invalidIp;
         document.getElementById("tableiptohex").innerHTML = invalidIp;
+        document.getElementById("tableipclass").innerHTML = invalidIp;
     } else {
         document.getElementById("tablenetworkrange").innerHTML = datRangeYo();
         document.getElementById("tablenetworkid").innerHTML = netFinal;
