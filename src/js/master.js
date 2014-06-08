@@ -219,12 +219,4 @@ window.onload = function() {
         evt.preventDefault();
         val()
     };
-    /*document.getElementById("download").onclick = function(evt) {
-        evt.preventDefault();
-        downloadInnerHtml()
-    }*/
 };
-function scrollIntoView() {
-    var objDiv = document.getElementById("info");
-    objDiv.scrollTop = objDiv.scrollHeight;
-}

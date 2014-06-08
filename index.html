@@ -32,8 +32,7 @@
       <label for="ip">IPv4 Address</label>
       <input class="clearfix" type="text" name="numhost" placeholder="500">
       <label for="numhost">Num. Req. Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
-      <input class="desktopbutton clearfix" type="submit" value="submit" />
-      <input class="clearfix mobilebutton" type="submit" value="submit" onclick="scrollIntoView();" />
+      <input class="clearfix" type="submit" value="submit" />
     </div>
     <div class="right" id="info">
       <table>
@@ -93,6 +92,7 @@
       <div id="hidden" style="display:none;"></div>
     </div>
   </form>
+  <a id="refresh" href="#" onclick="location.reload();window.scroll(0,0); return false">REFRESH</button>
   <script src="/src/js/closure.js"></script>
   <script src="/assets/js/webapp.js"></script>
 </body>
