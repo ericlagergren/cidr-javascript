@@ -225,5 +225,6 @@ window.onload = function() {
     }*/
 };
 function scrollIntoView() {
-    document.getElementById('info').scrollIntoView(alignToTop);
+    var objDiv = document.getElementById("info");
+    objDiv.scrollTop = objDiv.scrollHeight;
 }
