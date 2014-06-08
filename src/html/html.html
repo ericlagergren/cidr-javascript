@@ -1,34 +1,46 @@
 <plaintext>
 <!DOCTYPE html>
-<html>
+<html><!-- manifest="cache.appcache">--> <!-- CACHE IS FOR OFFLINE VIEWING MAKE SURE YOU KNOW WHAT YOU'RE DOING -->
 <head>
   <title>Subnetting Calculator</title>
     <meta charset="utf-8">
-    <link href="/css/style.css" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv='cleartype' content='on'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Subnetting Calculator">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="robots" content="index, follow">
+    <meta name="bitly-verification" content="7c235b444737"/>
+    <meta name="author" content="Eric Lagergren">
+    <link href="/assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-  <form name="form" onsubmit="y(); return false;">
+  <form name="form" onsubmit="val(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
-      <nav><a href="/about">about</a> // <a href="/about/#first">first time</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
+      <nav><a href="/about">about</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
       </nav>
       <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24">
       <label for="submask">Submask or CIDR</label>
       <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1">
       <label for="ip">IPv4 Address</label>
       <input class="clearfix" type="text" name="numhost" placeholder="500">
-      <label for="numhost">Number of Required Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
+      <label for="numhost">Num. Req. Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
       <input class="desktopbutton clearfix" type="submit" value="submit" />
-      <a href="#info" class=" clearfix mobilebutton" onclick="scrollIntoView();"><input type="submit" value="submit" /></a>
+      <input class="clearfix mobilebutton" type="submit" value="submit" onclick="scrollIntoView();" />
     </div>
     <div class="right" id="info">
       <table>
-        <tbody id="tbody">
-          <tr>
-            <td class="dl special">CIDR/Submask for Req. Hosts</td>
-            <td class="dl special" id="tablesubmaskforhosts"></td>
+        <thead id="thead">
+            <tr>
+              <th class="dl">ID</td>
+              <th class="dl">RESULTS</td>
           </tr>
+        </thead>
+        <tbody id="tbody">
           <tr>
             <td class="dl">CIDR</td>
             <td class="dl" id="tablecidr"></td>
@@ -58,6 +70,10 @@
             <td class="dl" id="tableipclass"></td>
           </tr>
           <tr>
+            <td class="dl">IP to Hex</td>
+            <td class="dl" id="tableiptohex"></td>
+          </tr>
+          <tr>
             <td class="dl">Network ID</td>
             <td class="dl" id="tablenetworkid"></td>
           </tr>
@@ -71,11 +87,11 @@
           </tr>
         </tbody>
       </table>
-      <div id="hidden" style="display:none;"></div>
     </div>
   </form>
   <script src="/src/js/master.js"></script>
 </body>
 
 </html>
+
 </plaintext>
