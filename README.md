@@ -5,7 +5,7 @@
 <h2>How do I use it?</h2>
 <p>It's simple: include the JavaScript file <a href="http://subnetting.ericlagergren.com/src/js/master.js">"master.js"</a> on your website, and make sure you have the form/table HTML files <a href="http://subnetting.ericlagergren.com/src/html/html.html">found here</a>.</p>
 <h2>Can I use this on my own website? Or somewhere else?</h2>
-<p>Yes, for the most part. The code is licensed under the MIT license, which you <a href="/license.txt">can find here</a>. For a tl;dr, you can refer to<a href="https://tldrlegal.com/license/mit-license"> tldrlegal.com/l/mit</a></p>
+<p>Yes, for the most part. The code is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License</a>, which you <a href="/license.txt">can find here</a>. For a tl;dr, you can refer to<a href="https://tldrlegal.com/l/apache2"> tldrlegal.com/l/apache2</a></p>
 
 <h2>Any other inquiries</h2>
 <p><a href="http://www.ericlagergren.com/contact">ericlagergren.com/contact</a></p>
