@@ -1,16 +1,13 @@
 CACHE MANIFEST
 
-# Cache manifest version 1.5
+# Cache manifest version 1.4
 
 CACHE:
 
-assets/js/webapp.js
-src/js/master.js
-src/js/closure.js
+js/master.js
+js/webapp.js
 index.html
-assets/css/style.css
-about/index.html
-license/index.html
+css/style.css
 
 NETWORK:
 *

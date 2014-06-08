@@ -15,6 +15,9 @@
     <meta name="author" content="Eric Lagergren">
     <link href="/dev/css/style.css" rel="stylesheet">
     <!--<script src="/assets/js/google-analytics.js"></script>-->
+        <script type="text/javascript">
+    if("standalone"in window.navigator&&window.navigator.standalone){var noddy,remotes=false;document.addEventListener("click",function(event){noddy=event.target;while(noddy.nodeName!=="A"&&noddy.nodeName!=="HTML")noddy=noddy.parentNode;if("href"in noddy&&noddy.href.indexOf("http")!==-1&&(noddy.href.indexOf(document.location.host)!==-1||remotes)){event.preventDefault();document.location.href=noddy.href}},false)};
+    </script>
 </head>
 
 <body>
@@ -30,15 +33,17 @@
       <input class="clearfix" type="text" name="numhost" placeholder="500">
       <label for="numhost">Num. Req. Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
       <input class="desktopbutton clearfix" type="submit" value="submit" />
-      <a href="#info" class=" clearfix mobilebutton" onclick="scrollIntoView();"><input type="submit" value="submit" /></a>
+      <input class="clearfix mobilebutton" onclick="scrollIntoView();"></input>
     </div>
     <div class="right" id="info">
       <table>
-        <tbody id="tbody">
-          <tr>
-            <td class="dl special">CIDR/Submask for Req. Hosts</td>
-            <td class="dl special" id="tablesubmaskforhosts"></td>
+        <thead id="thead">
+            <tr>
+              <th class="dl">ID</td>
+              <th class="dl">RESULTS</td>
           </tr>
+        </thead>
+        <tbody id="tbody">
           <tr>
             <td class="dl">CIDR</td>
             <td class="dl" id="tablecidr"></td>
@@ -68,6 +73,10 @@
             <td class="dl" id="tableipclass"></td>
           </tr>
           <tr>
+            <td class="dl">IP to Hex</td>
+            <td class="dl" id="tableiptohex"></td>
+          </tr>
+          <tr>
             <td class="dl">Network ID</td>
             <td class="dl" id="tablenetworkid"></td>
           </tr>
@@ -80,14 +89,11 @@
             <td class="dl" id="tablenetworkrange"></td>
           </tr>
         </tbody>
-         <!-- <caption>
-            <button class="desktopbutton half nobutton clearfix dlb" type="button" id="download">DOWNLOAD AS .TXT</button>
-        </caption>-->
       </table>
       <div id="hidden" style="display:none;"></div>
     </div>
   </form>
-  <script src="/dev/js/master_redone.js"></script>
+  <script src="/dev/js/closure.js"></script>
   <script src="/dev/js/webapp.js"></script>
 </body>
 

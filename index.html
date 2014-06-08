@@ -13,35 +13,37 @@
     <meta name="robots" content="index, follow">
     <meta name="bitly-verification" content="7c235b444737"/>
     <meta name="author" content="Eric Lagergren">
-    <link href="/assets/css/style.css" rel="stylesheet">
-    <script src="/assets/js/google-analytics.js"></script>
-    <script type="text/javascript">
+    <link href="/dev/css/style.css" rel="stylesheet">
+    <!--<script src="/assets/js/google-analytics.js"></script>-->
+        <script type="text/javascript">
     if("standalone"in window.navigator&&window.navigator.standalone){var noddy,remotes=false;document.addEventListener("click",function(event){noddy=event.target;while(noddy.nodeName!=="A"&&noddy.nodeName!=="HTML")noddy=noddy.parentNode;if("href"in noddy&&noddy.href.indexOf("http")!==-1&&(noddy.href.indexOf(document.location.host)!==-1||remotes)){event.preventDefault();document.location.href=noddy.href}},false)};
     </script>
 </head>
 
 <body>
-  <form name="form" onsubmit="y(); return false;">
+  <form name="form" onsubmit="val(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
-      <nav><a href="/about">about</a> // <a href="/about/#first">first time</a> // <a href="/license">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
+      <nav><a href="/about">about</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source code</a>
       </nav>
       <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24">
       <label for="submask">Submask or CIDR</label>
       <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1">
       <label for="ip">IPv4 Address</label>
       <input class="clearfix" type="text" name="numhost" placeholder="500">
-      <label for="numhost">Number of Required Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
+      <label for="numhost">Num. Req. Hosts<sup><a href="/about/#hosts">*</a></sup> (optional)</label>
       <input class="desktopbutton clearfix" type="submit" value="submit" />
-      <input class="clearfix mobilebutton" onclick="scrollIntoView();" type="submit" value="submit" />
+      <input class="clearfix mobilebutton" onclick="scrollIntoView();"></input>
     </div>
     <div class="right" id="info">
       <table>
-        <tbody id="tbody">
-          <tr>
-            <td class="dl special">CIDR/Submask for Req. Hosts</td>
-            <td class="dl special" id="tablesubmaskforhosts"></td>
+        <thead id="thead">
+            <tr>
+              <th class="dl">ID</td>
+              <th class="dl">RESULTS</td>
           </tr>
+        </thead>
+        <tbody id="tbody">
           <tr>
             <td class="dl">CIDR</td>
             <td class="dl" id="tablecidr"></td>
@@ -71,6 +73,10 @@
             <td class="dl" id="tableipclass"></td>
           </tr>
           <tr>
+            <td class="dl">IP to Hex</td>
+            <td class="dl" id="tableiptohex"></td>
+          </tr>
+          <tr>
             <td class="dl">Network ID</td>
             <td class="dl" id="tablenetworkid"></td>
           </tr>
@@ -83,7 +89,6 @@
             <td class="dl" id="tablenetworkrange"></td>
           </tr>
         </tbody>
-
       </table>
       <div id="hidden" style="display:none;"></div>
     </div>
