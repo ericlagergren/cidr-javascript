@@ -195,28 +195,15 @@ function val() {
         document.getElementById("tableiptohex").innerHTML = iptohex.toUpperCase();
     }
     netrange = datRangeYo();
-    document.getElementById("hidden").innerHTML = "cidr number: " + cidr + " submask: " + submask + " class: " + classOutput + " hosts: " + hostsOutput + " usable hosts: " + (hostsOutput - 2) + " network id " + netFinal + " broadcast address: " + bcastIdOutput + " subnets: " + subnetsOutput + " wildcard: " + wildcardOutput + " network range: " + netrange;
-    //cfh = submaskFromHosts(hostInput);
-    //smfh = getPair(array, cfh)[0];
-    //document.getElementById("tablesubmaskforhosts").innerHTML = cfh + " / " + smfh; 
 
     tablecidr.innerHTML = "/" + tablecidr.innerHTML;
     tablenumhosts.innerHTML = tablenumhosts.innerHTML.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     tablebinary.innerHTML = tablebinary.innerHTML.replace(/\B(?=(\d{8})+(?!\d))/g, ".")
 }
-
-/*function downloadInnerHtml() {
-    var elHtml = document.getElementById("hidden").innerHTML,
-        pom = document.createElement("a");
-        alert("working so far");
-        //mimeType = "text/plain";
-         pom.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(elHtml));
-    pom.setAttribute("download", "subnetting.txt");
-    pom.click()
-}*/
 window.onload = function() {
     document.getElementsByTagName("form")[0].onsubmit = function(evt) {
         evt.preventDefault();
         val()
+        window.scrollTo(0, document.body.scrollHeight);
     };
 };
