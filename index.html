@@ -15,19 +15,20 @@
     <meta name="author" content="Eric Lagergren">
     <link href="/assets/css/style.css" rel="stylesheet">
     <script src="/assets/js/google-analytics.js"></script>
-    <script type="text/javascript">
+    <script src="/src/js/closure_two.js"></script>
+    <!--<script type="text/javascript">
     if("standalone"in window.navigator&&window.navigator.standalone){var noddy,remotes=false;document.addEventListener("click",function(event){noddy=event.target;while(noddy.nodeName!=="A"&&noddy.nodeName!=="HTML")noddy=noddy.parentNode;if("href"in noddy&&noddy.href.indexOf("http")!==-1&&(noddy.href.indexOf(document.location.host)!==-1||remotes)){event.preventDefault();document.location.href=noddy.href}},false)};
     </script>
     <script type="text/javascript">
     function updateSite(event){window.applicationCache.swapCache();}window.applicationCache.addEventListener('updateready',updateSite,false);
-    </script>
+    </script>-->
 </head>
 
 <body>
   <form name="form" onsubmit="val(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
-      <nav><a href="/about">about</a> // <a href="/license.txt">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source</a> // <a href="#" onclick="location.reload(); return false;">refresh</a>
+      <nav><a href="/about">about</a> // <a href="/license">license</a> // <a href="https://github.com/EricLagerg/cidr-javascript/">source</a> // <a href="#" onclick="location.reload(); return false;">refresh</a>
       </nav>
       <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24">
       <label for="submask">Submask or CIDR</label>
@@ -98,8 +99,6 @@
   <button id="refresh" class="ux-actions clearfix" href="#" onclick="location.reload();window.scroll(0,0); return false;">REFRESH</button>
   <button id="top" class="ux-actions clearfix" href="#" onclick="window.scroll(0,0); return false;">TO TOP</button>
   </div>
-  <script src="/src/js/closure.js"></script>
-  <script src="/assets/js/webapp.js"></script>
 </body>
 
 </html>
