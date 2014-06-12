@@ -15,7 +15,6 @@
     <meta name="author" content="Eric Lagergren">
     <link href="/assets/css/style.css" rel="stylesheet">
     <script src="/assets/js/google-analytics.js"></script>
-    <script src="/src/js/master.js"></script>
 </head>
 
 <body>
@@ -89,9 +88,9 @@
       </table>
     </div>
   </form>
-      <div id="iphone_install" class="fish" style="">
+      <div id="iphoneinstall" class="fish">
         <div class="top" onclick="openInstall();">
-          Download the mobile app for free. <a class="dontshow" href="#" onclick="setCookie()">&#10006;</a>
+          Download the mobile app for free. <a class="dontshow" href="#" onclick="setCookie(); hide(); return false;">&#10006;</a>
         </div>
  
         <p>
@@ -108,6 +107,7 @@
   <button id="refresh" class="ux-actions clearfix" href="#" onclick="location.reload();window.scroll(0,0); return false;">REFRESH</button>
   <button id="top" class="ux-actions clearfix" href="#" onclick="window.scroll(0,0); return false;">TO TOP</button>
   </div>
+<script src="/src/js/master.js"></script>
 </body>
 
 </html>

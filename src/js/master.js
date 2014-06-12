@@ -35,10 +35,11 @@ function readCookie() {
 
 var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
 var readcookie = readCookie();
-if (window.navigator.standalone == false && iOS == true && !readcookie) {
-    document.getElementById("iphone_install").setAttribute("class","fish");
+
+if (window.navigator.standalone == false && iOS == true && readcookie != null) {
+    document.getElementById("iphoneinstall").setAttribute("class","fish");
 } else {
-    document.getElementById("iphone_install").setAttribute("class","hidden");
+    document.getElementById("iphoneinstall").setAttribute("class","hidden");
 }
 
 function openInstall() {
@@ -48,7 +49,10 @@ function openInstall() {
     } else {
         element.setAttribute("class","fish"); 
     }
+}
 
+function hide() {
+    document.getElementById("iphoneinstall").setAttribute("class","hidden");
 }
 
 if ("standalone" in window.navigator && window.navigator.standalone) {
