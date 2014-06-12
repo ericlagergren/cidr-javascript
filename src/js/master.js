@@ -17,12 +17,18 @@ limitations under the License.
 
 
 var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
-if (window.navigator.standalone == false && iOS === true ) {
-    document.getElementById("iphone_install").setAttribute("class","hidden");
+if (window.navigator.standalone == false && iOS == true) {
+    document.getElementById("iphone_install").setAttribute("class","open");
 }
 
 function openInstall() {
-    document.getElementById("iphone_install").setAttribute("class","open");
+    element = document.getElementById("iphone_install");
+    if (element.classList.contains("fish")) {
+        element.setAttribute("class","open");
+    } else {
+        element.setAttribute("class","fish"); 
+    }
+
 }
 
 if ("standalone" in window.navigator && window.navigator.standalone) {
