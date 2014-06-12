@@ -31,10 +31,6 @@ function openInstall() {
     }
 }
 
-if (document.getElementById('iphoneinstall').offsetHeight > window.innerHeight) {
-    document.getElementById('iphoneinstall').setAttribute('class','hidden');
-}
-
 if ("standalone" in window.navigator && window.navigator.standalone) {
     var noddy, remotes = false;
     document.addEventListener("click", function(event) {
