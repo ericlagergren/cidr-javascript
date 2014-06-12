@@ -17,7 +17,7 @@
     <script src="/assets/js/google-analytics.js"></script>
 </head>
 
-<body ontouchmove="blockMove(event);">
+<body>
   <form name="form" onsubmit="val(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
@@ -88,6 +88,21 @@
       </table>
     </div>
   </form>
+      <div id="iphone_install" class="" style="">
+        <div class="top" onclick="openInstall();">
+          Download the Forecast mobile app for free.
+        </div>
+ 
+        <p>
+        Simply tap the <img class="share" src="/assets/iphone_share.png"> button below, and choose "Add to Home Screen".
+        </p>
+ 
+        <p>
+        The mobile app will then be installed as an icon on your home screen.
+        </p>
+ 
+        <p class="arrow">↓</p>
+      </div>
   <div class="clearfix">
   <button id="refresh" class="ux-actions clearfix" href="#" onclick="location.reload();window.scroll(0,0); return false;">REFRESH</button>
   <button id="top" class="ux-actions clearfix" href="#" onclick="window.scroll(0,0); return false;">TO TOP</button>
