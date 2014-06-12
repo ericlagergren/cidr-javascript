@@ -14,6 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+function BlockMove(event) {
+    event.preventDefault() ;
+}
+
 if ("standalone" in window.navigator && window.navigator.standalone) {
     var noddy, remotes = false;
     document.addEventListener("click", function(event) {
