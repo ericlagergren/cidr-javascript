@@ -16,8 +16,26 @@ limitations under the License.
 
 
 
+function setMyCookie() {
+   var now = new Date();
+   var expires = now.setTime(now.getTime() + 12 * 2628000 );
+   document.cookie = 'subnetting=noshow;path=/;expires='+expires.toGMTString()+';';
+}
+
+function readCookie() {
+    var nameEQ = "subnetting" + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
 var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
-if (window.navigator.standalone == false && iOS == true) {
+var readcookie = readCookie();
+if (window.navigator.standalone == false && iOS == true && !readcookie) {
     document.getElementById("iphone_install").setAttribute("class","fish");
 } else {
     document.getElementById("iphone_install").setAttribute("class","hidden");
