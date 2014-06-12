@@ -19,6 +19,8 @@ limitations under the License.
 var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
 if (window.navigator.standalone == false && iOS == true) {
     document.getElementById("iphone_install").setAttribute("class","fish");
+} else {
+    document.getElementById("iphone_install").setAttribute("class","hidden");
 }
 
 function openInstall() {
