@@ -1,99 +1,155 @@
-/*Copyright 2014 Eric Lagergren
+if ("standalone" in window.navigator && window.navigator.standalone) {
+    var noddy, remotes = false;
+    document.addEventListener("click", function(event) {
+        noddy = event.target;
+        while (noddy.nodeName !== "A" && noddy.nodeName !== "HTML") noddy = noddy.parentNode;
+        if ("href" in noddy && noddy.href.indexOf("http") !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes)) {
+            event.preventDefault();
+            document.location.href = noddy.href
+        }
+    }, false)
+};
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.*/
-
-if("standalone"in window.navigator&&window.navigator.standalone){var noddy,remotes=false;document.addEventListener("click",function(event){noddy=event.target;while(noddy.nodeName!=="A"&&noddy.nodeName!=="HTML")noddy=noddy.parentNode;if("href"in noddy&&noddy.href.indexOf("http")!==-1&&(noddy.href.indexOf(document.location.host)!==-1||remotes)){event.preventDefault();document.location.href=noddy.href}},false)};
-
-function updateSite(event){window.applicationCache.swapCache();}window.applicationCache.addEventListener('updateready',updateSite,false);
+function updateSite(event) {
+    window.applicationCache.swapCache();
+}
+window.applicationCache.addEventListener('updateready', updateSite, false);
 
 function val() {
-    var array = ["0.0.0.0:0", "128.0.0.0:1", "192.0.0.0:2", "224.0.0.0:3", "240.0.0.0:4", "248.0.0.0:5", "252.0.0.0:6", "254.0.0.0:7", "255.0.0.0:8", "255.128.0.0:9", "255.192.0.0:10", "255.224.0.0:11", "255.240.0.0:12", "255.248.0.0:13", "255.252.0.0:14", "255.254.0.0:15", "255.255.0.0:16", "255.255.128.0:17", "255.255.192.0:18", "255.255.224.0:19", "255.255.240.0:20", "255.255.248.0:21", "255.255.252.0:22", "255.255.254.0:23", "255.255.255.0:24", "255.255.255.128:25", "255.255.255.192:26", "255.255.255.224:27", "255.255.255.240:28", "255.255.255.248:29", "255.255.255.252:30", "255.255.255.254:31", "255.255.255.255:32"],
-        submaskInput = document.form.submask.value,
-        ipInput = document.form.ip.value.split("."),
-        hostInput = document.form.numhost.value,
-        submaskArray, submask, cidr, submaskSplit, index, theBigString, hostsOutput, subnetsOutput, classOutput, netInit, netBeta, netFinal, bcastIdOutput, wildcardOutput, tablecidr, tablenumhosts, netrange;
+	var submaskInput = document.form.submask.value,
+	    ipInput = document.form.ip.value,
+	    submask, base, submaskSplit, index, theBigString, netInit, netFinal;
 
-    function getPair(arr, search) {
-        var rtn = arr.filter(function(v) {
-            return new RegExp("\\b" + search + "\\b").test(v)
-        })[0];
-        return rtn ? rtn.split(":") : -1
+
+    // Determine the type of input
+    if (submaskInput <= 32) { // less than or equal to = cidr
+        base = submaskInput;
+        submask = getSubmask(parseInt(submaskInput,10));
     }
-    submaskArray = getPair(array, submaskInput);
-    if (submaskInput === "") {
-        cidr = submaskFromHosts(hostInput);
-        submask = getPair(array, cidr)[0];
-    } else {
-        submask = submaskArray[0];
-        cidr = submaskArray[1];
+    if (submaskInput.split(".").length === 4) { // if you can split the input iptointo four parts it's a submask
+        base = getCidr(submaskInput);
+    	submask = submaskInput;
     }
-    submaskSplit = submask.split(".");
-    submaskSplitLength = submaskSplit.length;
-    for (var i = 0; i < submaskSplitLength; i++) {
-        if (submaskSplit[i] !== "255") {
-            index = i;
-            break
-        }
+    if (submaskInput > 32) { // greater than = host
+        base = getCidrFromHost(submaskInput);
+        submask = getSubmask(base);
+    }
+    if (base === 'undefined' || isNaN(base) || base === null) {
+    	return null
     }
 
-    function getNetworkRange(cider) {
-        var init, network, broadcast, modResult = cider % 8;
-        if (modResult) {
-            init = (Math.pow(2, (8 - modResult)));
-            network = ((Math.floor(ipInput[index] / init)) * init);
-            broadcast = (network + (init - 1))
-        } else if (cider === 32 || cider === 31) {
-            network = "N/A";
-            broadcast = "N/A";
-        } else {
-            init = 128;
-            network = ((Math.floor(ipInput[index] / init)) * init);
-            broadcast = "255"
+	var ipInputArray = ipInput.split("."),
+	   submaskInputArray = submask.split(".");
+
+    function getCidrFromHost(input) {
+        if (input !== 0) {
+            var input = (32 - (Math.ceil((Math.log(input))/(Math.log(2)))));
         }
-        return [network, broadcast]
+        return input;
     }
 
-    function placeRangeCorrectly(network, broadcast) {
-        var networkString, broadcastString, networkStringInitial = "",
-            broadcastStringInitial = "";
-        for (var i = 0; i < index; i++) {
-            networkStringInitial += ipInput[i] + ".";
-            broadcastStringInitial += ipInput[i] + "."
+    function getSubmask(input) {
+		if (input === 0) return "0.0.0.0";
+		if (input === 1) return "128.0.0.0";
+		if (input === 2) return "192.0.0.0";
+		if (input === 3) return "224.0.0.0";
+		if (input === 4) return "240.0.0.0";
+		if (input === 5) return "248.0.0.0";
+		if (input === 6) return "252.0.0.0";
+		if (input === 7) return "254.0.0.0";
+		if (input === 8) return "255.0.0.0";
+		if (input === 9) return "255.128.0.0";
+		if (input === 10) return "255.192.0.0";
+		if (input === 11) return "255.224.0.0";
+		if (input === 12) return "255.240.0.0";
+		if (input === 13) return "255.248.0.0";
+		if (input === 14) return "255.252.0.0";
+		if (input === 15) return "255.254.0.0";
+		if (input === 16) return "255.255.0.0";
+		if (input === 17) return "255.255.128.0";
+		if (input === 18) return "255.255.192.0";
+		if (input === 19) return "255.255.224.0";
+		if (input === 20) return "255.255.240.0";
+		if (input === 21) return "255.255.248.0";
+		if (input === 22) return "255.255.252.0";
+		if (input === 23) return "255.255.254.0";
+		if (input === 24) return "255.255.255.0";
+		if (input === 25) return "255.255.255.128";
+		if (input === 26) return "255.255.255.192";
+		if (input === 27) return "255.255.255.224";
+		if (input === 28) return "255.255.255.240";
+		if (input === 29) return "255.255.255.248";
+		if (input === 30) return "255.255.255.252";
+		if (input === 31) return "255.255.255.254";
+		if (input === 32) return "255.255.255.255";
+    }
+
+    function getCidr(input) {
+    	if (input === "0.0.0.0") return 0;
+    	if (input === "128.0.0.0") return 1;
+    	if (input === "192.0.0.0") return 2;
+    	if (input === "224.0.0.0") return 3;
+		if (input === "240.0.0.0") return 4;
+		if (input === "248.0.0.0") return 5;
+		if (input === "252.0.0.0") return 6;
+		if (input === "254.0.0.0") return 7;
+		if (input === "255.0.0.0") return 8;
+		if (input === "255.128.0.0") return 9;
+		if (input === "255.192.0.0") return 10;
+		if (input === "255.224.0.0") return 11;
+		if (input === "255.240.0.0") return 12;
+		if (input === "255.248.0.0") return 13;
+		if (input === "255.252.0.0") return 14;
+		if (input === "255.254.0.0") return 15;
+		if (input === "255.255.0.0") return 16;
+		if (input === "255.255.128.0") return 17;
+		if (input === "255.255.192.0") return 18;
+		if (input === "255.255.224.0") return 19;
+		if (input === "255.255.240.0") return 20;
+		if (input === "255.255.248.0") return 21;
+		if (input === "255.255.252.0") return 22;
+		if (input === "255.255.254.0") return 23;
+		if (input === "255.255.255.0") return 24;
+		if (input === "255.255.255.128") return 25;
+		if (input === "255.255.255.192") return 26;
+		if (input === "255.255.255.224") return 27;
+		if (input === "255.255.255.240") return 28;
+		if (input === "255.255.255.248") return 29;
+		if (input === "255.255.255.252") return 30;
+		if (input === "255.255.255.254") return 31;
+		if (input === "255.255.255.255") return 32;
+    }
+
+    function calculateHosts(hv) {
+        hv = hv || 0; // zero out hv
+        if (hv >= 2) {
+            hv = (Math.pow(2, (32 - hv))) // 2 ^ (32 - hv), aka off bits
         }
-        networkString = networkStringInitial + network;
-        broadcastString = broadcastStringInitial + broadcast;
-        if (index === 0) {
-            networkString += ".0.0.0";
-            broadcastString += ".255.255.255"
-        }
-        if (index === 1) {
-            networkString += ".0.0";
-            broadcastString += ".255.255"
-        }
-        if (index === 2) {
-            networkString += ".0";
-            broadcastString += ".255"
-        }
-        return theBigString = [networkString, broadcastString]
+        return hv
     }
 
     function calculateSubnets(input) {
+    	// this is black magic >:)
         var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
         return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets"
     }
 
+
+    function onBits(bits) {
+        var one = "1",
+          two = "0";
+        for (var i = ""; i.length < bits;) {
+            i += one
+        }
+        for (var v = ""; v.length < (32 - bits);) {
+          v += two
+        }
+        var binarystring = i + v;
+        return binarystring.replace(/\B(?=(\d{8})+(?!\d))/g, ".");
+    }
+
     function findClass(ip) {
-        if ((ipInput.length - 1) === 3) {
+        if (ipInputArray.length === 4) {
             if (!ip || ip < 0 || typeof ip === 'undefined') {
                 return "No Valid IP Entered"
             }
@@ -117,31 +173,62 @@ function val() {
         }
     }
 
-    function calculateHosts(hv) {
-        hv = hv || 0;
-        if (hv >= 2) {
-            hv = (Math.pow(2, (32 - hv)))
+    submaskSplitLength = submaskInputArray.length;
+
+    for (var i = 0; i < submaskSplitLength; i++) {
+    	// finds the first octet not equal to 255
+        if (submaskInputArray[i] !== "255") {
+            index = i;
+            break
         }
-        return hv
     }
 
-    function submaskFromHosts(numhosts) {
-        if (numhosts !== 0) {
-            var numhosts = (32 - (Math.ceil((Math.log(numhosts))/(Math.log(2)))));
+    function getNetworkRange(cider) {
+        var init, network, broadcast, modResult = cider % 8;
+        if (modResult) {
+            init = (Math.pow(2, (8 - modResult)));
+            network = ((Math.floor(ipInputArray[index] / init)) * init);
+            broadcast = (network + (init - 1))
+        } else if (cider === 32 || cider === 31) {
+            network = "N/A";
+            broadcast = "N/A";
+        } else {
+            init = 128;
+            network = ((Math.floor(ipInputArray[index] / init)) * init);
+            broadcast = "255"
         }
-        return numhosts;
+        return [network, broadcast]
+    }
+    
+    function getEnds(input) {
+    	var netInit = getNetworkRange(base),
+    		netFinal = placeRangeCorrectly(netInit[0], netInit[1]);
+    	return netFinal;
     }
 
-    hostsOutput = calculateHosts(cidr);
-    subnetsOutput = calculateSubnets(cidr);
-    classOutput = findClass(ipInput[0]);
-    netInit = getNetworkRange(parseInt(cidr, 10));
-    netBeta = placeRangeCorrectly(netInit[0], netInit[1]);
-    netFinal = netBeta[0];
-    bcastIdOutput = netBeta[1];
-    wildcardOutput = submaskSplit.map(function(v) {
-        return 255 - v
-    }).join(".");
+    function placeRangeCorrectly(network, broadcast) {
+        var networkString, broadcastString, networkStringInitial = "",
+            broadcastStringInitial = "";
+        for (var i = 0; i < index; i++) {
+            networkStringInitial += ipInputArray[i] + ".";
+            broadcastStringInitial += ipInputArray[i] + "."
+        }
+        networkString = networkStringInitial + network;
+        broadcastString = broadcastStringInitial + broadcast;
+        if (index === 0) {
+            networkString += ".0.0.0";
+            broadcastString += ".255.255.255"
+        }
+        if (index === 1) {
+            networkString += ".0.0";
+            broadcastString += ".255.255"
+        }
+        if (index === 2) {
+            networkString += ".0";
+            broadcastString += ".255"
+        }
+        return theBigString = [networkString, broadcastString]
+    }
 
     function datRangeYo() {
         var networkOctet = theBigString[0].split("."),
@@ -152,57 +239,68 @@ function val() {
         return fullUsableRange
     }
 
-    function onBits(bits) {
-        var c = "1",
-          d = "0";
-        for (var i = ""; i.length < bits;) {
-            i += c
-        }
-        for (var v = ""; v.length < (32 - bits);) {
-          v += d
-        }
-        return i + v
-    }
 
-    tablecidr = document.getElementById("tablecidr");
-    tablecidr.innerHTML = cidr;
-    tablenumhosts = document.getElementById("tablenumhosts");
-    if (hostsOutput >= 2) {
-    tablenumhosts.innerHTML = hostsOutput + " hosts " + "(" + (hostsOutput - 2) + " usable)";
-    } else {
-    tablenumhosts.innerHTML = hostsOutput + " hosts " + "(0 usable)";
-    } 
-    tablebinary = document.getElementById("tablebinary");
-    tablebinary.innerHTML = onBits(cidr);
+    var ipiptoint = ipInputArray.map(function(x) { 
+        return parseInt(x, 10); 
+    });
+    var iptohex = ipiptoint.map(function(v) {
+        return ("00" + v.toString(16)).substr(-2);
+    }).join(".");
+    var wildcard = submaskInputArray.map(function(v) {
+        return 255 - v
+    }).join(".");
+    var hosts = calculateHosts(base),
+    	usable_hosts = (hosts - 2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // CIDR
+    document.getElementById("tablecidr").innerHTML = base;
+    // Submask
     document.getElementById("tablesubmask").innerHTML = submask;
-    document.getElementById("tableipclass").innerHTML = classOutput;
+    // Submask -> binary 
+    document.getElementById("tablebinary").innerHTML = onBits(base);
+    // # of hosts
+    document.getElementById("tablenumhosts").innerHTML = hosts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " (" + usable_hosts + " usable)";
+    // # of subnets
+    document.getElementById("tablenumsubnets").innerHTML = calculateSubnets(base);
+	// Wildcard mask
+	document.getElementById("tablewildcardmask").innerHTML = wildcard;
+    // IP class
+    document.getElementById("tableipclass").innerHTML = findClass(ipInputArray[0]);
+    // IP -> hex
+    document.getElementById("tableiptohex").innerHTML = iptohex.toUpperCase(); 
+    // Network ID
+    document.getElementById("tablenetworkid").innerHTML = getEnds()[0];
+    // Broadcast Address
+    document.getElementById("tablebroadcastaddress").innerHTML = getEnds()[1];
+    // Network ranges
+    document.getElementById("tablenetworkrange").innerHTML = datRangeYo();
 
-    document.getElementById("tablenumsubnets").innerHTML = subnetsOutput;
-    document.getElementById("tablewildcardmask").innerHTML = wildcardOutput;
-    if (typeof ipInput[index] === 'undefined' || ipInput[0] > 255 || ipInput[1] > 255 || ipInput[2] > 255 || ipInput[3] > 255 || ipInput[0].length > 3 || ipInput[1].length > 3 || ipInput[2].length > 3 || ipInput[3].length > 3) {
-        invalidIp = "No Valid IP Entered";
-        document.getElementById("tablenetworkrange").innerHTML = invalidIp;
-        document.getElementById("tablenetworkid").innerHTML = invalidIp;
-        document.getElementById("tablebroadcastaddress").innerHTML = invalidIp;
-        document.getElementById("tableiptohex").innerHTML = invalidIp;
-        document.getElementById("tableipclass").innerHTML = invalidIp;
-    } else {
-        document.getElementById("tablenetworkrange").innerHTML = datRangeYo();
-        document.getElementById("tablenetworkid").innerHTML = netFinal;
-        document.getElementById("tablebroadcastaddress").innerHTML = bcastIdOutput;
-        ipint = ipInput.map(function(x) { 
-            return parseInt(x, 10); 
-        });
-        iptohex = ipint.map(function(v) {
-            return ("00" + v.toString(16)).substr(-2);
-        }).join(".");
-        document.getElementById("tableiptohex").innerHTML = iptohex.toUpperCase();
+	function throwError() {
+		var error = "No Valid IP Entered";
+		// IP class
+	    document.getElementById("tableipclass").innerHTML = error;
+	    // IP -> hex
+	    document.getElementById("tableiptohex").innerHTML = error;
+	    // Network ID
+	    document.getElementById("tablenetworkid").innerHTML = error;
+	    // Broadcast Address
+	    document.getElementById("tablebroadcastaddress").innerHTML = error;
+	    // Network ranges
+	    document.getElementById("tablenetworkrange").innerHTML = error;
+
+	}
+
+	if (ipInput.split(".").length !== 4 || ipInput === "") {
+		throwError();
+	}
+    for (var i = 0; i < 4; i++) {
+        var iptoint = parseInt(ipInputArray[i], 10);
+        if (iptoint != ipInputArray[i] || iptoint < 0 || iptoint > 255) {
+            throwError();
+        } 
+    ipInputArray[i] = iptoint;
     }
-    netrange = datRangeYo();
 
-    tablecidr.innerHTML = "/" + tablecidr.innerHTML;
-    tablenumhosts.innerHTML = tablenumhosts.innerHTML.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    tablebinary.innerHTML = tablebinary.innerHTML.replace(/\B(?=(\d{8})+(?!\d))/g, ".")
 }
 window.onload = function() {
     document.getElementsByTagName("form")[0].onsubmit = function(evt) {
