@@ -23,7 +23,7 @@ if (window.navigator.standalone == false && iOS == true) {
 }
 
 function openInstall() {
-    element = document.getElementById("iphone_install");
+    element = document.getElementById("iphoneinstall");
     if (element.classList.contains("fish")) {
         element.setAttribute("class","open");
     } else {
