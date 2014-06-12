@@ -1,3 +1,19 @@
+/*
+Copyright 2014 Eric Lagergren
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 if ("standalone" in window.navigator && window.navigator.standalone) {
     var noddy, remotes = false;
     document.addEventListener("click", function(event) {
@@ -16,9 +32,10 @@ function updateSite(event) {
 window.applicationCache.addEventListener('updateready', updateSite, false);
 
 function val() {
-	var submaskInput = document.form.submask.value,
-	    ipInput = document.form.ip.value,
-	    submask, base, submaskSplit, index, theBigString, netInit, netFinal;
+	var doc = document,
+        submaskInput = doc.form.submask.value,
+	    ipInput = doc.form.ip.value,
+	    submask, base, ssl, index, theBigString, netInit, netFinal;
 
 
     // Determine the type of input
@@ -26,11 +43,12 @@ function val() {
         base = submaskInput;
         submask = getSubmask(parseInt(submaskInput,10));
     }
-    if (submaskInput.split(".").length === 4) { // if you can split the input iptointo four parts it's a submask
+    if (submaskInput.split(".").length === 4) { 
+    // if you can split the input ip into four parts it's a submask
         base = getCidr(submaskInput);
     	submask = submaskInput;
     }
-    if (submaskInput > 32) { // greater than = host
+    if (doc.form.cb.checked || submaskInput > 32) { // greater than = host
         base = getCidrFromHost(submaskInput);
         submask = getSubmask(base);
     }
@@ -123,7 +141,8 @@ function val() {
     function calculateHosts(hv) {
         hv = hv || 0; // zero out hv
         if (hv >= 2) {
-            hv = (Math.pow(2, (32 - hv))) // 2 ^ (32 - hv), aka off bits
+            hv = (Math.pow(2, (32 - hv))) 
+            // 2^(total bits - on bits) = off bits
         }
         return hv
     }
@@ -173,9 +192,9 @@ function val() {
         }
     }
 
-    submaskSplitLength = submaskInputArray.length;
+    var ssl = submaskInputArray.length;
 
-    for (var i = 0; i < submaskSplitLength; i++) {
+    for (var i = 0; i < ssl; i++) {
     	// finds the first octet not equal to 255
         if (submaskInputArray[i] !== "255") {
             index = i;
@@ -253,40 +272,41 @@ function val() {
     	usable_hosts = (hosts - 2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     // CIDR
-    document.getElementById("tablecidr").innerHTML = base;
+    doc.getElementById("tablecidr").innerHTML = base;
     // Submask
-    document.getElementById("tablesubmask").innerHTML = submask;
+    doc.getElementById("tablesubmask").innerHTML = submask;
     // Submask -> binary 
-    document.getElementById("tablebinary").innerHTML = onBits(base);
+    doc.getElementById("tablebinary").innerHTML = onBits(base);
     // # of hosts
-    document.getElementById("tablenumhosts").innerHTML = hosts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " (" + usable_hosts + " usable)";
+    doc.getElementById("tablenumhosts").innerHTML = hosts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " (" + usable_hosts + " usable)";
     // # of subnets
-    document.getElementById("tablenumsubnets").innerHTML = calculateSubnets(base);
+    doc.getElementById("tablenumsubnets").innerHTML = calculateSubnets(base);
 	// Wildcard mask
-	document.getElementById("tablewildcardmask").innerHTML = wildcard;
+	doc.getElementById("tablewildcardmask").innerHTML = wildcard;
     // IP class
-    document.getElementById("tableipclass").innerHTML = findClass(ipInputArray[0]);
+    doc.getElementById("tableipclass").innerHTML = findClass(ipInputArray[0]);
     // IP -> hex
-    document.getElementById("tableiptohex").innerHTML = iptohex.toUpperCase(); 
+    doc.getElementById("tableiptohex").innerHTML = iptohex.toUpperCase(); 
     // Network ID
-    document.getElementById("tablenetworkid").innerHTML = getEnds()[0];
+    doc.getElementById("tablenetworkid").innerHTML = getEnds()[0];
     // Broadcast Address
-    document.getElementById("tablebroadcastaddress").innerHTML = getEnds()[1];
+    doc.getElementById("tablebroadcastaddress").innerHTML = getEnds()[1];
     // Network ranges
-    document.getElementById("tablenetworkrange").innerHTML = datRangeYo();
+    doc.getElementById("tablenetworkrange").innerHTML = datRangeYo();
 
 	function throwError() {
-		var error = "No Valid IP Entered";
+		var error = "No Valid IP Entered",
+            doc = document;
 		// IP class
-	    document.getElementById("tableipclass").innerHTML = error;
+	    doc.getElementById("tableipclass").innerHTML = error;
 	    // IP -> hex
-	    document.getElementById("tableiptohex").innerHTML = error;
+	    doc.getElementById("tableiptohex").innerHTML = error;
 	    // Network ID
-	    document.getElementById("tablenetworkid").innerHTML = error;
+	    doc.getElementById("tablenetworkid").innerHTML = error;
 	    // Broadcast Address
-	    document.getElementById("tablebroadcastaddress").innerHTML = error;
+	    doc.getElementById("tablebroadcastaddress").innerHTML = error;
 	    // Network ranges
-	    document.getElementById("tablenetworkrange").innerHTML = error;
+	    doc.getElementById("tablenetworkrange").innerHTML = error;
 
 	}
 
@@ -308,4 +328,12 @@ window.onload = function() {
         val()
         window.scrollTo(0, document.body.scrollHeight);
     };
+    document.onkeypress = function keypressed(e){
+      var keyCode = (window.event) ? e.which : e.keyCode;
+      if (keyCode == 13) {
+        if(val())
+          document.forms['form'].submit();
+      }      
+    }
 };
+
