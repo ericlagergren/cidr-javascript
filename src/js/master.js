@@ -14,23 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
-
-if (window.navigator.standalone == false && iOS == true) {
-    document.getElementById("iphoneinstall").setAttribute("class","fish");
-} else {
-    document.getElementById("iphoneinstall").setAttribute("class","hidden");
-}
-
-function openInstall() {
-    element = document.getElementById("iphoneinstall");
-    if (element.classList.contains("fish")) {
-        element.setAttribute("class","open");
-    } else {
-        element.setAttribute("class","fish"); 
-    }
-}
-
 if ("standalone" in window.navigator && window.navigator.standalone) {
     var noddy, remotes = false;
     document.addEventListener("click", function(event) {
@@ -42,6 +25,26 @@ if ("standalone" in window.navigator && window.navigator.standalone) {
         }
     }, false)
 };
+
+function pegMobile() {
+    var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
+
+    if (window.navigator.standalone == false && iOS == true) {
+        document.getElementById("iphoneinstall").setAttribute("class","fish");
+    } else {
+        document.getElementById("iphoneinstall").setAttribute("class","hidden");
+    }
+}
+pegMobile();
+
+function openInstall() {
+    element = document.getElementById("iphoneinstall");
+    if (element.classList.contains("fish")) {
+        element.setAttribute("class","open");
+    } else {
+        element.setAttribute("class","fish"); 
+    }
+}
 
 function updateSite(event) {
     window.applicationCache.swapCache();
