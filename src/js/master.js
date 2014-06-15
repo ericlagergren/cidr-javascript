@@ -37,15 +37,6 @@ function pegMobile() {
 }
 pegMobile();
 
-function openInstall() {
-    element = document.getElementById("iphoneinstall");
-    if (element.classList.contains("fish")) {
-        element.setAttribute("class","open");
-    } else {
-        element.setAttribute("class","fish"); 
-    }
-}
-
 function updateSite(event) {
     window.applicationCache.swapCache();
 }
