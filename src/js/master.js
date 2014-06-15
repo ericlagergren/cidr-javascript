@@ -30,12 +30,21 @@ function pegMobile() {
     var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
     if (iOS == true && !window.navigator.standalone) {
         document.getElementById("iphoneinstall").setAttribute("class","fish");
-        document.getElementsByTagName("body").setAttribute("style","margin-top:40px;");
+        document.getElementsByTagName("body")[0].setAttribute("style","margin-top:40px;");
     } else {
         document.getElementById("iphoneinstall").setAttribute("class","hidden");
     }
 }
 pegMobile();
+
+function openInstall() {
+    element = document.getElementById("iphoneinstall");
+    if (element.classList.contains("fish")) {
+        element.setAttribute("class","open");
+    } else {
+        element.setAttribute("class","fish"); 
+    }
+}
 
 function updateSite(event) {
     window.applicationCache.swapCache();
