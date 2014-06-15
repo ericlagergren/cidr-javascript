@@ -28,8 +28,7 @@ if ("standalone" in window.navigator && window.navigator.standalone) {
 
 function pegMobile() {
     var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
-
-    if (window.navigator.standalone == false && iOS == true) {
+    if (iOS == true && !window.navigator.standalone) {
         document.getElementById("iphoneinstall").setAttribute("class","fish");
     } else {
         document.getElementById("iphoneinstall").setAttribute("class","hidden");
