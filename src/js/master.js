@@ -30,6 +30,7 @@ function pegMobile() {
     var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
     if (iOS == true && !window.navigator.standalone) {
         document.getElementById("iphoneinstall").setAttribute("class","fish");
+        document.getElementsByTagName("body").setAttribute("style","margin-top:40px;");
     } else {
         document.getElementById("iphoneinstall").setAttribute("class","hidden");
     }
