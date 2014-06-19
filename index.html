@@ -8,26 +8,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-title" content="Subnetting Calculator">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="robots" content="index, follow">
     <meta name="bitly-verification" content="7c235b444737"/>
     <meta name="author" content="Eric Lagergren">
+    <script src="/assets/js/yepnope.js"></script>
+    <script type="text/javascript">
+    yepnope('timeout=1000!/assets/js/google-analytics.js');
+    </script>
     <link href="/assets/css/style.css" rel="stylesheet">
-    <script src="/assets/js/google-analytics.js"></script>
-</head>
+  </head>
 
-<body>
-        <div id="iphoneinstall" onclick="openInstall();" class="hidden">
+<body ontouchmove="event.preventDefault();">
+        <div id="iphoneinstall" onclick="openInstall();" ontouchmove="event.preventDefault();" class="hidden">
 
-        <p>
-        Simply tap the <img class="share" src="/assets/iphone_share.png"> button below, and choose "Add to Home Screen".
+
+        <p class="close">
+        <img src="/assets/cross.png"
         </p>
- 
+        <p>
+        Simply tap the share button below
+        </p>
+        <p>
+        <img class="share" src="/assets/iphone_share.png">
+        </p>
+        <p>
+        And choose "Add to Home Screen".
+        </p>
+        <p>
+        <img class="share" src="/assets/download.png">
+        </p>
+        <br>
         <p>
         The mobile app will then be installed as an icon on your home screen.
         </p>
-      <p class="arrow">↓</p>
+      <!--<p class="arrow">↓</p>-->
          <div class="top">
           Download the mobile app for free.
         </div>

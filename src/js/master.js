@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+
 if ("standalone" in window.navigator && window.navigator.standalone) {
     var noddy, remotes = false;
     document.addEventListener("click", function(event) {
@@ -26,16 +27,16 @@ if ("standalone" in window.navigator && window.navigator.standalone) {
     }, false)
 };
 
-function pegMobile() {
-    var iOS = (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
-    if (iOS == true && !window.navigator.standalone) {
+function findios() {
+    var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
+    if (iOS === true && !window.navigator.standalone) {
         document.getElementById("iphoneinstall").setAttribute("class","fish");
         document.getElementsByTagName("body")[0].setAttribute("style","margin-top:40px;");
     } else {
         document.getElementById("iphoneinstall").setAttribute("class","hidden");
     }
 }
-pegMobile();
+findios();
 
 function openInstall() {
     element = document.getElementById("iphoneinstall");
@@ -355,5 +356,6 @@ window.onload = function() {
           document.forms['form'].submit();
       }      
     }
+    document.ontouchmove = function(e) {e.preventDefault()};
 };
 
