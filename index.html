@@ -47,7 +47,7 @@
   <form name="form" onsubmit="val(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
-      <nav><a href="/about">about </a><a href="/license">license </a><a href="h ttpsithub.com/EricLagerg/cidr-javascript/">source </a><a href="#" onclick="location.reload(); return false;">refresh</a>
+      <nav><a href="/about">about </a><a href="/license">license </a><a href="https://www.github.com/EricLagerg/cidr-javascript/">source </a><a href="javascript:void(0)" onclick="window.location.reload(true);">refresh</a>
       </nav>
       <input type="checkbox" id="c1" name="cb">
       <label class="first" for="c1">Use # of Hosts?</label>
@@ -115,8 +115,8 @@
     </div>
   </form>
   <div class="clearfix">
-  <button id="refresh" class="ux-actions clearfix" href="#" onclick="location.reload();window.scroll(0,0); return false;">REFRESH</button>
-  <button id="top" class="ux-actions clearfix" href="#" onclick="window.scroll(0,0); return false;">TO TOP</button>
+  <a id="refresh" class="ux-actions clearfix" href="javascript:void(0)" onclick="window.location.reload(true);window.scroll(0,0);">REFRESH</a>
+  <a id="top" class="ux-actions clearfix" href="javascript:void(0)" onclick="window.scroll(0,0);">TO TOP</a>
   </div>
   <script src="/src/js/master.min.js"></script>
 </body>
