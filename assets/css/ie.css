@@ -13,6 +13,7 @@ a {
     text-decoration:none;
     margin:20px 5px;
     padding:10px;
+    background: #1ba698;
 }
 a:hover {
     //color:#1ba698
@@ -52,33 +53,10 @@ a.button:hover, button:hover, input[type=submit]:hover {
     background:#1ba698;
     cursor:pointer
 }
-input[type="checkbox"] {
-    display: none;
-}
 .first {
     margin-top: 2em;
     font-size: 90%;
     cursor: pointer;
-}
-input[type="checkbox"] + label:before {
-    border: 1px solid #666;
-    content:"\00a0";
-    display: inline-block;
-    font: 16px/1em sans-serif;
-    height: 16px;
-    margin: 0 .25em 0 0;
-    padding:0;
-    vertical-align: top;
-    width: 16px;
-}
-input[type="checkbox"]:checked + label:before {
-    background: #fff;
-    color: #666;
-    content:"\2713";
-    text-align: center;
-}
-input[type="checkbox"]:checked + label:after {
-    font-weight: bold;
 }
 input[type="text"] {
     -webkit-appearance:none;
