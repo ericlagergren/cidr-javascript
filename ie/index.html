@@ -18,15 +18,15 @@
     <script type="text/javascript">
     yepnope('timeout=1000!/assets/js/google-analytics.js');
     </script>
-    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/ie.css" rel="stylesheet">
   </head>
 
 <body>
   <form name="form" onsubmit="val(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
-      <nav><a href="/about">about </a><a href="/license">license </a><a href="https://www.github.com/EricLagerg/cidr-javascript/">source </a><a href="javascript:void(0)" onclick="window.location.reload(true);">refresh</a>
-      </nav>
+      <div class="nav"><a href="/about">about </a><a href="/license">license </a><a href="https://www.github.com/EricLagerg/cidr-javascript/">source </a><a href="javascript:void(0)" onclick="window.location.reload(true);">refresh</a>
+      </div>
       <input type="checkbox" id="c1" name="cb">
       <label class="first" for="c1">Use # of Hosts?</label>
       <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24 or 500" />
