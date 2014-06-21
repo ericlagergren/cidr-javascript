@@ -22,7 +22,7 @@
   </head>
 
 <body>
-  <form name="form" onsubmit="javascript:val(); return false;">
+  <form name="form" onsubmit="val(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
       <div class="nav"><a href="/about">about </a><a href="/license">license </a><a href="https://www.github.com/EricLagerg/cidr-javascript/">source </a><a href="javascript:void(0)" onclick="window.location.reload(true);">refresh</a>
@@ -33,7 +33,7 @@
       <label for="submask">Submask or CIDR or Num Req Hosts</label>
       <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1" />
       <label for="ip">IPv4 Address</label>
-      <input class="clearfix" type="submit" value="submit" />
+      <input class="clearfix" type="submit" value="submit" onclick="val();" />
     </div>
     <div class="right" id="info">
       <table>
