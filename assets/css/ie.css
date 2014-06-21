@@ -54,6 +54,7 @@ a.button:hover, button:hover, input[type=submit]:hover {
     margin-top: 2em;
     font-size: 90%;
     cursor: pointer;
+    width: 50%;
 }
 #c1 {
     float: left;
