@@ -1,38 +1,64 @@
-###
-Copyright 2014 Eric Lagergren
+#jshint bitwise: false
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+#
+#Copyright 2014 Eric Lagergren
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
+#
 
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-###
-
-###
-THIS IS AN UNTESTED COFFESCRIPT PORT OF MY VANILLA JAVASCRIPT FILE.
-I COMPILED IT WITH http://js2coffee.org/ AND DO NOT GUARENTEE THAT IT WORKS CORRECTLY IF CONVERTED BACK TO JAVASCRIPT
-###
-
+# THIS IS STUFF FOR MY STANDALONE APP 
+# Just because.
+findios = ->
+  iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent)
+  if iOS is true and not window.navigator.standalone
+    document.getElementById("iphoneinstall").setAttribute "class", "fish"
+    document.getElementsByTagName("body")[0].setAttribute "style", "margin-top:40px;"
+  else
+    document.getElementById("iphoneinstall").setAttribute "class", "hidden"
+  return
+openInstall = ->
+  element = document.getElementById("iphoneinstall")
+  if element.classList.contains("fish")
+    element.setAttribute "class", "open"
+  else
+    element.setAttribute "class", "fish"
+  return
 updateSite = (event) ->
   window.applicationCache.swapCache()
   return
+
+# THIS DOES THE ACTUAL COMPUTATIONS 
 val = ->
+  
+  # Just declaring some variables.
   
   # Determine the type of input
   # less than or equal to = cidr
   
+  # parseInt because if it's CIDR notation then we need to convert the string input to an int
+  
   # if you can split the input ip into four parts it's a submask
-  # greater than = host
+  # greater than = host or checked checkbox
+  
+  # if base isn't valid then do nothing
   getCidrFromHost = (input) ->
+    
+    # as long as the number of hosts isn't 0, find (log2(hosts)), round up, and subtract that from 32 to find the correct CIDR
     input = (32 - (Math.ceil((Math.log(input)) / (Math.log(2)))))  if input isnt 0
     input
   getSubmask = (input) ->
+    
+    # self explanatory
     return "0.0.0.0"  if input is 0
     return "128.0.0.0"  if input is 1
     return "192.0.0.0"  if input is 2
@@ -67,6 +93,8 @@ val = ->
     return "255.255.255.254"  if input is 31
     "255.255.255.255"  if input is 32
   getCidr = (input) ->
+    
+    #self explanatory
     return 0  if input is "0.0.0.0"
     return 1  if input is "128.0.0.0"
     return 2  if input is "192.0.0.0"
@@ -111,18 +139,36 @@ val = ->
     # this is black magic >:)
     valToSubtractFromInput = (if not index then 0 else (if index < 3 then Math.pow(2, index + 2) else 24))
     ~~Math.pow(2, (input - valToSubtractFromInput)) + " subnets"
+  
+  # 
+  #
+  #    The above function does this:
+  #
+  #        If there's no var index, which is the index of the first octect !== "255", then the value we're subtracting from the input (CIDR) is 0. If there IS, and it's less than 3, then we take 2, raise it to the power of index + 2 and subtract that from the input. If both are false, then the value is 24.
+  #
+  #        We return what is essentially (but not exactly) Math.floor (~~) of 2 to the power of the input - the value we previously found. That = the amount of subnets
+  #
+  #    
   onBits = (bits) ->
+    
+    # Turns the CIDR into 1s and 0s
     one = "1"
     two = "0"
+    
+    # Adds "1"s or "0"s until we've added as many as there are bits (CIDR)
     i = ""
 
     while i.length < bits
       i += one
+    
+    # Same, but in reverse so we can count the off bits
     v = ""
 
     while v.length < (32 - bits)
       v += two
     binarystring = i + v
+    
+    # Inserts a period after every 8th character
     binarystring.replace /\B(?=(\d{8})+(?!\d))/g, "."
   findClass = (ip) ->
     if ipInputArray.length is 4
@@ -182,6 +228,9 @@ val = ->
     if index is 2
       networkString += ".0"
       broadcastString += ".255"
+    unless index
+      networkString = ipInput
+      broadcastString = ipInput
     theBigString = [
       networkString
       broadcastString
@@ -192,6 +241,7 @@ val = ->
     firstUsable = (parseInt(networkOctet[3], 10) + 1)
     lastUsable = (parseInt(broadcastOctet[3], 10) - 1)
     fullUsableRange = networkOctet.slice(0, -1).join(".") + "." + firstUsable + " - " + broadcastOctet.slice(0, -1).join(".") + "." + lastUsable
+    fullUsableRange = ipInput + " - " + ipInput  unless index
     fullUsableRange
   
   # CIDR
@@ -235,35 +285,33 @@ val = ->
     doc.getElementById("tablenetworkrange").innerHTML = error
     return
   doc = document
-  submaskInput = doc.form.submask.value
-  ipInput = doc.form.ip.value
+  submaskInput = doc.form["submask"].value
+  ipInput = doc.form["ip"].value
   submask = undefined
   base = undefined
-  ssl = undefined
   index = undefined
   theBigString = undefined
-  netInit = undefined
   netFinal = undefined
+  netInit = undefined
   if submaskInput <= 32
     base = submaskInput
     submask = getSubmask(parseInt(submaskInput, 10))
   if submaskInput.split(".").length is 4
     base = getCidr(submaskInput)
     submask = submaskInput
-  if submaskInput > 32
+  if doc.form["cb"].checked or submaskInput > 32
     base = getCidrFromHost(submaskInput)
     submask = getSubmask(base)
   return null  if base is "undefined" or isNaN(base) or base is null
   ipInputArray = ipInput.split(".")
   submaskInputArray = submask.split(".")
-  ssl = submaskInputArray.length
-  i = 0
+  j = 0
 
-  while i < ssl
-    if submaskInputArray[i] isnt "255"
-      index = i
+  while j < submaskInputArray.length
+    if submaskInputArray[j] isnt "255"
+      index = j
       break
-    i++
+    j++
   ipiptoint = ipInputArray.map((x) ->
     parseInt x, 10
   )
@@ -274,7 +322,7 @@ val = ->
     255 - v
   ).join(".")
   hosts = calculateHosts(base)
-  usable_hosts = (hosts - 2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  usable_hosts = (if (hosts - 2) > 0 then (hosts - 2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") else 0)
   doc.getElementById("tablecidr").innerHTML = base
   doc.getElementById("tablesubmask").innerHTML = submask
   doc.getElementById("tablebinary").innerHTML = onBits(base)
@@ -295,23 +343,30 @@ val = ->
     ipInputArray[i] = iptoint
     i++
   return
-if "standalone" of window.navigator and window.navigator.standalone
+"use strict"
+if window.navigator["standalone"]
   noddy = undefined
   remotes = false
   document.addEventListener "click", ((event) ->
     noddy = event.target
     noddy = noddy.parentNode  while noddy.nodeName isnt "A" and noddy.nodeName isnt "HTML"
-    if "href" of noddy and noddy.href.indexOf("http") isnt -1 and (noddy.href.indexOf(document.location.host) isnt -1 or remotes)
+    if noddy.href.indexOf("http") isnt -1 and (noddy.href.indexOf(document.location.host) isnt -1 or remotes)
       event.preventDefault()
       document.location.href = noddy.href
     return
   ), false
+findios()
 window.applicationCache.addEventListener "updateready", updateSite, false
 window.onload = ->
   document.getElementsByTagName("form")[0].onsubmit = (evt) ->
     evt.preventDefault()
     val()
     window.scrollTo 0, document.body.scrollHeight
+    return
+
+  document.onkeypress = keypressed = (e) ->
+    keyCode = (if (window.event) then e.which else e.keyCode)
+    document.forms["form"].submit()  if val()  if keyCode is 13
     return
 
   return

@@ -15,14 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/* THIS IS STUFF FOR MY STANDALONE APP */
 
-if ("standalone" in window.navigator && window.navigator.standalone) {
+"use strict"; // Just because.
+
+if (window.navigator["standalone"]) {
     var noddy, remotes = false;
     document.addEventListener("click", function(event) {
         noddy = event.target;
         while (noddy.nodeName !== "A" && noddy.nodeName !== "HTML") { noddy = noddy.parentNode;
         }
-        if ("href" in noddy && noddy.href.indexOf("http") !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes)) {
+        if (noddy.href.indexOf("http") !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes)) {
             event.preventDefault();
             document.location.href = noddy.href;
         }
@@ -54,16 +57,19 @@ function updateSite(event) {
 }
 window.applicationCache.addEventListener('updateready', updateSite, false);
 
-function val() {
-    var doc = document,
-        submaskInput = doc.form.submask.value,
-        ipInput = doc.form.ip.value,
-        submask, base, ssl, index, theBigString, netFinal, netInit;
+/* THIS DOES THE ACTUAL COMPUTATIONS */
 
+function val() {
+    // Just declaring some variables.
+    var doc = document,
+        submaskInput = doc.form["submask"].value,
+        ipInput = doc.form["ip"].value,
+        submask, base, index, theBigString, netFinal, netInit;
 
     // Determine the type of input
     if (submaskInput <= 32) { // less than or equal to = cidr
         base = submaskInput;
+        // parseInt because if it's CIDR notation then we need to convert the string input to an int
         submask = getSubmask(parseInt(submaskInput, 10));
     }
     if (submaskInput.split(".").length === 4) {
@@ -71,12 +77,12 @@ function val() {
         base = getCidr(submaskInput);
         submask = submaskInput;
     }
-    if (doc.form.cb.checked || submaskInput > 32) { // greater than = host
+    if (doc.form["cb"].checked || submaskInput > 32) { // greater than = host or checked checkbox
         base = getCidrFromHost(submaskInput);
         submask = getSubmask(base);
     }
     if (base === 'undefined' || isNaN(base) || base === null) {
-        console.log("no submask input")
+        // if base isn't valid then do nothing
         return null;
     }
 
@@ -84,6 +90,7 @@ function val() {
         submaskInputArray = submask.split(".");
 
     function getCidrFromHost(input) {
+        // as long as the number of hosts isn't 0, find (log2(hosts)), round up, and subtract that from 32 to find the correct CIDR
         if (input !== 0) {
             input = (32 - (Math.ceil((Math.log(input)) / (Math.log(2)))));
         }
@@ -91,6 +98,7 @@ function val() {
     }
 
     function getSubmask(input) {
+        // self explanatory
         if (input === 0) {return "0.0.0.0";}
         if (input === 1) {return "128.0.0.0";}
         if (input === 2) {return "192.0.0.0";}
@@ -127,6 +135,7 @@ function val() {
     }
 
     function getCidr(input) {
+        //self explanatory
         if (input === "0.0.0.0") {return 0;}
         if (input === "128.0.0.0") {return 1;}
         if (input === "192.0.0.0") {return 2;}
@@ -177,17 +186,32 @@ function val() {
         return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets";
     }
 
+    /*
+
+    The above function does this:
+
+        If there's no var index, which is the index of the first octect !== "255", then the value we're subtracting from the input (CIDR) is 0. If there IS, and it's less than 3, then we take 2, raise it to the power of index + 2 and subtract that from the input. If both are false, then the value is 24.
+
+        We return what is essentially (but not exactly) Math.floor (~~) of 2 to the power of the input - the value we previously found. That = the amount of subnets
+
+    */
+
 
     function onBits(bits) {
+        // Turns the CIDR into 1s and 0s
         var one = "1",
             two = "0";
+
+        // Adds "1"s or "0"s until we've added as many as there are bits (CIDR)
         for (var i = ""; i.length < bits;) {
             i += one;
         }
+        // Same, but in reverse so we can count the off bits
         for (var v = ""; v.length < (32 - bits);) {
             v += two;
         }
         var binarystring = i + v;
+        // Inserts a period after every 8th character
         return binarystring.replace(/\B(?=(\d{8})+(?!\d))/g, ".");
     }
 
@@ -216,9 +240,7 @@ function val() {
         }
     }
 
-    ssl = submaskInputArray.length;
-
-    for (var j = 0; j < ssl; j++) {
+    for (var j = 0; j < submaskInputArray.length; j++) {
         // finds the first octet not equal to 255
         if (submaskInputArray[j] !== "255") {
             index = j;
@@ -306,7 +328,7 @@ function val() {
     doc.getElementById("tablecidr").innerHTML = base;
     // Submask
     doc.getElementById("tablesubmask").innerHTML = submask;
-    // Submask -> binary 
+    // Submask -> binary
     doc.getElementById("tablebinary").innerHTML = onBits(base);
     // # of hosts
     doc.getElementById("tablenumhosts").innerHTML = hosts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " (" + usable_hosts + " usable)";
@@ -366,8 +388,5 @@ window.onload = function() {
                 document.forms['form'].submit();
             }
         }
-    };
-    document.ontouchmove = function(e) {
-        e.preventDefault();
     };
 };
