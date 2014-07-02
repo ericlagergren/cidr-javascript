@@ -34,7 +34,7 @@ if (window.navigator["standalone"]) {
 
 function findios() {
     var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
-    if (iOS === true && !window.navigator.standalone) {
+    if (iOS === true && !window.navigator["standalone"]) {
         document.getElementById("iphoneinstall").setAttribute("class", "fish");
         document.getElementsByTagName("body")[0].setAttribute("style", "margin-top:40px;");
     } else {
