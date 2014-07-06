@@ -44,7 +44,7 @@ function findios() {
 findios();
 
 function openInstall() {
-    element = document.getElementById("iphoneinstall");
+    var element = document.getElementById("iphoneinstall");
     if (element.classList.contains("fish")) {
         element.setAttribute("class", "open");
     } else {
@@ -59,15 +59,16 @@ window.applicationCache.addEventListener('updateready', updateSite, false);
 
 /* THIS DOES THE ACTUAL COMPUTATIONS */
 
-function val() {
+function performCalculations() {
     // Just declaring some variables.
     var doc = document,
         submaskInput = doc.form["submask"].value,
         ipInput = doc.form["ip"].value,
+        maxBitValue = 32,
         submask, base, index, theBigString, netFinal, netInit;
 
     // Determine the type of input
-    if (submaskInput <= 32) { // less than or equal to = cidr
+    if (submaskInput <= maxBitValue) { // less than or equal to = cidr
         base = submaskInput;
         // parseInt because if it's CIDR notation then we need to convert the string input to an int
         submask = getSubmask(parseInt(submaskInput, 10));
@@ -77,7 +78,7 @@ function val() {
         base = getCidr(submaskInput);
         submask = submaskInput;
     }
-    if (doc.form["cb"].checked || submaskInput > 32) { // greater than = host or checked checkbox
+    if (doc.form["cb"].checked || submaskInput > maxBitValue) { // greater than = host or checked checkbox
         base = getCidrFromHost(submaskInput);
         submask = getSubmask(base);
     }
@@ -90,9 +91,9 @@ function val() {
         submaskInputArray = submask.split(".");
 
     function getCidrFromHost(input) {
-        // as long as the number of hosts isn't 0, find (log2(hosts)), round up, and subtract that from 32 to find the correct CIDR
+        // as long as the number of hosts isn't 0, find (log2(hosts)), round up, and subtract that from maxBitValue to find the correct CIDR
         if (input !== 0) {
-            input = (32 - (Math.ceil((Math.log(input)) / (Math.log(2)))));
+            input = (maxBitValue - (Math.ceil((Math.log(input)) / (Math.log(2)))));
         }
         return input;
     }
@@ -131,7 +132,7 @@ function val() {
         if (input === 29) {return "255.255.255.248";}
         if (input === 30) {return "255.255.255.252";}
         if (input === 31) {return "255.255.255.254";}
-        if (input === 32) {return "255.255.255.255";}
+        if (input === maxBitValue) {return "255.255.255.255";}
     }
 
     function getCidr(input) {
@@ -168,33 +169,32 @@ function val() {
         if (input === "255.255.255.248") {return 29;}
         if (input === "255.255.255.252") {return 30;}
         if (input === "255.255.255.254") {return 31;}
-        if (input === "255.255.255.255") {return 32;}
+        if (input === "255.255.255.255") {return maxBitValue;}
     }
 
     function calculateHosts(hv) {
         hv = hv || 0; // zero out hv
         if (hv >= 2) {
-            hv = (Math.pow(2, (32 - hv)));
+            hv = (Math.pow(2, (maxBitValue - hv)));
             // 2^(total bits - on bits) = off bits
         }
         return hv;
     }
 
-    function calculateSubnets(input) {
-        // this is black magic >:)
-        var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
-        return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets";
-    }
-
     /*
 
-    The above function does this:
+    The below function does this:
 
         If there's no var index, which is the index of the first octect !== "255", then the value we're subtracting from the input (CIDR) is 0. If there IS, and it's less than 3, then we take 2, raise it to the power of index + 2 and subtract that from the input. If both are false, then the value is 24.
 
         We return what is essentially (but not exactly) Math.floor (~~) of 2 to the power of the input - the value we previously found. That = the amount of subnets
 
     */
+
+    function calculateSubnets(input) {
+        var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
+        return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets";
+    }
 
 
     function onBits(bits) {
@@ -207,7 +207,7 @@ function val() {
             i += one;
         }
         // Same, but in reverse so we can count the off bits
-        for (var v = ""; v.length < (32 - bits);) {
+        for (var v = ""; v.length < (maxBitValue - bits);) {
             v += two;
         }
         var binarystring = i + v;
@@ -254,7 +254,7 @@ function val() {
             init = (Math.pow(2, (8 - modResult)));
             network = ((Math.floor(ipInputArray[index] / init)) * init);
             broadcast = (network + (init - 1));
-        } else if (cider === 32 || cider === 31) {
+        } else if (cider === maxBitValue || cider === 31) {
             network = "N/A";
             broadcast = "N/A";
         } else {
@@ -265,7 +265,7 @@ function val() {
         return [network, broadcast];
     }
 
-    function getEnds(input) {
+    function getEnds() {
         var netInit = getNetworkRange(base),
             netFinal = placeRangeCorrectly(netInit[0], netInit[1]);
         return netFinal;
@@ -378,13 +378,13 @@ function val() {
 window.onload = function() {
     document.getElementsByTagName("form")[0].onsubmit = function(evt) {
         evt.preventDefault();
-        val();
+        performCalculations();
         window.scrollTo(0, document.body.scrollHeight);
     };
     document.onkeypress = function keypressed(e) {
         var keyCode = (window.event) ? e.which : e.keyCode;
         if (keyCode == 13) {
-            if (val()) {
+            if (performCalculations()) {
                 document.forms['form'].submit();
             }
         }
