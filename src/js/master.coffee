@@ -16,49 +16,59 @@
 #limitations under the License.
 #
 
+# 
+#
+#I use object['property'] because if I don't, Google's Closure Compiler will 
+#convert the non-ECMA properties (like 'standalone') into variables and break
+#my app.
+#
+#
+
 # THIS IS STUFF FOR MY STANDALONE APP 
-# Just because.
-findios = ->
-  iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent)
-  if iOS is true and not window.navigator.standalone
-    document.getElementById("iphoneinstall").setAttribute "class", "fish"
-    document.getElementsByTagName("body")[0].setAttribute "style", "margin-top:40px;"
-  else
-    document.getElementById("iphoneinstall").setAttribute "class", "hidden"
-  return
-openInstall = ->
-  element = document.getElementById("iphoneinstall")
-  if element.classList.contains("fish")
-    element.setAttribute "class", "open"
-  else
-    element.setAttribute "class", "fish"
-  return
+# Just because. It keeps me from doing stupid things with my code
+
+# Prevents same-domain links from being opened outside my standalone app 
+# (e.g. Safari, Google Chrome)
+
+# Tests useragent to see if the client using an iPad, iPhone, or iPod and 
+# toggles the 'Download app' notice
+
+# Per Apple, it swaps cache on page reload
 updateSite = (event) ->
   window.applicationCache.swapCache()
   return
 
 # THIS DOES THE ACTUAL COMPUTATIONS 
-val = ->
+performCalculations = ->
   
-  # Just declaring some variables.
+  # Declare our variables. Doc = document prevents global lookup each time 
+  # 'document' is referenced
+  # see http://jonraasch.com/blog/10-javascript-performance-boosting-tips-from-nicholas-zakas
   
   # Determine the type of input
   # less than or equal to = cidr
   
-  # parseInt because if it's CIDR notation then we need to convert the string input to an int
+  # parseInt because if it's CIDR notation then we need to convert 
+  # the string input to an int
   
   # if you can split the input ip into four parts it's a submask
+  
   # greater than = host or checked checkbox
   
   # if base isn't valid then do nothing
+  
+  # Splits our inputs into arrays
   getCidrFromHost = (input) ->
     
-    # as long as the number of hosts isn't 0, find (log2(hosts)), round up, and subtract that from 32 to find the correct CIDR
-    input = (32 - (Math.ceil((Math.log(input)) / (Math.log(2)))))  if input isnt 0
+    # as long as the number of hosts isn't 0, find (log2(hosts)), round 
+    # up, and subtract that from MAX_BIT_VALUE to find the correct CIDR
+    input = (MAX_BIT_VALUE - (Math.ceil((Math.log(input)) / (Math.log(2)))))  if input isnt 0
     input
+  
+  # TO-DO: SEE IF THIS AND ITS SIBLING FUNCTION WILL PERFORM FASTER AS LOOPS 
+  
+  # check out yoda conditions as well 
   getSubmask = (input) ->
-    
-    # self explanatory
     return "0.0.0.0"  if input is 0
     return "128.0.0.0"  if input is 1
     return "192.0.0.0"  if input is 2
@@ -91,85 +101,63 @@ val = ->
     return "255.255.255.248"  if input is 29
     return "255.255.255.252"  if input is 30
     return "255.255.255.254"  if input is 31
-    "255.255.255.255"  if input is 32
+    "255.255.255.255"  if input is MAX_BIT_VALUE
   getCidr = (input) ->
+    arr = input.split(".")
     
-    #self explanatory
-    return 0  if input is "0.0.0.0"
-    return 1  if input is "128.0.0.0"
-    return 2  if input is "192.0.0.0"
-    return 3  if input is "224.0.0.0"
-    return 4  if input is "240.0.0.0"
-    return 5  if input is "248.0.0.0"
-    return 6  if input is "252.0.0.0"
-    return 7  if input is "254.0.0.0"
-    return 8  if input is "255.0.0.0"
-    return 9  if input is "255.128.0.0"
-    return 10  if input is "255.192.0.0"
-    return 11  if input is "255.224.0.0"
-    return 12  if input is "255.240.0.0"
-    return 13  if input is "255.248.0.0"
-    return 14  if input is "255.252.0.0"
-    return 15  if input is "255.254.0.0"
-    return 16  if input is "255.255.0.0"
-    return 17  if input is "255.255.128.0"
-    return 18  if input is "255.255.192.0"
-    return 19  if input is "255.255.224.0"
-    return 20  if input is "255.255.240.0"
-    return 21  if input is "255.255.248.0"
-    return 22  if input is "255.255.252.0"
-    return 23  if input is "255.255.254.0"
-    return 24  if input is "255.255.255.0"
-    return 25  if input is "255.255.255.128"
-    return 26  if input is "255.255.255.192"
-    return 27  if input is "255.255.255.224"
-    return 28  if input is "255.255.255.240"
-    return 29  if input is "255.255.255.248"
-    return 30  if input is "255.255.255.252"
-    return 31  if input is "255.255.255.254"
-    32  if input is "255.255.255.255"
+    # Similar to:
+    # arr = [192.168.0.1]
+    # x =  192 << 8 | 168
+    # x += 168 << 8 | x
+    # x +=   0 << 8 | x
+    # x +=   1 << 8 | x
+    # return x
+    x = arr.reduce((previousValue, currentValue, index, array) ->
+      (previousValue << 8 | currentValue) >>> 0
+    )
+    
+    # https://github.com/mikolalysenko/bit-twiddle/blob/master/twiddle.js#L63
+    # https://github.com/mikolalysenko/bit-twiddle/blob/master/LICENSE
+    x = x - ((x >>> 1) & 0x55555555)
+    x = (x & 0x33333333) + ((x >>> 2) & 0x33333333)
+    ((x + (x >>> 4) & 0xf0f0f0f) * 0x1010101) >>> 24
   calculateHosts = (hv) ->
     hv = hv or 0 # zero out hv
-    hv = (Math.pow(2, (32 - hv)))  if hv >= 2
+    hv = (Math.pow(2, (MAX_BIT_VALUE - hv)))  if hv >= 2
     
     # 2^(total bits - on bits) = off bits
     hv
-  calculateSubnets = (input) ->
-    
-    # this is black magic >:)
-    valToSubtractFromInput = (if not index then 0 else (if index < 3 then Math.pow(2, index + 2) else 24))
-    ~~Math.pow(2, (input - valToSubtractFromInput)) + " subnets"
   
-  # 
   #
-  #    The above function does this:
   #
-  #        If there's no var index, which is the index of the first octect !== "255", then the value we're subtracting from the input (CIDR) is 0. If there IS, and it's less than 3, then we take 2, raise it to the power of index + 2 and subtract that from the input. If both are false, then the value is 24.
+  #    The below function does this:
   #
-  #        We return what is essentially (but not exactly) Math.floor (~~) of 2 to the power of the input - the value we previously found. That = the amount of subnets
+  #        If there's no var index, which is the index of the first octect !== 
+  #        "255", then the value we're subtracting from the input (CIDR) is 0. 
+  #        If there IS, and it's less than 3, then we take 2, raise it to the 
+  #        power of index + 2 and subtract that from the input. If both are false, 
+  #        then the value is 24.
+  #
+  #        We return what is essentially (but not exactly) Math.floor (~~) of 
+  #        2 to the power of the input mins the value we previously found. 
+  #        That equals the amount of subnets.
   #
   #    
+  calculateSubnets = (input) ->
+    valToSubtractFromInput = (if not index then 0 else (if index < 3 then Math.pow(2, index + 2) else 24))
+    ~~Math.pow(2, (input - valToSubtractFromInput)) + " subnets"
   onBits = (bits) ->
-    
-    # Turns the CIDR into 1s and 0s
     one = "1"
     two = "0"
-    
-    # Adds "1"s or "0"s until we've added as many as there are bits (CIDR)
     i = ""
-
-    while i.length < bits
-      i += one
-    
-    # Same, but in reverse so we can count the off bits
     v = ""
-
-    while v.length < (32 - bits)
-      v += two
+    i += one  while i.length < bits
+    v += two  while v.length < (MAX_BIT_VALUE - bits)
     binarystring = i + v
     
-    # Inserts a period after every 8th character
-    binarystring.replace /\B(?=(\d{8})+(?!\d))/g, "."
+    # .{8} means find 8 of any characters, and we repeat this 3 times 
+    # because we need to insert 3 periods. See: http://regexr.com/3943q
+    binarystring.replace /(.{8})(.{8})(.{8})/g, "$1.$2.$3."
   findClass = (ip) ->
     if ipInputArray.length is 4
       return "No Valid IP Entered"  if not ip or ip < 0 or typeof ip is "undefined"
@@ -191,9 +179,6 @@ val = ->
       init = (Math.pow(2, (8 - modResult)))
       network = ((Math.floor(ipInputArray[index] / init)) * init)
       broadcast = (network + (init - 1))
-    else if cider is 32 or cider is 31
-      network = "N/A"
-      broadcast = "N/A"
     else
       init = 128
       network = ((Math.floor(ipInputArray[index] / init)) * init)
@@ -202,7 +187,7 @@ val = ->
       network
       broadcast
     ]
-  getEnds = (input) ->
+  getEnds = ->
     netInit = getNetworkRange(base)
     netFinal = placeRangeCorrectly(netInit[0], netInit[1])
     netFinal
@@ -244,11 +229,16 @@ val = ->
     fullUsableRange = ipInput + " - " + ipInput  unless index
     fullUsableRange
   
+  # The first two `var`s convert the IP to hex by parsing the 
+  # ipInputArray's segments as integers, and then adding '00' padding 
+  # (because JS) and converting them to a base-16 string, and then removing 
+  # the prefixed '00's.
+  
   # CIDR
   
   # Submask
   
-  # Submask -> binary 
+  # Submask -> binary
   
   # # of hosts
   
@@ -287,19 +277,20 @@ val = ->
   doc = document
   submaskInput = doc.form["submask"].value
   ipInput = doc.form["ip"].value
+  MAX_BIT_VALUE = 32
   submask = undefined
   base = undefined
   index = undefined
   theBigString = undefined
   netFinal = undefined
   netInit = undefined
-  if submaskInput <= 32
+  if submaskInput <= MAX_BIT_VALUE
     base = submaskInput
     submask = getSubmask(parseInt(submaskInput, 10))
   if submaskInput.split(".").length is 4
     base = getCidr(submaskInput)
     submask = submaskInput
-  if doc.form["cb"].checked or submaskInput > 32
+  if doc.form["cb"].checked or submaskInput > MAX_BIT_VALUE
     base = getCidrFromHost(submaskInput)
     submask = getSubmask(base)
   return null  if base is "undefined" or isNaN(base) or base is null
@@ -347,26 +338,33 @@ val = ->
 if window.navigator["standalone"]
   noddy = undefined
   remotes = false
-  document.addEventListener "click", ((event) ->
+  doc = document
+  doc.addEventListener "click", ((event) ->
     noddy = event.target
     noddy = noddy.parentNode  while noddy.nodeName isnt "A" and noddy.nodeName isnt "HTML"
-    if noddy.href.indexOf("http") isnt -1 and (noddy.href.indexOf(document.location.host) isnt -1 or remotes)
+    if noddy.href.indexOf("http") isnt -1 and (noddy.href.indexOf(doc.location.host) isnt -1 or remotes)
       event.preventDefault()
-      document.location.href = noddy.href
+      doc.location.href = noddy.href
     return
   ), false
-findios()
+iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent)
+doc = document
+if not iOS or window.navigator["standalone"]
+  doc.getElementById("iphoneinstall").classList.toggle "hidden"
+else
+  doc.getElementsByTagName("body")[0].setAttribute "style", "margin-top:40px;"
+  doc.getElementsByTagName("body")[0].classList.toggle "no-touch"
 window.applicationCache.addEventListener "updateready", updateSite, false
 window.onload = ->
   document.getElementsByTagName("form")[0].onsubmit = (evt) ->
     evt.preventDefault()
-    val()
+    performCalculations()
     window.scrollTo 0, document.body.scrollHeight
     return
 
   document.onkeypress = keypressed = (e) ->
     keyCode = (if (window.event) then e.which else e.keyCode)
-    document.forms["form"].submit()  if val()  if keyCode is 13
+    document.forms["form"].submit()  if performCalculations()  if keyCode is 13
     return
 
   return
