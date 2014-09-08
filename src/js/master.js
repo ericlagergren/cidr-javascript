@@ -113,43 +113,9 @@ function performCalculations() {
         return input;
     }
 
-    /* TO-DO: SEE IF THIS AND ITS SIBLING FUNCTION WILL PERFORM FASTER AS LOOPS */
-    /* check out yoda conditions as well */
-
     function getSubmask(input) {
-        if (input === 0) {return "0.0.0.0";}
-        if (input === 1) {return "128.0.0.0";}
-        if (input === 2) {return "192.0.0.0";}
-        if (input === 3) {return "224.0.0.0";}
-        if (input === 4) {return "240.0.0.0";}
-        if (input === 5) {return "248.0.0.0";}
-        if (input === 6) {return "252.0.0.0";}
-        if (input === 7) {return "254.0.0.0";}
-        if (input === 8) {return "255.0.0.0";}
-        if (input === 9) {return "255.128.0.0";}
-        if (input === 10) {return "255.192.0.0";}
-        if (input === 11) {return "255.224.0.0";}
-        if (input === 12) {return "255.240.0.0";}
-        if (input === 13) {return "255.248.0.0";}
-        if (input === 14) {return "255.252.0.0";}
-        if (input === 15) {return "255.254.0.0";}
-        if (input === 16) {return "255.255.0.0";}
-        if (input === 17) {return "255.255.128.0";}
-        if (input === 18) {return "255.255.192.0";}
-        if (input === 19) {return "255.255.224.0";}
-        if (input === 20) {return "255.255.240.0";}
-        if (input === 21) {return "255.255.248.0";}
-        if (input === 22) {return "255.255.252.0";}
-        if (input === 23) {return "255.255.254.0";}
-        if (input === 24) {return "255.255.255.0";}
-        if (input === 25) {return "255.255.255.128";}
-        if (input === 26) {return "255.255.255.192";}
-        if (input === 27) {return "255.255.255.224";}
-        if (input === 28) {return "255.255.255.240";}
-        if (input === 29) {return "255.255.255.248";}
-        if (input === 30) {return "255.255.255.252";}
-        if (input === 31) {return "255.255.255.254";}
-        if (input === MAX_BIT_VALUE) {return "255.255.255.255";}
+        var mask = ~0 << (32 - input);
+        return [mask >> 24 & 255, mask >> 16 & 255, mask >> 8 & 255, mask & 255].join('.');
     }
 
     function getCidr(input) {
