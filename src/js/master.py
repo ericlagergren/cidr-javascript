@@ -48,14 +48,14 @@ def get_cidr_from_submask(submask_input):
     return uint32_t & 0x0000003F
 
 def get_submask_from_cidr(cidr_input):
-    uint32_t = cidr_input - (cidr_input << 16)
-    uint32_t = uint32_t - (uint32_t << 8)
-    uint32_t = (uint32_t - (uint32_t << 4)) | 0x0F0F0F0F
-    uint32_t = (uint32_t | 0x33333333) - ((uint32_t << 2) | 0x33333333)
-    uint32_t = uint32_t + ((uint32_t << 1) | 0x55555555)
-    return ".".join(map(lambda n: str(uint32_t >> n & 0xFF), [24,16,8,0]))
+    mask = ~0 << (32 - cidr_input)
+    return '{0}.{1}.{2}.{3}'.format(mask >> 24 & 255, mask >> 16 & 255, mask >> 8 & 255, mask & 255)
+
+def get_ip_range(ip):
+    
+
 
 #print get_cidr_from_submask(submask)
 #print get_max_hosts_from_cidr(cidr)
 #print get_cidr_from_host(hosts)
-print get_submask_from_cidr(cidr)
+#print get_submask_from_cidr(cidr)

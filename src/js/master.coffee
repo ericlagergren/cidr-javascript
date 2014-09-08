@@ -69,39 +69,13 @@ performCalculations = ->
   
   # check out yoda conditions as well 
   getSubmask = (input) ->
-    return "0.0.0.0"  if input is 0
-    return "128.0.0.0"  if input is 1
-    return "192.0.0.0"  if input is 2
-    return "224.0.0.0"  if input is 3
-    return "240.0.0.0"  if input is 4
-    return "248.0.0.0"  if input is 5
-    return "252.0.0.0"  if input is 6
-    return "254.0.0.0"  if input is 7
-    return "255.0.0.0"  if input is 8
-    return "255.128.0.0"  if input is 9
-    return "255.192.0.0"  if input is 10
-    return "255.224.0.0"  if input is 11
-    return "255.240.0.0"  if input is 12
-    return "255.248.0.0"  if input is 13
-    return "255.252.0.0"  if input is 14
-    return "255.254.0.0"  if input is 15
-    return "255.255.0.0"  if input is 16
-    return "255.255.128.0"  if input is 17
-    return "255.255.192.0"  if input is 18
-    return "255.255.224.0"  if input is 19
-    return "255.255.240.0"  if input is 20
-    return "255.255.248.0"  if input is 21
-    return "255.255.252.0"  if input is 22
-    return "255.255.254.0"  if input is 23
-    return "255.255.255.0"  if input is 24
-    return "255.255.255.128"  if input is 25
-    return "255.255.255.192"  if input is 26
-    return "255.255.255.224"  if input is 27
-    return "255.255.255.240"  if input is 28
-    return "255.255.255.248"  if input is 29
-    return "255.255.255.252"  if input is 30
-    return "255.255.255.254"  if input is 31
-    "255.255.255.255"  if input is MAX_BIT_VALUE
+    mask = ~0 << (32 - input)
+    [
+      mask >> 24 & 255
+      mask >> 16 & 255
+      mask >> 8 & 255
+      mask & 255
+    ].join "."
   getCidr = (input) ->
     arr = input.split(".")
     
