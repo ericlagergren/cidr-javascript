@@ -1,0 +1,30 @@
+CACHE MANIFEST
+
+# Cache manifest version 10.1
+
+CACHE:
+
+### Assets ###
+
+assets/js/webapp.js
+assets/js/yepnope.js
+assets/iphone_share.png
+assets/download.png
+assets/css/style.css
+assets/js/google-analytics.js
+
+### Src ###
+
+src/js/master.js
+src/js/master.min.js
+
+### Pages ###
+
+index.html
+about/index.html
+license/index.html
+
+NETWORK:
+*
+http://www.google-analytics.com/analytics.js
+https://www.google-analytics.com/analytics.js

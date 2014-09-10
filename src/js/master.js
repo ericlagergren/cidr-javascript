@@ -109,7 +109,10 @@ function performCalculations() {
     var ipInputArray = ipInput.split("."),
         submaskInputArray = submask.split(".");
 
+<<<<<<< HEAD
     // Converts an IP/Submask into 32 bit int
+=======
+>>>>>>> 4aee0b6... Refactored. Added more bitwise and integer logic, removed a lot of lines, cleaned up CSS and HTML a bit.
     function ipToInt(ip) {
         var x = 0;
 
@@ -121,14 +124,22 @@ function performCalculations() {
         return x;
     }
 
+<<<<<<< HEAD
     // Reverses the previous functions
+=======
+>>>>>>> 4aee0b6... Refactored. Added more bitwise and integer logic, removed a lot of lines, cleaned up CSS and HTML a bit.
     function intToIp(integer) {
 
         var arr = [24, 16, 8, 0];
 
         var x = arr.map(function(n) {
+<<<<<<< HEAD
             return integer >> n & 0xFF;
         }).reverse().join('.');
+=======
+                    return integer >> n & 0xFF;
+                }).reverse().join('.');
+>>>>>>> 4aee0b6... Refactored. Added more bitwise and integer logic, removed a lot of lines, cleaned up CSS and HTML a bit.
 
         return x;
     }
@@ -144,6 +155,7 @@ function performCalculations() {
 
     function getSubmask(input) {
         var mask = ~0 << (MAX_BIT_VALUE - input);
+<<<<<<< HEAD
         return [mask >> 24 & MAX_BIT_BIN,
             mask >> 16 & MAX_BIT_BIN,
             mask >> 8 & MAX_BIT_BIN,
@@ -159,6 +171,14 @@ function performCalculations() {
             mask >> 8 & MAX_BIT_BIN,
             mask & MAX_BIT_BIN
         ].join('.');
+=======
+        return [mask >> 24 & MAX_BIT_BIN, mask >> 16 & MAX_BIT_BIN, mask >> 8 & MAX_BIT_BIN, mask & MAX_BIT_BIN].join('.');
+    }
+
+    function getWildcard(input) {
+        var mask = ~(~0 << (MAX_BIT_VALUE - input));
+        return [mask >> 24 & MAX_BIT_BIN, mask >> 16 & MAX_BIT_BIN, mask >> 8 & MAX_BIT_BIN, mask & MAX_BIT_BIN].join('.');
+>>>>>>> 4aee0b6... Refactored. Added more bitwise and integer logic, removed a lot of lines, cleaned up CSS and HTML a bit.
     }
 
     function getCidr(input) {
@@ -192,7 +212,29 @@ function performCalculations() {
         return hv;
     }
 
+<<<<<<< HEAD
     function calculateSubnets(base) {
+=======
+    /*
+
+    The below function does this:
+
+        If there's no var index, which is the index of the first octect !== 
+        "255", then the value we're subtracting from the input (CIDR) is 0. 
+        If there IS, and it's less than 3, then we take 2, raise it to the 
+        power of index + 2 and subtract that from the input. If both are false, 
+        then the value is 24.
+
+        We return what is essentially (but not exactly) Math.floor (~~) of 
+        2 to the power of the input mins the value we previously found. 
+        That equals the amount of subnets.
+
+    */
+
+    function calculateSubnets(base) {
+        /*var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
+        return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets";*/
+>>>>>>> 4aee0b6... Refactored. Added more bitwise and integer logic, removed a lot of lines, cleaned up CSS and HTML a bit.
         var mod_base = base % 8;
         return mod_base ? Math.pow(2, mod_base) : Math.pow(2, 8);
     }
@@ -263,9 +305,14 @@ function performCalculations() {
         var x = +x;
         return ("00" + x.toString(16)).substr(-2);
     }).join('');
+<<<<<<< HEAD
 
     var wildcard = getWildcard(base);
 
+=======
+
+    var wildcard = getWildcard(base);
+>>>>>>> 4aee0b6... Refactored. Added more bitwise and integer logic, removed a lot of lines, cleaned up CSS and HTML a bit.
     var hosts = calculateHosts(base),
         usable_hosts = (hosts - 2) > 0 ? (hosts - 2).toString().replace(
             /\B(?=(\d{3})+(?!\d))/g, ",") : 0;
@@ -275,8 +322,13 @@ function performCalculations() {
         naa = networkAddr.split('.'),
         baa = broadcastAddr.split('.');
 
+<<<<<<< HEAD
     naa[3] = +naa[3] + 1;
     baa[3] = +baa[3] - 1;
+=======
+    naa[3] = +naa[3]+1;
+    baa[3] = +baa[3]-1;
+>>>>>>> 4aee0b6... Refactored. Added more bitwise and integer logic, removed a lot of lines, cleaned up CSS and HTML a bit.
     var usable_range = naa.join('.') + " - " + baa.join('.');
 
 
