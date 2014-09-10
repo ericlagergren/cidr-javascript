@@ -31,7 +31,8 @@ my app.
 // (e.g. Safari, Google Chrome)
 
 if (window.navigator["standalone"]) {
-    var noddy, remotes = false, doc = document;
+    var noddy, remotes = false,
+        doc = document;
     doc.addEventListener("click", function(event) {
         noddy = event.target;
         while (noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
@@ -52,8 +53,7 @@ var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
 
 if (!iOS || window.navigator["standalone"]) {
     doc.getElementById("iphoneinstall").classList.toggle("hidden");
-}
-else {
+} else {
     doc.getElementsByTagName("body")[0].setAttribute("style", "margin-top:40px;");
     doc.getElementsByTagName("body")[0].classList.toggle("no-touch");
 }
@@ -109,6 +109,7 @@ function performCalculations() {
     var ipInputArray = ipInput.split("."),
         submaskInputArray = submask.split(".");
 
+    // Converts an IP/Submask into 32 bit int
     function ipToInt(ip) {
         var x = 0;
 
@@ -120,13 +121,14 @@ function performCalculations() {
         return x;
     }
 
+    // Reverses the previous functions
     function intToIp(integer) {
 
         var arr = [24, 16, 8, 0];
 
         var x = arr.map(function(n) {
-                    return integer >> n & 0xFF;
-                }).reverse().join('.');
+            return integer >> n & 0xFF;
+        }).reverse().join('.');
 
         return x;
     }
@@ -142,12 +144,21 @@ function performCalculations() {
 
     function getSubmask(input) {
         var mask = ~0 << (MAX_BIT_VALUE - input);
-        return [mask >> 24 & MAX_BIT_BIN, mask >> 16 & MAX_BIT_BIN, mask >> 8 & MAX_BIT_BIN, mask & MAX_BIT_BIN].join('.');
+        return [mask >> 24 & MAX_BIT_BIN,
+            mask >> 16 & MAX_BIT_BIN,
+            mask >> 8 & MAX_BIT_BIN,
+            mask & MAX_BIT_BIN
+        ].join('.');
     }
 
+    // Inverse of submask
     function getWildcard(input) {
-        var mask = ~(~0 << (MAX_BIT_VALUE - input));
-        return [mask >> 24 & MAX_BIT_BIN, mask >> 16 & MAX_BIT_BIN, mask >> 8 & MAX_BIT_BIN, mask & MAX_BIT_BIN].join('.');
+        var mask = ~ (~0 << (MAX_BIT_VALUE - input));
+        return [mask >> 24 & MAX_BIT_BIN,
+            mask >> 16 & MAX_BIT_BIN,
+            mask >> 8 & MAX_BIT_BIN,
+            mask & MAX_BIT_BIN
+        ].join('.');
     }
 
     function getCidr(input) {
@@ -161,8 +172,8 @@ function performCalculations() {
         // x +=   1 << 8 | x
         // return x
         var x = arr.reduce(function(previousValue, currentValue, index, array) {
-                    return (previousValue << 8 | currentValue) >>> 0;
-                });
+            return (previousValue << 8 | currentValue) >>> 0;
+        });
 
         // https://github.com/mikolalysenko/bit-twiddle/blob/master/twiddle.js#L63
         // https://github.com/mikolalysenko/bit-twiddle/blob/master/LICENSE
@@ -181,25 +192,7 @@ function performCalculations() {
         return hv;
     }
 
-    /*
-
-    The below function does this:
-
-        If there's no var index, which is the index of the first octect !== 
-        "255", then the value we're subtracting from the input (CIDR) is 0. 
-        If there IS, and it's less than 3, then we take 2, raise it to the 
-        power of index + 2 and subtract that from the input. If both are false, 
-        then the value is 24.
-
-        We return what is essentially (but not exactly) Math.floor (~~) of 
-        2 to the power of the input mins the value we previously found. 
-        That equals the amount of subnets.
-
-    */
-
     function calculateSubnets(base) {
-        /*var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
-        return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets";*/
         var mod_base = base % 8;
         return mod_base ? Math.pow(2, mod_base) : Math.pow(2, 8);
     }
@@ -272,6 +265,7 @@ function performCalculations() {
     }).join('');
 
     var wildcard = getWildcard(base);
+
     var hosts = calculateHosts(base),
         usable_hosts = (hosts - 2) > 0 ? (hosts - 2).toString().replace(
             /\B(?=(\d{3})+(?!\d))/g, ",") : 0;
@@ -281,8 +275,8 @@ function performCalculations() {
         naa = networkAddr.split('.'),
         baa = broadcastAddr.split('.');
 
-    naa[3] = +naa[3]+1;
-    baa[3] = +baa[3]-1;
+    naa[3] = +naa[3] + 1;
+    baa[3] = +baa[3] - 1;
     var usable_range = naa.join('.') + " - " + baa.join('.');
 
 
