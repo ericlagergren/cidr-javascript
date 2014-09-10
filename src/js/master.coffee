@@ -45,6 +45,8 @@ performCalculations = ->
   # 'document' is referenced
   # see http://jonraasch.com/blog/10-javascript-performance-boosting-tips-from-nicholas-zakas
   
+  # Declare constants*
+  
   # Determine the type of input
   # less than or equal to = cidr
   
@@ -58,23 +60,45 @@ performCalculations = ->
   # if base isn't valid then do nothing
   
   # Splits our inputs into arrays
+  ipToInt = (ip) ->
+    x = 0
+    x += +ip[3] << 24 >>> 0
+    x += +ip[2] << 16 >>> 0
+    x += +ip[1] << 8 >>> 0
+    x += +ip[0] >>> 0
+    x
+  intToIp = (integer) ->
+    arr = [
+      24
+      16
+      8
+      0
+    ]
+    x = arr.map((n) ->
+      integer >> n & 0xff
+    ).reverse().join(".")
+    x
   getCidrFromHost = (input) ->
     
     # as long as the number of hosts isn't 0, find (log2(hosts)), round 
     # up, and subtract that from MAX_BIT_VALUE to find the correct CIDR
-    input = (MAX_BIT_VALUE - (Math.ceil((Math.log(input)) / (Math.log(2)))))  if input isnt 0
+    input = (MAX_BIT_VALUE - (Math.ceil((Math.log(input)) / (Math.log(2)))))  if 0 isnt input
     input
-  
-  # TO-DO: SEE IF THIS AND ITS SIBLING FUNCTION WILL PERFORM FASTER AS LOOPS 
-  
-  # check out yoda conditions as well 
   getSubmask = (input) ->
-    mask = ~0 << (32 - input)
+    mask = ~0 << (MAX_BIT_VALUE - input)
     [
-      mask >> 24 & 255
-      mask >> 16 & 255
-      mask >> 8 & 255
-      mask & 255
+      mask >> 24 & MAX_BIT_BIN
+      mask >> 16 & MAX_BIT_BIN
+      mask >> 8 & MAX_BIT_BIN
+      mask & MAX_BIT_BIN
+    ].join "."
+  getWildcard = (input) ->
+    mask = ~(~0 << (MAX_BIT_VALUE - input))
+    [
+      mask >> 24 & MAX_BIT_BIN
+      mask >> 16 & MAX_BIT_BIN
+      mask >> 8 & MAX_BIT_BIN
+      mask & MAX_BIT_BIN
     ].join "."
   getCidr = (input) ->
     arr = input.split(".")
@@ -92,7 +116,7 @@ performCalculations = ->
     
     # https://github.com/mikolalysenko/bit-twiddle/blob/master/twiddle.js#L63
     # https://github.com/mikolalysenko/bit-twiddle/blob/master/LICENSE
-    x = x - ((x >>> 1) & 0x55555555)
+    x -= (x >>> 1) & 0x55555555
     x = (x & 0x33333333) + ((x >>> 2) & 0x33333333)
     ((x + (x >>> 4) & 0xf0f0f0f) * 0x1010101) >>> 24
   calculateHosts = (hv) ->
@@ -117,9 +141,12 @@ performCalculations = ->
   #        That equals the amount of subnets.
   #
   #    
-  calculateSubnets = (input) ->
-    valToSubtractFromInput = (if not index then 0 else (if index < 3 then Math.pow(2, index + 2) else 24))
-    ~~Math.pow(2, (input - valToSubtractFromInput)) + " subnets"
+  calculateSubnets = (base) ->
+    
+    #var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
+    #        return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets";
+    mod_base = base % 8
+    (if mod_base then Math.pow(2, mod_base) else Math.pow(2, 8))
   onBits = (bits) ->
     one = "1"
     two = "0"
@@ -133,8 +160,8 @@ performCalculations = ->
     # because we need to insert 3 periods. See: http://regexr.com/3943q
     binarystring.replace /(.{8})(.{8})(.{8})/g, "$1.$2.$3."
   findClass = (ip) ->
-    if ipInputArray.length is 4
-      return "No Valid IP Entered"  if not ip or ip < 0 or typeof ip is "undefined"
+    if 4 is ipInputArray.length
+      return "No Valid IP Entered"  if not ip or ip < 0 or "undefined" is typeof ip
       return "Class A"  if ip < 128
       return "Class B"  if ip < 192
       return "Class C"  if ip < 224
@@ -142,71 +169,16 @@ performCalculations = ->
       "Class E"  if ip < 256
     else
       "No Valid IP Entered"
+  networkAddress = (ip, sm) ->
+    x = ip & sm
+    intToIp x
+  broadcastAddress = (ip, sm) ->
+    x = ip | (~sm & THIRTY_TWO_BITS)
+    intToIp x
   
-  # finds the first octet not equal to 255
-  getNetworkRange = (cider) ->
-    init = undefined
-    network = undefined
-    broadcast = undefined
-    modResult = cider % 8
-    if modResult
-      init = (Math.pow(2, (8 - modResult)))
-      network = ((Math.floor(ipInputArray[index] / init)) * init)
-      broadcast = (network + (init - 1))
-    else
-      init = 128
-      network = ((Math.floor(ipInputArray[index] / init)) * init)
-      broadcast = "255"
-    [
-      network
-      broadcast
-    ]
-  getEnds = ->
-    netInit = getNetworkRange(base)
-    netFinal = placeRangeCorrectly(netInit[0], netInit[1])
-    netFinal
-  placeRangeCorrectly = (network, broadcast) ->
-    networkString = undefined
-    broadcastString = undefined
-    networkStringInitial = ""
-    broadcastStringInitial = ""
-    i = 0
-
-    while i < index
-      networkStringInitial += ipInputArray[i] + "."
-      broadcastStringInitial += ipInputArray[i] + "."
-      i++
-    networkString = networkStringInitial + network
-    broadcastString = broadcastStringInitial + broadcast
-    if index is 0
-      networkString += ".0.0.0"
-      broadcastString += ".255.255.255"
-    if index is 1
-      networkString += ".0.0"
-      broadcastString += ".255.255"
-    if index is 2
-      networkString += ".0"
-      broadcastString += ".255"
-    unless index
-      networkString = ipInput
-      broadcastString = ipInput
-    theBigString = [
-      networkString
-      broadcastString
-    ]
-  datRangeYo = ->
-    networkOctet = theBigString[0].split(".")
-    broadcastOctet = theBigString[1].split(".")
-    firstUsable = (parseInt(networkOctet[3], 10) + 1)
-    lastUsable = (parseInt(broadcastOctet[3], 10) - 1)
-    fullUsableRange = networkOctet.slice(0, -1).join(".") + "." + firstUsable + " - " + broadcastOctet.slice(0, -1).join(".") + "." + lastUsable
-    fullUsableRange = ipInput + " - " + ipInput  unless index
-    fullUsableRange
-  
-  # The first two `var`s convert the IP to hex by parsing the 
-  # ipInputArray's segments as integers, and then adding '00' padding 
-  # (because JS) and converting them to a base-16 string, and then removing 
-  # the prefixed '00's.
+  # Parse the ipInputArray's segments as integers, and then adding '00' 
+  # padding (because JS is weird) and converting them to a base-16 string,
+  # and then removing the prefixed '00's.
   
   # CIDR
   
@@ -251,43 +223,41 @@ performCalculations = ->
   doc = document
   submaskInput = doc.form["submask"].value
   ipInput = doc.form["ip"].value
-  MAX_BIT_VALUE = 32
   submask = undefined
   base = undefined
   index = undefined
   theBigString = undefined
   netFinal = undefined
   netInit = undefined
+  THIRTY_TWO_BITS = 4294967295
+  MAX_BIT_VALUE = 32
+  MAX_BIT_BIN = 255
   if submaskInput <= MAX_BIT_VALUE
     base = submaskInput
     submask = getSubmask(parseInt(submaskInput, 10))
-  if submaskInput.split(".").length is 4
+  if 4 is submaskInput.split(".").length
     base = getCidr(submaskInput)
     submask = submaskInput
   if doc.form["cb"].checked or submaskInput > MAX_BIT_VALUE
     base = getCidrFromHost(submaskInput)
     submask = getSubmask(base)
-  return null  if base is "undefined" or isNaN(base) or base is null
+  return null  if "undefined" is base or isNaN(base) or null is base
   ipInputArray = ipInput.split(".")
   submaskInputArray = submask.split(".")
-  j = 0
-
-  while j < submaskInputArray.length
-    if submaskInputArray[j] isnt "255"
-      index = j
-      break
-    j++
-  ipiptoint = ipInputArray.map((x) ->
-    parseInt x, 10
-  )
-  iptohex = ipiptoint.map((v) ->
-    ("00" + v.toString(16)).substr -2
-  ).join(".")
-  wildcard = submaskInputArray.map((v) ->
-    255 - v
-  ).join(".")
+  hexIp = ipInputArray.map((x) ->
+    x = +x
+    ("00" + x.toString(16)).substr -2
+  ).join("")
+  wildcard = getWildcard(base)
   hosts = calculateHosts(base)
   usable_hosts = (if (hosts - 2) > 0 then (hosts - 2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") else 0)
+  networkAddr = networkAddress(ipToInt(ipInputArray), ipToInt(submaskInputArray))
+  broadcastAddr = broadcastAddress(ipToInt(ipInputArray), ipToInt(submaskInputArray))
+  naa = networkAddr.split(".")
+  baa = broadcastAddr.split(".")
+  naa[3] = +naa[3] + 1
+  baa[3] = +baa[3] - 1
+  usable_range = naa.join(".") + " - " + baa.join(".")
   doc.getElementById("tablecidr").innerHTML = base
   doc.getElementById("tablesubmask").innerHTML = submask
   doc.getElementById("tablebinary").innerHTML = onBits(base)
@@ -295,18 +265,18 @@ performCalculations = ->
   doc.getElementById("tablenumsubnets").innerHTML = calculateSubnets(base)
   doc.getElementById("tablewildcardmask").innerHTML = wildcard
   doc.getElementById("tableipclass").innerHTML = findClass(ipInputArray[0])
-  doc.getElementById("tableiptohex").innerHTML = iptohex.toUpperCase()
-  doc.getElementById("tablenetworkid").innerHTML = getEnds()[0]
-  doc.getElementById("tablebroadcastaddress").innerHTML = getEnds()[1]
-  doc.getElementById("tablenetworkrange").innerHTML = datRangeYo()
-  throwError()  if ipInput.split(".").length isnt 4 or ipInput is ""
-  i = 0
+  doc.getElementById("tableiptohex").innerHTML = "0x" + hexIp.toUpperCase()
+  doc.getElementById("tablenetworkid").innerHTML = networkAddr
+  doc.getElementById("tablebroadcastaddress").innerHTML = broadcastAddr
+  doc.getElementById("tablenetworkrange").innerHTML = usable_range
+  throwError()  if 4 isnt ipInput.split(".").length or "" is ipInput
+  j = 0
 
-  while i < 4
-    iptoint = parseInt(ipInputArray[i], 10)
-    throwError()  if iptoint isnt ipInputArray[i] or iptoint < 0 or iptoint > 255
-    ipInputArray[i] = iptoint
-    i++
+  while j < 4
+    iptoint = parseInt(ipInputArray[j], 10)
+    throwError()  if iptoint isnt ipInputArray[j] or iptoint < 0 or iptoint > MAX_BIT_BIN
+    ipInputArray[j] = iptoint
+    j++
   return
 "use strict"
 if window.navigator["standalone"]

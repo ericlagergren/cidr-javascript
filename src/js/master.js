@@ -74,8 +74,13 @@ function performCalculations() {
     var doc = document,
         submaskInput = doc.form["submask"].value,
         ipInput = doc.form["ip"].value,
-        MAX_BIT_VALUE = 32,
         submask, base, index, theBigString, netFinal, netInit;
+    // Declare constants*
+    var THIRTY_TWO_BITS = 4294967295,
+        MAX_BIT_VALUE = 32,
+        MAX_BIT_BIN = 255;
+
+
 
     // Determine the type of input
     if (submaskInput <= MAX_BIT_VALUE) { // less than or equal to = cidr
@@ -84,7 +89,7 @@ function performCalculations() {
         // the string input to an int
         submask = getSubmask(parseInt(submaskInput, 10));
     }
-    if (submaskInput.split(".").length === 4) {
+    if (4 === submaskInput.split(".").length) {
         // if you can split the input ip into four parts it's a submask
         base = getCidr(submaskInput);
         submask = submaskInput;
@@ -94,7 +99,7 @@ function performCalculations() {
         base = getCidrFromHost(submaskInput);
         submask = getSubmask(base);
     }
-    if (base === 'undefined' || isNaN(base) || base === null) {
+    if ('undefined' === base || isNaN(base) || null === base) {
         // if base isn't valid then do nothing
         return null;
     }
@@ -104,18 +109,45 @@ function performCalculations() {
     var ipInputArray = ipInput.split("."),
         submaskInputArray = submask.split(".");
 
+    function ipToInt(ip) {
+        var x = 0;
+
+        x += +ip[3] << 24 >>> 0;
+        x += +ip[2] << 16 >>> 0;
+        x += +ip[1] << 8 >>> 0;
+        x += +ip[0] >>> 0;
+
+        return x;
+    }
+
+    function intToIp(integer) {
+
+        var arr = [24, 16, 8, 0];
+
+        var x = arr.map(function(n) {
+                    return integer >> n & 0xFF;
+                }).reverse().join('.');
+
+        return x;
+    }
+
     function getCidrFromHost(input) {
         // as long as the number of hosts isn't 0, find (log2(hosts)), round 
         // up, and subtract that from MAX_BIT_VALUE to find the correct CIDR
-        if (input !== 0) {
+        if (0 !== input) {
             input = (MAX_BIT_VALUE - (Math.ceil((Math.log(input)) / (Math.log(2)))));
         }
         return input;
     }
 
     function getSubmask(input) {
-        var mask = ~0 << (32 - input);
-        return [mask >> 24 & 255, mask >> 16 & 255, mask >> 8 & 255, mask & 255].join('.');
+        var mask = ~0 << (MAX_BIT_VALUE - input);
+        return [mask >> 24 & MAX_BIT_BIN, mask >> 16 & MAX_BIT_BIN, mask >> 8 & MAX_BIT_BIN, mask & MAX_BIT_BIN].join('.');
+    }
+
+    function getWildcard(input) {
+        var mask = ~(~0 << (MAX_BIT_VALUE - input));
+        return [mask >> 24 & MAX_BIT_BIN, mask >> 16 & MAX_BIT_BIN, mask >> 8 & MAX_BIT_BIN, mask & MAX_BIT_BIN].join('.');
     }
 
     function getCidr(input) {
@@ -134,7 +166,7 @@ function performCalculations() {
 
         // https://github.com/mikolalysenko/bit-twiddle/blob/master/twiddle.js#L63
         // https://github.com/mikolalysenko/bit-twiddle/blob/master/LICENSE
-        x = x - ((x >>> 1) & 0x55555555);
+        x -= (x >>> 1) & 0x55555555;
         x = (x & 0x33333333) + ((x >>> 2) & 0x33333333);
 
         return ((x + (x >>> 4) & 0xF0F0F0F) * 0x1010101) >>> 24;
@@ -165,9 +197,11 @@ function performCalculations() {
 
     */
 
-    function calculateSubnets(input) {
-        var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
-        return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets";
+    function calculateSubnets(base) {
+        /*var valToSubtractFromInput = !index ? 0 : index < 3 ? Math.pow(2, index + 2) : 24;
+        return~~ Math.pow(2, (input - valToSubtractFromInput)) + " subnets";*/
+        var mod_base = base % 8;
+        return mod_base ? Math.pow(2, mod_base) : Math.pow(2, 8);
     }
 
     function onBits(bits) {
@@ -192,8 +226,8 @@ function performCalculations() {
     }
 
     function findClass(ip) {
-        if (ipInputArray.length === 4) {
-            if (!ip || ip < 0 || typeof ip === 'undefined') {
+        if (4 === ipInputArray.length) {
+            if (!ip || ip < 0 || 'undefined' === typeof ip) {
                 return "No Valid IP Entered";
             }
             if (ip < 128) {
@@ -216,93 +250,41 @@ function performCalculations() {
         }
     }
 
-    for (var j = 0; j < submaskInputArray.length; j++) {
-        // finds the first octet not equal to 255
-        if (submaskInputArray[j] !== "255") {
-            index = j;
-            break;
-        }
+    function networkAddress(ip, sm) {
+        var x = ip & sm;
+
+        return intToIp(x);
     }
 
-    function getNetworkRange(cider) {
-        var init, network, broadcast, modResult = cider % 8;
-        if (modResult) {
-            init = (Math.pow(2, (8 - modResult)));
-            network = ((Math.floor(ipInputArray[index] / init)) * init);
-            broadcast = (network + (init - 1));
-        } else {
-            init = 128;
-            network = ((Math.floor(ipInputArray[index] / init)) * init);
-            broadcast = "255";
-        }
-        return [network, broadcast];
+    function broadcastAddress(ip, sm) {
+        var x = ip | (~sm & THIRTY_TWO_BITS);
+
+        return intToIp(x);
     }
 
-    function getEnds() {
-        var netInit = getNetworkRange(base),
-            netFinal = placeRangeCorrectly(netInit[0], netInit[1]);
-        return netFinal;
-    }
+    // Parse the ipInputArray's segments as integers, and then adding '00' 
+    // padding (because JS is weird) and converting them to a base-16 string,
+    // and then removing the prefixed '00's.
 
-    function placeRangeCorrectly(network, broadcast) {
-        var networkString, broadcastString, networkStringInitial = "",
-            broadcastStringInitial = "";
-        for (var i = 0; i < index; i++) {
-            networkStringInitial += ipInputArray[i] + ".";
-            broadcastStringInitial += ipInputArray[i] + ".";
-        }
-        networkString = networkStringInitial + network;
-        broadcastString = broadcastStringInitial + broadcast;
-        if (index === 0) {
-            networkString += ".0.0.0";
-            broadcastString += ".255.255.255";
-        }
-        if (index === 1) {
-            networkString += ".0.0";
-            broadcastString += ".255.255";
-        }
-        if (index === 2) {
-            networkString += ".0";
-            broadcastString += ".255";
-        }
-        if (!index) {
-            networkString = ipInput;
-            broadcastString = ipInput;
-        }
-        return theBigString = [networkString, broadcastString];
-    }
+    var hexIp = ipInputArray.map(function(x) {
+        var x = +x;
+        return ("00" + x.toString(16)).substr(-2);
+    }).join('');
 
-    function datRangeYo() {
-        var networkOctet = theBigString[0].split("."),
-            broadcastOctet = theBigString[1].split("."),
-            firstUsable = (parseInt(networkOctet[3], 10) + 1),
-            lastUsable = (parseInt(broadcastOctet[3], 10) - 1),
-            fullUsableRange = networkOctet.slice(0, -1).join(".") + "." +
-                firstUsable + " - " + broadcastOctet.slice(0, -1).join(".") +
-                "." + lastUsable;
-            if(!index) {
-                fullUsableRange = ipInput + " - " + ipInput;
-            }
-        return fullUsableRange;
-    }
-
-    // The first two `var`s convert the IP to hex by parsing the 
-    // ipInputArray's segments as integers, and then adding '00' padding 
-    // (because JS) and converting them to a base-16 string, and then removing 
-    // the prefixed '00's.
-
-    var ipiptoint = ipInputArray.map(function(x) {
-        return parseInt(x, 10);
-    });
-    var iptohex = ipiptoint.map(function(v) {
-        return ("00" + v.toString(16)).substr(-2);
-    }).join(".");
-    var wildcard = submaskInputArray.map(function(v) {
-        return 255 - v;
-    }).join(".");
+    var wildcard = getWildcard(base);
     var hosts = calculateHosts(base),
         usable_hosts = (hosts - 2) > 0 ? (hosts - 2).toString().replace(
             /\B(?=(\d{3})+(?!\d))/g, ",") : 0;
+
+    var networkAddr = networkAddress(ipToInt(ipInputArray), ipToInt(submaskInputArray)),
+        broadcastAddr = broadcastAddress(ipToInt(ipInputArray), ipToInt(submaskInputArray)),
+        naa = networkAddr.split('.'),
+        baa = broadcastAddr.split('.');
+
+    naa[3] = +naa[3]+1;
+    baa[3] = +baa[3]-1;
+    var usable_range = naa.join('.') + " - " + baa.join('.');
+
 
     // CIDR
     doc.getElementById("tablecidr").innerHTML = base;
@@ -320,13 +302,13 @@ function performCalculations() {
     // IP class
     doc.getElementById("tableipclass").innerHTML = findClass(ipInputArray[0]);
     // IP -> hex
-    doc.getElementById("tableiptohex").innerHTML = iptohex.toUpperCase();
+    doc.getElementById("tableiptohex").innerHTML = "0x" + hexIp.toUpperCase();
     // Network ID
-    doc.getElementById("tablenetworkid").innerHTML = getEnds()[0];
+    doc.getElementById("tablenetworkid").innerHTML = networkAddr;
     // Broadcast Address
-    doc.getElementById("tablebroadcastaddress").innerHTML = getEnds()[1];
+    doc.getElementById("tablebroadcastaddress").innerHTML = broadcastAddr;
     // Network ranges
-    doc.getElementById("tablenetworkrange").innerHTML = datRangeYo();
+    doc.getElementById("tablenetworkrange").innerHTML = usable_range;
 
     function throwError() {
         var error = "No Valid IP Entered",
@@ -344,15 +326,16 @@ function performCalculations() {
 
     }
 
-    if (ipInput.split(".").length !== 4 || ipInput === "") {
+    if (4 !== ipInput.split(".").length || "" === ipInput) {
         throwError();
     }
-    for (var i = 0; i < 4; i++) {
-        var iptoint = parseInt(ipInputArray[i], 10);
-        if (iptoint != ipInputArray[i] || iptoint < 0 || iptoint > 255) {
+
+    for (var j = 0; j < 4; j++) {
+        var iptoint = parseInt(ipInputArray[j], 10);
+        if (iptoint != ipInputArray[j] || iptoint < 0 || iptoint > MAX_BIT_BIN) {
             throwError();
         }
-        ipInputArray[i] = iptoint;
+        ipInputArray[j] = iptoint;
     }
 
 }
