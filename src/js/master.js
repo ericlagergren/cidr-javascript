@@ -162,6 +162,7 @@ function performCalculations() {
     }
 
     function getCidr(input) {
+        
         var arr = input.split('.');
 
         // Similar to:
