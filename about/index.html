@@ -21,7 +21,7 @@
         padding: 0px;
     }
     body {
-        width: 96%;
+        width: 100%;
         margin: 0 auto;
         font-size: 115%;
         font-family: Georgia, Times, "Times New Roman", serif;
@@ -37,6 +37,10 @@
         top: 0px;
         color: #ffffff;
     }
+    .eric {
+        width:96%;
+        margin:0 auto;
+    }
     h1 {
         margin-top: 2em;
     }
@@ -47,7 +51,7 @@
     <nav>
         <a href="/" class="backtocalc">BACK TO CALCULATOR</a>
     </nav>
-
+<div class="eric">
     <h1>Subnetting Calculator</h1>
 
     <h2>What is it?</h2>
@@ -60,7 +64,7 @@
 
     <h2 id="first">How do I use it?</h2>
 
-    It accepts four types of input: submask, CIDR, hosts, and IP. There's the possible combinations:</p>
+    It accepts four types of input: submask, CIDR prefix, hosts, and IP. There's the possible combinations:</p>
 
     <ul style="list-style-type:disc">
         <li>Sumbask OR CIDR OR hosts</li>
@@ -90,23 +94,27 @@
     </ul>
 
     <p>The only punctuation needed is periods.</p>
-    <p>The calculator will
-        <em>some</em>error-checking. For instance, it'll reject invalid IPs like "192.256.00001.3" or "192.168.2.cat".</p>
+    <p>The calculator will reject invalid IPs like "192.256.00001.3" or "192.168.2.cat".</p>
 
     <p>
-        <strong>NOTE:</strong>If you wish to use calculate with hosts but the number of hosts is LESS than 32, you'll need to check the "Use # of Hosts?" checkbox. The calculator will automatically assume that any value greater than 32 is a host value and less than and equal to 32 is CIDR. Therefore, in order to avoid the overlap I've put in the checkbox to make sure you get the correct results.</p>
+        <strong>NOTE:</strong> If you wish to use calculate with hosts, but the number of hosts is <em>LESS</em> than 32, you'll need to check the "Use # of Hosts?" checkbox. The calculator will automatically assume that any value greater than 32 is a host value and less than and equal to 32 is CIDR. Therefore, in order to avoid the overlap I've put in the checkbox to make sure you get the correct results.
+    </p>
 
     <h2>How do I use it on my website?</h2>
-    <p>It's simple: include the JavaScript file <a href="/src/js/master.js">"master.js"</a> on your website, and make sure you have the form/table HTML files <a href="/src/html/html.html">found here</a>.</p>
+    <p>It's simple: include the JavaScript file <a href="/src/js/master.js">"master.js"</a> on your website, and make sure you have the form/table HTML files <a href="/src/html/">found here</a>. (NOTE: </p>
 
     <h2>Can I use this on my own website? Or somewhere else?</h2>
     <p>Yes, for the most part. The code is licensed under the Apache License, which you <a href="/license.txt">can find here</a>. For a tl;dr, you can refer to<a href="https://www.tldrlegal.com/l/apache2"> tldrlegal.com/l/apache2</a>
     </p>
 
-    <h2>Any other inquiries</h2>
+    <h2>Bugs/Features or other inquiries:</h2>
+    <p>contact@ericlagergren.com</p>
     <p><a href="http://www.ericlagergren.com/contact">ericlagergren.com/contact</a>
     </p>
 
+    <h2>Feel free to submit pull requests.</h2>
+
+</div>
 </body>
 
 </html>
