@@ -26,9 +26,15 @@
 // Prevents same-domain links from being opened outside my standalone app 
 // (e.g. Safari, Google Chrome)
 
+var doc = document;
+
 if (window.navigator["standalone"]) {
+<<<<<<< HEAD
     var noddy, remotes = false,
         doc = document;
+=======
+    var noddy, remotes = false;
+>>>>>>> gh-pages
     doc.addEventListener("click", function(event) {
         noddy = event.target;
         while (noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
@@ -44,8 +50,7 @@ if (window.navigator["standalone"]) {
 // Tests useragent to see if the client using an iPad, iPhone, or iPod and 
 // toggles the 'Download app' notice
 
-var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent),
-    doc = document;
+var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
 if (!iOS || window.navigator["standalone"]) {
     doc.getElementById("iphoneinstall").classList.toggle("hidden");
@@ -68,12 +73,20 @@ window.applicationCache.addEventListener('updateready', updateSite, false);
  */
 function performCalculations() {
     /**
+<<<<<<< HEAD
      * Declare our variables. Doc = document prevents global lookup each time 
      *'document' is referenced
      * see http://jonraasch.com/blog/10-javascript-performance-boosting-tips-from-nicholas-zakas
      */
     var doc = document,
         submaskInput = doc.form["submask"].value,
+=======
+     * Declare our variables. doc = document prevents global lookup each time 
+     *'document' is referenced
+     * see http://jonraasch.com/blog/10-javascript-performance-boosting-tips-from-nicholas-zakas
+     */
+    var submaskInput = doc.form["submask"].value,
+>>>>>>> gh-pages
         ipInput = doc.form["ip"].value,
         submask, base;
     /**
@@ -103,12 +116,15 @@ function performCalculations() {
     // Determine the type of input
     if (submaskInput <= MAX_BIT_VALUE) { // less than or equal to = cidr
         base = submaskInput;
+<<<<<<< HEAD
         // parseInt because if it's CIDR notation then we need to convert 
         // the string input to an int
+=======
+>>>>>>> gh-pages
         submask = intToQdot(unpackInt(base));
     }
+    // if you can split the input into four parts it's a submask
     if (4 === submaskInput.split(".").length) {
-        // if you can split the input ip into four parts it's a submask
         base = getCidr(submaskInput);
         submask = submaskInput;
     }
@@ -116,6 +132,13 @@ function performCalculations() {
     if (doc.form["cb"].checked || submaskInput > MAX_BIT_VALUE) {
         base = getCidrFromHost(submaskInput);
         submask = intToQdot(unpackInt(base));
+<<<<<<< HEAD
+=======
+    }
+    if (!base) {
+        submask = defaultSubmask(+ipInput.split(".")[0])
+        base = getCidr(submask)
+>>>>>>> gh-pages
     }
     if ('undefined' === base || isNaN(base) || null === base) {
         // if base isn't valid then do nothing
@@ -135,8 +158,12 @@ function performCalculations() {
     /**
      * Validates user inputs
      * 
+<<<<<<< HEAD
      * @param {string} string to be validated
      * @param {string} type/name of error to be thrown
+=======
+     * @param {string} item_to_val string to be validated
+>>>>>>> gh-pages
      */
     function validate(item_to_val) {
         var itv_arr = item_to_val.split(".");
@@ -145,6 +172,7 @@ function performCalculations() {
         if (4 !== itv_arr.length || "" === item_to_val) {
             throwError();
         }
+<<<<<<< HEAD
 
         for (var j = 0; j < 4; j++) {
             var itv_int = +itv_arr[j];
@@ -177,6 +205,40 @@ function performCalculations() {
             hostsPer = arg_list[1];
         } else {
 
+=======
+
+        for (var j = 0; j < 4; j++) {
+            var itv_int = +itv_arr[j];
+            // If the specific element of the ip/submask can't be converted to
+            // an integer without not equaling (using == not ===) the string
+            // version, then it's invalid
+            // 
+            // If the integer element is < 0 or > 255 then it's invalid as well
+            if (itv_int != itv_arr[j] || itv_int < 0 || itv_int > MAX_BIT_BIN) {
+                throwError();
+            }
+            itv_arr[j] = itv_int;
+        }
+    }
+
+    // Validate both submask and IP
+    validate(ipInput);
+    validate(submask);
+
+    /* UNDER CONSTRUCTION
+    function numberOfSubnets(arg_list) {
+        for (var i = 1; i < arg_list.length; i += 2) {
+            if (arg_list[i - 1] !== "-s") {
+                throwError();
+            }
+        }
+
+        if (2 === arg_list.length) {
+            // Assume that the user means number of evenly-distrubuted subnets
+            hostsPer = arg_list[1];
+        } else {
+
+>>>>>>> gh-pages
         }
     }
 
@@ -184,9 +246,15 @@ function performCalculations() {
     */
 
     /**
+<<<<<<< HEAD
      * Converts an IP/Submask into 32 bit int
      *
      * @param {Array.<String>} a quad-dotted IPv4 address -> array
+=======
+     * Converts an IP/Submask into 32-bit int
+     *
+     * @param {Array.<String>} ip a quad-dotted IPv4 address -> array
+>>>>>>> gh-pages
      * @return {number} a 32-bit integer representation of an IPv4 address
      */
     function qdotToInt(ip) {
@@ -203,7 +271,11 @@ function performCalculations() {
     /**
      * Reverses function qdotToInt(ip)
      *
+<<<<<<< HEAD
      * @param {number} a 32-bit integer representation of an IPv4 address
+=======
+     * @param {number} integer a 32-bit integer representation of an IPv4 address
+>>>>>>> gh-pages
      * @return {string} a quad-dotted IPv4 address
      */
     function intToQdot(integer) {
@@ -213,7 +285,11 @@ function performCalculations() {
     /**
      * Gets CIDR prefix from a {number} of hosts
      *
+<<<<<<< HEAD
      * @param {number} int number of hosts
+=======
+     * @param {number} input int number of hosts
+>>>>>>> gh-pages
      * @return {number} if param isn't 0, return 32 - ceil(log2(input)), else 0
      */
     function getCidrFromHost(input) {
@@ -223,9 +299,15 @@ function performCalculations() {
     }
 
     /**
+<<<<<<< HEAD
      * Unpacks 8 bit int
      *
      * @param {number} 8 bit int
+=======
+     * Unpacks 8-bit int
+     *
+     * @param {number} input 8-bit int
+>>>>>>> gh-pages
      * @return {number} I actually don't know what to call this
      */
     function unpackInt(input) {
@@ -236,7 +318,11 @@ function performCalculations() {
      * Gets CIDR prefix from quad-dotted submask
      * Counts number of bits
      *
+<<<<<<< HEAD
      * @param {string} IPv4 address in string notation
+=======
+     * @param {string} input IPv4 address in string notation
+>>>>>>> gh-pages
      * @return {number} a short int
      */
     function getCidr(input) {
@@ -273,7 +359,11 @@ function performCalculations() {
     /**
      * Gets total number of usable hosts from on bits
      *
+<<<<<<< HEAD
      * @param {number} int number of on bits
+=======
+     * @param {number} hv int number of on bits
+>>>>>>> gh-pages
      * @return {number} int number of usable hosts
      */
     function fhosts(hv) {
@@ -288,7 +378,11 @@ function performCalculations() {
     /**
      * Gets number of subnets from on bits
      *
+<<<<<<< HEAD
      * @param {number} int number of on bits
+=======
+     * @param {number} base int number of on bits
+>>>>>>> gh-pages
      * @return {number} int number of subnets
      */
     function fsubnets(base) {
@@ -297,9 +391,40 @@ function performCalculations() {
     }
 
     /**
+<<<<<<< HEAD
      * Gets class of IPv4 address from arr[0]
      *
      * @param {Array.<Number>} is first (zero) element in array
+=======
+     * Gets default submask from an IPv4 address
+     * @param {Array.<Number>} ip is 0th element in IPv4 address array
+     * @return {string|function(string): string} string containing default mask
+     */
+     function defaultSubmask(ip) {
+        if (ip < 128) {
+            return "255.0.0.0";
+        }
+        if (ip < 192) {
+            return "255.255.0.0";
+        }
+        if (ip < 224) {
+            return "255.255.255.0";
+        }
+        if (ip < 256) {
+            return "255.255.255.255";
+        }
+        if (!ip || ip < 0 || 'undefined' === typeof ip || isNaN(ip)) {
+            throwError();
+        } else {
+            throwError();
+        }
+     }
+
+    /**
+     * Gets class of IPv4 address from arr[0]
+     *
+     * @param {Array.<Number>} ip is first (zero) element in array
+>>>>>>> gh-pages
      * @return {string|function(string): string} string containing class of address
      */
     function findClass(ip) {
@@ -327,22 +452,38 @@ function performCalculations() {
     }
 
     /**
+<<<<<<< HEAD
      * ANDs 32 bit representations of IP and submask to get network address
      *
      * @param {number} 32 bit representation of IP address
      * @param {number} 32 bit representation of submask
      * @return {number} 32 bit representation of IP address (network address)
+=======
+     * ANDs 32-bit representations of IP and submask to get network address
+     *
+     * @param {number} ip 32-bit representation of IP address
+     * @param {number} sm 32-bit representation of submask
+     * @return {number} 32-bit representation of IP address (network address)
+>>>>>>> gh-pages
      */
     function networkAddress(ip, sm) {
         return intToQdot(ip & sm);
     }
 
     /**
+<<<<<<< HEAD
      * ORs 32 bit representations of IP and submask to get broadcast address
      *
      * @param {number} 32 bit representation of IP address
      * @param {number} 32 bit representation of submask
      * @return {number} 32 bit representation of IP address (broadcast address)
+=======
+     * ORs 32-bit representations of IP and submask to get broadcast address
+     *
+     * @param {number} ip 32-bit representation of IP address
+     * @param {number} sm 32-bit representation of submask
+     * @return {number} 32-bit representation of IP address (broadcast address)
+>>>>>>> gh-pages
      */
     function broadcastAddress(ip, sm) {
         return intToQdot(ip | (~sm & THIRTY_TWO_BITS));
@@ -351,13 +492,24 @@ function performCalculations() {
     /**
      * Converts an int to its hex form
      *
+<<<<<<< HEAD
      * @param {number} 32 bit int representation of a quad-dotted address
+=======
+     * @param {number} address 32-bit int representation of a quad-dotted address
+>>>>>>> gh-pages
      * @return {string} hex value of address
      */
     function addressToHex(address) {
         return "0x" + address.toString(16).toUpperCase();
     }
 
+    /**
+     * Provides the visual binary representation of the on and off bits in
+     * an an IPv4 address' submask
+     *
+     * @param {number} bits our 'base' var
+     * @return {string} visual binary rep. of on/off bits
+     */
     function onBits(bits) {
         var one = "1",
             two = "0",
@@ -392,10 +544,17 @@ function performCalculations() {
     var hexMask = addressToHex(_sm_32bit_int);
     var naa = networkAddr.split('.');
     var baa = broadcastAddr.split('.');
+<<<<<<< HEAD
 
     naa[3] = +naa[3] + 1;
     baa[3] = +baa[3] - 1;
 
+=======
+
+    naa[3] = +naa[3] + 1;
+    baa[3] = +baa[3] - 1;
+
+>>>>>>> gh-pages
     var netMin = naa.join('.');
     var netMax = baa.join('.');
 
