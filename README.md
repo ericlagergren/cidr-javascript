@@ -50,7 +50,7 @@ It accepts four types of input: submask, CIDR prefix, hosts, and IP. There's the
 <p>It's simple: include the JavaScript file <a href="/src/js/master.js">"master.js"</a> on your website, and make sure you have the form/table HTML files <a href="/src/html/html.html">found here</a>.</p>
 
 <h2>Can I use this on my own website? Or somewhere else?</h2>
-<p>Yes, for the most part. The code is licensed under the Apache License, which you <a href="/license.txt">can find here</a>. For a tl;dr, you can refer to<a href="https://www.tldrlegal.com/l/apache2"> tldrlegal.com/l/apache2</a>
+<p>Yes, for the most part. The code is licensed under the Apache License, which you <a href="/license.txt">can find here</a>. For a tl;dr, you can refer to<a href="https://www.tldrlegal.com/l/gpl-3.0"> tldrlegal.com/l/gpl-3.0</a>
 </p>
 
 <h2>Any other inquiries</h2>
