@@ -67,21 +67,28 @@ window.applicationCache.addEventListener('updateready', updateSite, false);
  * Performs all calculations, including writing to screen
  */
 function performCalculations() {
+
+    var submaskInput = doc.forms["valuebox"]["submask"].value;
+    var submask;
+
     /**
-     * Declare our variables. doc = document prevents global lookup each time 
-     *'document' is referenced
-     * see http://jonraasch.com/blog/10-javascript-performance-boosting-tips-from-nicholas-zakas
+     * @type {string}
      */
-    var submaskInput = doc.form["submask"].value,
-        ipInput = doc.form["ip"].value,
-        submask, base;
+    var ipInput = doc.forms["valuebox"]["ip"].value;
+
     /**
-     * Thirty-two bits worth of a number
+     * @type {number}
+     */
+    var base;
+
+    /**
+     * Max 32 bit number
      *
      * @const 
      * @type {number}
      */
     var THIRTY_TWO_BITS = 4294967295;
+
     /**
      * Maximum number of "on" bits
      *
@@ -91,7 +98,7 @@ function performCalculations() {
     var MAX_BIT_VALUE = 32;
 
     /**
-     * Maximum binary number 
+     * Maximum "binary" number
      *
      * @const 
      * @type {number}
@@ -101,7 +108,7 @@ function performCalculations() {
 
     // Determine the type of input
     if (submaskInput <= MAX_BIT_VALUE) { // less than or equal to = cidr
-        base = submaskInput;
+        base = +submaskInput;
         submask = intToQdot(unpackInt(base));
     }
     // if you can split the input into four parts it's a submask
@@ -110,7 +117,7 @@ function performCalculations() {
         submask = submaskInput;
     }
     // greater than = host or checked checkbox
-    if (doc.form["cb"].checked || submaskInput > MAX_BIT_VALUE) {
+    if (doc.forms["valuebox"]["cb"].checked || submaskInput > MAX_BIT_VALUE) {
         base = getCidrFromHost(submaskInput);
         submask = intToQdot(unpackInt(base));
     }
@@ -118,7 +125,7 @@ function performCalculations() {
         submask = defaultSubmask(+ipInput.split(".")[0])
         base = getCidr(submask)
     }
-    if ('undefined' === base || isNaN(base) || null === base) {
+    if (undefined === base || isNaN(base) || null === base) {
         // if base isn't valid then do nothing
         return null;
     }
@@ -156,7 +163,7 @@ function performCalculations() {
             if (itv_int != itv_arr[j] || itv_int < 0 || itv_int > MAX_BIT_BIN) {
                 throwError();
             }
-            itv_arr[j] = itv_int;
+            //itv_arr[j] = itv_int;
         }
     }
 
@@ -164,29 +171,10 @@ function performCalculations() {
     validate(ipInput);
     validate(submask);
 
-    /* UNDER CONSTRUCTION
-    function numberOfSubnets(arg_list) {
-        for (var i = 1; i < arg_list.length; i += 2) {
-            if (arg_list[i - 1] !== "-s") {
-                throwError();
-            }
-        }
-
-        if (2 === arg_list.length) {
-            // Assume that the user means number of evenly-distrubuted subnets
-            hostsPer = arg_list[1];
-        } else {
-
-        }
-    }
-
-    numberOfSubnets(process.argv.slice(4));
-    */
-
     /**
      * Converts an IP/Submask into 32-bit int
      *
-     * @param {Array.<String>} ip a quad-dotted IPv4 address -> array
+     * @param {Array<string>} ip a quad-dotted IPv4 address -> array
      * @return {number} a 32-bit integer representation of an IPv4 address
      */
     function qdotToInt(ip) {
@@ -243,22 +231,23 @@ function performCalculations() {
 
         var arr = input.split('.');
 
-        /** 
-         * Similar to:
-         * arr = [192.168.0.1]
-         * x =  192 << 8 | 168
-         * x += 168 << 8 | x
-         * x +=   0 << 8 | x
-         * x +=   1 << 8 | x
-         * return x
-         *
+         
+         // Similar to:
+         // arr = [192.168.0.1]
+         x =  +arr[0] << 8 | +arr[1]
+         x += +arr[1] << 8 | x
+         x += +arr[2] << 8 | x
+         x += +arr[3] << 8 | x
+         
+
+        /**
          * @param {number} previous value in array
          * @param {number} next value in array
          * @return {number} sum of bitwise shifted numbers
          */
-        var x = arr.reduce(function(previousValue, currentValue) {
+        /*var x = arr.reduce(function(previousValue, currentValue) {
             return (previousValue << 8 | currentValue) >>> 0;
-        });
+        });*/
 
         /**
          * https://github.com/mikolalysenko/bit-twiddle/blob/master/twiddle.js#L63
@@ -298,8 +287,8 @@ function performCalculations() {
 
     /**
      * Gets default submask from an IPv4 address
-     * @param {Array.<Number>} ip is 0th element in IPv4 address array
-     * @return {string|function(string): string} string containing default mask
+     * @param {number} ip is 0th element in IPv4 address array
+     * @return {string} string containing default mask
      */
      function defaultSubmask(ip) {
         if (ip < 128) {
@@ -316,16 +305,20 @@ function performCalculations() {
         }
         if (!ip || ip < 0 || 'undefined' === typeof ip || isNaN(ip)) {
             throwError();
+            // unreachable
+            return "";
         } else {
             throwError();
+            // unreachable
+            return "";
         }
      }
 
     /**
      * Gets class of IPv4 address from arr[0]
      *
-     * @param {Array.<Number>} ip is first (zero) element in array
-     * @return {string|function(string): string} string containing class of address
+     * @param {number} ip is first (zero) element in array
+     * @return {string} string containing class of address
      */
     function findClass(ip) {
         if (ip < 128) {
@@ -345,9 +338,14 @@ function performCalculations() {
         }
         if (!ip || ip < 0 || 'undefined' === typeof ip || isNaN(ip)) {
             throwError();
+
+            // unreachable
+            return "";
         } else {
             // Is there anything else?
             throwError();
+            // unreachable
+            return "";
         }
     }
 
@@ -356,7 +354,7 @@ function performCalculations() {
      *
      * @param {number} ip 32-bit representation of IP address
      * @param {number} sm 32-bit representation of submask
-     * @return {number} 32-bit representation of IP address (network address)
+     * @return {string} quad-dotted repr. of IPv4 address (network address)
      */
     function networkAddress(ip, sm) {
         return intToQdot(ip & sm);
@@ -365,9 +363,9 @@ function performCalculations() {
     /**
      * ORs 32-bit representations of IP and submask to get broadcast address
      *
-     * @param {number} ip 32-bit representation of IP address
+     * @param {number} ip 32-bit representation of IPv4 address
      * @param {number} sm 32-bit representation of submask
-     * @return {number} 32-bit representation of IP address (broadcast address)
+     * @return {string} quad-dotted repr. of IPv4 address (broadcast address)
      */
     function broadcastAddress(ip, sm) {
         return intToQdot(ip | (~sm & THIRTY_TWO_BITS));
@@ -392,7 +390,7 @@ function performCalculations() {
      */
     function onBits(bits) {
         var one = "1",
-            two = "0",
+            zero = "0",
             i = "",
             v = "";
 
@@ -401,7 +399,7 @@ function performCalculations() {
         }
 
         while (v.length < (MAX_BIT_VALUE - bits)) {
-            v += two;
+            v += zero;
         }
 
         var binarystring = i + v;
@@ -411,13 +409,43 @@ function performCalculations() {
         return binarystring.replace(/(.{8})(.{8})(.{8})/g, "$1.$2.$3.");
     }
 
+    /**
+     * Provites visual binary representation of an IPv4 address
+     *
+     * @param {Array<string>} ip quad-dotted IPv4 address
+     * @return {string} visual binary rep. of IPv4 address
+     */
+     function ipToBin(ip) {
+        var binstr = "",
+            seg = "",
+            zero = "0";
+
+        for (var i = 0; i < 4; i++) {
+            var t = "";
+
+            seg = (+ip[i]).toString(2)
+            while (t.length + seg.length < 8) {
+                t += zero;
+            }
+
+            if (t.length > 0) {
+                seg += t + seg;
+            }
+
+            binstr += seg;
+        }
+
+        return binstr.replace(/(.{8})(.{8})(.{8})/g, "$1.$2.$3.");
+     }
+
+    var ipBase = (ipInput);
     var hosts = fhosts(base);
     var usable_hosts = 2 <= hosts ? hosts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0;
     var _ip_32bit_int = qdotToInt(ipInputArray);
     var _sm_32bit_int = qdotToInt(submaskInputArray);
     var networkAddr = networkAddress(_ip_32bit_int, _sm_32bit_int);
     var broadcastAddr = broadcastAddress(_ip_32bit_int, _sm_32bit_int);
-    var ipClass = findClass(ipInputArray[0]);
+    var ipClass = findClass(+ipInputArray[0]);
     var subnet = fsubnets(base);
     var wildcard = intToQdot(~_sm_32bit_int);
     var hexAddress = addressToHex(_ip_32bit_int);
@@ -425,8 +453,8 @@ function performCalculations() {
     var naa = networkAddr.split('.');
     var baa = broadcastAddr.split('.');
 
-    naa[3] = +naa[3] + 1;
-    baa[3] = +baa[3] - 1;
+    naa[3] = (+naa[3] + 1).toString();
+    baa[3] = (+baa[3] - 1).toString();
 
     var netMin = naa.join('.');
     var netMax = baa.join('.');
@@ -437,7 +465,7 @@ function performCalculations() {
     // Submask
     doc.getElementById("tablesubmask").innerHTML = submask;
     // Submask -> binary
-    doc.getElementById("tablebinary").innerHTML = onBits(base);
+    doc.getElementById("tablebinarysub").innerHTML = onBits(base);
     // # of hosts
     doc.getElementById("tablenumhosts").innerHTML = usable_hosts;
     // # of subnets
@@ -448,6 +476,8 @@ function performCalculations() {
     doc.getElementById("tableipclass").innerHTML = ipClass;
     // IP -> hex
     doc.getElementById("tableiptohex").innerHTML = hexAddress;
+    // IP -> binary
+    doc.getElementById("tablebinaryip").innerHTML = ipToBin(ipInputArray);
     // Network ID
     doc.getElementById("tablenetworkid").innerHTML = networkAddr;
     // Broadcast Address
@@ -461,12 +491,13 @@ function performCalculations() {
 
         doc.getElementById("tablecidr").innerHTML = error;
         doc.getElementById("tablesubmask").innerHTML = error;
-        doc.getElementById("tablebinary").innerHTML = error;
+        doc.getElementById("tablebinarysub").innerHTML = error;
         doc.getElementById("tablenumhosts").innerHTML = error;
         doc.getElementById("tablenumsubnets").innerHTML = error;
         doc.getElementById("tablewildcardmask").innerHTML = error;
         doc.getElementById("tableipclass").innerHTML = error;
         doc.getElementById("tableiptohex").innerHTML = error;
+        doc.getElementById("tablebinaryip").innerHTML = error;
         doc.getElementById("tablenetworkid").innerHTML = error;
         doc.getElementById("tablebroadcastaddress").innerHTML = error;
         doc.getElementById("tablenetworkrange").innerHTML = error;
@@ -485,7 +516,7 @@ window.onload = function() {
         var keyCode = (window.event) ? e.which : e.keyCode;
         if (keyCode == 13) {
             if (performCalculations()) {
-                document.forms['form'].submit();
+                document.forms['valuebox'].submit();
             }
         }
     };

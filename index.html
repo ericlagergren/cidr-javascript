@@ -49,7 +49,7 @@
           Download the mobile app for free.
         </div>
       </div>
-  <form name="form" onsubmit="performCalculations(); return false;">
+  <form name="valuebox" onsubmit="performCalculations(); return false;">
     <div class="left">
       <h1>Subnetting Calculator</h1>
       <nav><a href="/about">about </a><a href="/license">license </a><a href="https://www.github.com/EricLagerg/cidr-javascript/">source </a><a href="javascript:void(0)" onclick="window.location.reload(true);">refresh</a>
@@ -84,8 +84,8 @@
             <td class="dl" id="tablewildcardmask"></td>
           </tr>
           <tr>
-            <td class="dl">Binary</td>
-            <td class="dl" id="tablebinary"></td>
+            <td class="dl">Submask to Binary</td>
+            <td class="dl" id="tablebinarysub"></td>
           </tr>
           <tr>
             <td class="dl"># Hosts</td>
@@ -102,6 +102,10 @@
           <tr>
             <td class="dl">IP to Hex</td>
             <td class="dl" id="tableiptohex"></td>
+          </tr>
+          <tr>
+            <td class="dl">IP to Binary</td>
+            <td class="dl" id="tablebinaryip"></td>
           </tr>
           <tr>
             <td class="dl">Network ID</td>
