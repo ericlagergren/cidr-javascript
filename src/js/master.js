@@ -425,7 +425,7 @@ function performCalculations() {
 
             seg = (+ip[i]).toString(2)
             while (seg.length < 8) {
-                seg = zero += seg;
+                seg = zero + seg;
             }
 
             binstr += seg;
