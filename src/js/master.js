@@ -252,17 +252,6 @@ function performCalculations() {
     }
 
     /**
-     * Gets number of subnets from on bits
-     *
-     * @param {number} base number of on bits
-     * @return {number} number of subnets
-     */
-    function fsubnets(base) {
-        var mod_base = base % 8;
-        return mod_base ? Math.pow(2, mod_base) : Math.pow(2, 8);
-    }
-
-    /**
      * Gets default submask from an IPv4 address
      * @param {number} ip is 0th element in IPv4 address array
      * @return {string} string containing default mask
@@ -419,7 +408,6 @@ function performCalculations() {
     var networkAddr = networkAddress(_ip32, _sm32);
     var broadcastAddr = broadcastAddress(_ip32, _sm32);
     var ipClass = findClass(+ipInputArray[0]);
-    var subnet = fsubnets(base);
     var wildcard = intToQdot(~_sm32);
     var hexAddress = addressToHex(_ip32);
     //var hexMask = addressToHex(_sm32);
@@ -441,8 +429,6 @@ function performCalculations() {
     doc.getElementById("tablebinarysub").innerHTML = onBits(base);
     // # of hosts
     doc.getElementById("tablenumhosts").innerHTML = usable_hosts;
-    // # of subnets
-    doc.getElementById("tablenumsubnets").innerHTML = subnet;
     // Wildcard mask
     doc.getElementById("tablewildcardmask").innerHTML = wildcard;
     // IP class
@@ -466,7 +452,6 @@ function performCalculations() {
         doc.getElementById("tablesubmask").innerHTML = error;
         doc.getElementById("tablebinarysub").innerHTML = error;
         doc.getElementById("tablenumhosts").innerHTML = error;
-        doc.getElementById("tablenumsubnets").innerHTML = error;
         doc.getElementById("tablewildcardmask").innerHTML = error;
         doc.getElementById("tableipclass").innerHTML = error;
         doc.getElementById("tableiptohex").innerHTML = error;
