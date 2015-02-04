@@ -424,12 +424,8 @@ function performCalculations() {
             var t = "";
 
             seg = (+ip[i]).toString(2)
-            while (t.length + seg.length < 8) {
-                t += zero;
-            }
-
-            if (t.length > 0) {
-                seg += t + seg;
+            while (seg.length < 8) {
+                seg = zero += seg;
             }
 
             binstr += seg;

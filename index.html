@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html manifest="cache.appcache">
+
 <head>
-  <title>Subnetting Calculator</title>
+    <title>Subnetting Calculator</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv='cleartype' content='on'>
@@ -12,7 +13,7 @@
     <meta name="apple-mobile-web-app-title" content="Subnetting Calculator">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="robots" content="index, follow">
-    <meta name="bitly-verification" content="7c235b444737"/>
+    <meta name="bitly-verification" content="7c235b444737" />
     <meta name="author" content="Eric Lagergren">
     <!--[if IE lte 7]>
     <meta HTTP-EQUIV="REFRESH" content="0; url=http://subnetting.ericlagergren.com/ie">
@@ -25,109 +26,109 @@
     yepnope('timeout=1000!/assets/js/google-analytics.js');
     </script>
     <link href="/assets/css/style.css" rel="stylesheet">
-  </head>
+</head>
 
 <body>
-        <div id="iphoneinstall" onclick="classList.toggle('open');" class="">
+    <div id="iphoneinstall" onclick="classList.toggle('open');" class="">
 
 
         <p class="close">
-        <img class="cloze" src="/assets/cross.png">
+            <img class="cloze" src="/assets/cross.png">
         </p>
         <p>
-        Press the 'share' button below and then choose "Add to Home Screen". The app will then be installed as an icon, just like a regular app from the App Store.
+            Press the 'share' button below and then choose "Add to Home Screen". The app will then be installed as an icon, just like a regular app from the App Store.
         </p>
         <p>
-        <img class="share" src="/assets/iphone_share.png"> →
-        <img class="share shareHalf" src="/assets/download.png">
+            <img class="share" src="/assets/iphone_share.png"> →
+            <img class="share shareHalf" src="/assets/download.png">
         </p>
         <br>
         <p>
-        The mobile app will then be installed as an icon on your home screen.
+            The mobile app will then be installed as an icon on your home screen.
         </p>
-         <div class="top">
-          Download the mobile app for free.
+        <div class="top">
+            Download the mobile app for free.
         </div>
-      </div>
-  <form name="valuebox" onsubmit="performCalculations(); return false;">
-    <div class="left">
-      <h1>Subnetting Calculator</h1>
-      <nav><a href="/about">about </a><a href="/license">license </a><a href="https://www.github.com/EricLagerg/cidr-javascript/">source </a><a href="javascript:void(0)" onclick="window.location.reload(true);">refresh</a>
-      </nav>
-      <input type="checkbox" id="c1" name="cb">
-      <label class="first" for="c1">Use # of Hosts?</label>
-      <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24 or 500" />
-      <label for="submask">Submask or CIDR or Num Req Hosts</label>
-      <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1" />
-      <label for="ip">IPv4 Address</label>
-      <input class="clearfix" type="submit" value="submit" />
     </div>
-    <div class="right" id="info">
-      <table>
-        <thead id="thead">
-            <tr>
-              <th class="dl">ID</td>
-              <th class="dl">RESULTS</td>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-          <tr>
-            <td class="dl">CIDR</td>
-            <td class="dl" id="tablecidr"></td>
-          </tr>
-          <tr>
-            <td class="dl">Submask</td>
-            <td class="dl" id="tablesubmask"></td>
-          </tr>
-          <tr>
-            <td class="dl">Wildcard Mask</td>
-            <td class="dl" id="tablewildcardmask"></td>
-          </tr>
-          <tr>
-            <td class="dl">Submask to Binary</td>
-            <td class="dl" id="tablebinarysub"></td>
-          </tr>
-          <tr>
-            <td class="dl"># Hosts</td>
-            <td class="dl" id="tablenumhosts"></td>
-          </tr>
-          <tr>
-            <td class="dl"># Subnets</td>
-            <td class="dl" id="tablenumsubnets"></td>
-          </tr>
-          <tr>
-            <td class="dl">IP Class</td>
-            <td class="dl" id="tableipclass"></td>
-          </tr>
-          <tr>
-            <td class="dl">IP to Hex</td>
-            <td class="dl" id="tableiptohex"></td>
-          </tr>
-          <tr>
-            <td class="dl">IP to Binary</td>
-            <td class="dl" id="tablebinaryip"></td>
-          </tr>
-          <tr>
-            <td class="dl">Network ID</td>
-            <td class="dl" id="tablenetworkid"></td>
-          </tr>
-          <tr>
-            <td class="dl">Broadcast Address</td>
-            <td class="dl" id="tablebroadcastaddress"></td>
-          </tr>
-          <tr>
-            <td class="dl">Usable Host Range</td>
-            <td class="dl" id="tablenetworkrange"></td>
-          </tr>
-        </tbody>
-      </table>
+    <form name="valuebox" onsubmit="performCalculations(); return false;">
+        <div class="left">
+            <h1>Subnetting Calculator</h1>
+            <nav><a href="/about">about </a><a href="/license">license </a><a href="https://www.github.com/EricLagerg/cidr-javascript/">source </a><a href="javascript:void(0)" onclick="window.location.reload(true);">refresh</a>
+            </nav>
+            <input type="checkbox" id="c1" name="cb">
+            <label class="first" for="c1">Use # of Hosts?</label>
+            <input class="clearfix" type="text" name="submask" placeholder="255.255.255.0 or 24 or 500" />
+            <label for="submask">Submask or CIDR or Num Req Hosts</label>
+            <input class="clearfix" type="text" name="ip" placeholder="192.168.1.1" />
+            <label for="ip">IPv4 Address</label>
+            <input class="clearfix" type="submit" value="submit" />
+        </div>
+        <div class="right" id="info">
+            <table>
+                <thead id="thead">
+                    <tr>
+                        <th class="dl">ID</td>
+                            <th class="dl">RESULTS</td>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <tr>
+                        <td class="dl">CIDR</td>
+                        <td class="dl" id="tablecidr"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">Submask</td>
+                        <td class="dl" id="tablesubmask"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">Wildcard Mask</td>
+                        <td class="dl" id="tablewildcardmask"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">Submask to Binary</td>
+                        <td class="dl" id="tablebinarysub"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl"># Hosts</td>
+                        <td class="dl" id="tablenumhosts"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl"># Subnets</td>
+                        <td class="dl" id="tablenumsubnets"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">IP Class</td>
+                        <td class="dl" id="tableipclass"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">IP to Hex</td>
+                        <td class="dl" id="tableiptohex"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">IP to Binary</td>
+                        <td class="dl" id="tablebinaryip"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">Network ID</td>
+                        <td class="dl" id="tablenetworkid"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">Broadcast Address</td>
+                        <td class="dl" id="tablebroadcastaddress"></td>
+                    </tr>
+                    <tr>
+                        <td class="dl">Usable Host Range</td>
+                        <td class="dl" id="tablenetworkrange"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+    <div class="clearfix">
+        <a id="refresh" class="ux-actions clearfix" href="javascript:void(0)" onclick="window.location.reload(true);window.scroll(0,0);">REFRESH</a>
+        <a id="top" class="ux-actions clearfix" href="javascript:void(0)" onclick="window.scroll(0,0);">TO TOP</a>
     </div>
-  </form>
-  <div class="clearfix">
-  <a id="refresh" class="ux-actions clearfix" href="javascript:void(0)" onclick="window.location.reload(true);window.scroll(0,0);">REFRESH</a>
-  <a id="top" class="ux-actions clearfix" href="javascript:void(0)" onclick="window.scroll(0,0);">TO TOP</a>
-  </div>
-  <script src="/src/js/master.min.js"></script>
+    <script src="/src/js/master.min.js"></script>
 </body>
 
 </html>
