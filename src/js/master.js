@@ -221,13 +221,12 @@ function performCalculations() {
      * @return {number} a short int
      */
     function getCidr(submask) {
-
         var arr = submask.split('.');
 
-        var i,
-            x = +arr[0] << 8 | +arr[1];
-        for (i = 1; i < 4; i++) {
-            x += +arr[i] << 8 | x
+        var i = 0,
+            x = 0;
+        while (i < 4) {
+            x = (x << 8 | +arr[i++]) >> 0;
         }
          
         // count bits
