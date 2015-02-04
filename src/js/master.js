@@ -82,51 +82,45 @@ function performCalculations() {
     var base;
 
     /**
-     * Max 32 bit number
-     *
-     * @const 
-     * @type {number}
-     */
-    var THIRTY_TWO_BITS = 4294967295;
-
-    /**
      * Maximum number of "on" bits
      *
      * @const 
      * @type {number}
      */
-    var MAX_BIT_VALUE = 32;
+    var BITS_MAX = 32;
 
     /**
-     * Maximum "binary" number
+     * Maximum octet number
      *
      * @const 
      * @type {number}
      */
-    var MAX_BIT_BIN = 255;
+    var OCTET_MAX = 255;
 
 
     // Determine the type of input
-    if (submaskInput <= MAX_BIT_VALUE) { // less than or equal to = cidr
+    // if less than or equal 32 then CIDR
+    if (submaskInput <= BITS_MAX) {
         base = +submaskInput;
-        submask = intToQdot(unpackInt(base));
+        submask = intToQdot(mask(base));
     }
     // if you can split the input into four parts it's a submask
     if (4 === submaskInput.split(".").length) {
         base = getCidr(submaskInput);
         submask = submaskInput;
     }
-    // greater than = host or checked checkbox
-    if (doc.forms["valuebox"]["cb"].checked || submaskInput > MAX_BIT_VALUE) {
+    // greater than max CIDR value or checked checkbox then # hosts
+    if (doc.forms["valuebox"]["cb"].checked || submaskInput > BITS_MAX) {
         base = getCidrFromHost(submaskInput);
-        submask = intToQdot(unpackInt(base));
+        submask = intToQdot(mask(base));
     }
+    // no base entered default to using "default" submasks
     if (!base) {
         submask = defaultSubmask(+ipInput.split(".")[0])
         base = getCidr(submask)
     }
+    // if base isn't valid then do nothing
     if (undefined === base || isNaN(base) || null === base) {
-        // if base isn't valid then do nothing
         return null;
     }
 
@@ -160,7 +154,7 @@ function performCalculations() {
             // version, then it's invalid
             // 
             // If the integer element is < 0 or > 255 then it's invalid as well
-            if (itv_int != itv_arr[j] || itv_int < 0 || itv_int > MAX_BIT_BIN) {
+            if (itv_int != itv_arr[j] || itv_int < 0 || itv_int > OCTET_MAX) {
                 throwError();
             }
             //itv_arr[j] = itv_int;
@@ -178,98 +172,82 @@ function performCalculations() {
      * @return {number} a 32-bit integer representation of an IPv4 address
      */
     function qdotToInt(ip) {
-        var x = 0;
+        var i, x;
+        for (x = 0, i = 0; i < 4; i++) {
+            x<<=8;
+            x += +ip[i];
+        }
 
-        x += +ip[0] << 24 >>> 0;
-        x += +ip[1] << 16 >>> 0;
-        x += +ip[2] << 8 >>> 0;
-        x += +ip[3] >>> 0;
-
-        return x;
+        return x>>>0;
     }
 
     /**
      * Reverses function qdotToInt(ip)
      *
-     * @param {number} integer a 32-bit integer representation of an IPv4 address
+     * @param {number} n a 32-bit integer representation of an IPv4 address
      * @return {string} a quad-dotted IPv4 address
      */
-    function intToQdot(integer) {
-        return [integer >> 24 & MAX_BIT_BIN, integer >> 16 & MAX_BIT_BIN, integer >> 8 & MAX_BIT_BIN, integer & MAX_BIT_BIN].join('.');
+    function intToQdot(n) {
+        return [n >>> 24, n >> 16 & OCTET_MAX, n >> 8 & OCTET_MAX, n & OCTET_MAX].join('.');
     }
 
     /**
      * Gets CIDR prefix from a {number} of hosts
      *
-     * @param {number} input int number of hosts
+     * @param {number} n number of hosts
      * @return {number} if param isn't 0, return 32 - ceil(log2(input)), else 0
      */
-    function getCidrFromHost(input) {
+    function getCidrFromHost(n) {
         // as long as the number of hosts isn't 0, find (log2(hosts)), round 
-        // up, and subtract that from MAX_BIT_VALUE to find the correct CIDR
-        return 0 !== input ? MAX_BIT_VALUE - Math.ceil(Math.log(input) / Math.log(2)) : 0;
+        // up, and subtract that from BITS_MAX to find the correct CIDR
+        return 0 !== n ? BITS_MAX - Math.ceil(Math.log(n) / Math.log(2)) : 0;
     }
 
     /**
-     * Unpacks 8-bit int
+     * Finds mask
      *
-     * @param {number} input 8-bit int
-     * @return {number} I actually don't know what to call this
+     * @param {number} n CIDR or HOSTS
+     * @return {number} masked of the above
      */
-    function unpackInt(input) {
-        return -1 << (MAX_BIT_VALUE - input);
+    function mask(n) {
+        return -1 << (BITS_MAX - n);
     }
 
     /**
      * Gets CIDR prefix from quad-dotted submask
      * Counts number of bits
      *
-     * @param {string} input IPv4 address in string notation
+     * @param {string} submask in string notation
      * @return {number} a short int
      */
-    function getCidr(input) {
+    function getCidr(submask) {
 
-        var arr = input.split('.');
+        var arr = submask.split('.');
 
+        var i,
+            x = +arr[0] << 8 | +arr[1];
+        for (i = 1; i < 4; i++) {
+            x += +arr[i] << 8 | x
+        }
          
-         // Similar to:
-         // arr = [192.168.0.1]
-         x =  +arr[0] << 8 | +arr[1]
-         x += +arr[1] << 8 | x
-         x += +arr[2] << 8 | x
-         x += +arr[3] << 8 | x
-         
-
-        /**
-         * @param {number} previous value in array
-         * @param {number} next value in array
-         * @return {number} sum of bitwise shifted numbers
-         */
-        /*var x = arr.reduce(function(previousValue, currentValue) {
-            return (previousValue << 8 | currentValue) >>> 0;
-        });*/
-
-        /**
-         * https://github.com/mikolalysenko/bit-twiddle/blob/master/twiddle.js#L63
-         * https://github.com/mikolalysenko/bit-twiddle/blob/master/LICENSE
-         */
+        // count bits
+        // https://github.com/mikolalysenko/bit-twiddle/blob/master/twiddle.js#L63
         x -= (x >>> 1) & 0x55555555;
         x = (x & 0x33333333) + (x >>> 2 & 0x33333333);
-
         return ((x + (x >>> 4) & 0xF0F0F0F) * 0x1010101) >>> 24;
     }
 
     /**
      * Gets total number of usable hosts from on bits
      *
-     * @param {number} hv int number of on bits
-     * @return {number} int number of usable hosts
+     * @param {number} hv number of on bits
+     * @return {number} number of usable hosts
      */
     function fhosts(hv) {
         hv = hv || 0; // zero out hv
         if (hv >= 2) {
             // 2^(total bits - on bits) = off bits -2 because of nwork/bcast addrs
-            hv = (Math.pow(2, (MAX_BIT_VALUE - hv))) - 2;
+            hv = (Math.pow(2, (BITS_MAX - hv))) - 2;
         }
         return hv;
     }
@@ -277,8 +255,8 @@ function performCalculations() {
     /**
      * Gets number of subnets from on bits
      *
-     * @param {number} base int number of on bits
-     * @return {number} int number of subnets
+     * @param {number} base number of on bits
+     * @return {number} number of subnets
      */
     function fsubnets(base) {
         var mod_base = base % 8;
@@ -368,7 +346,7 @@ function performCalculations() {
      * @return {string} quad-dotted repr. of IPv4 address (broadcast address)
      */
     function broadcastAddress(ip, sm) {
-        return intToQdot(ip | (~sm & THIRTY_TWO_BITS));
+        return intToQdot(ip | ~sm);
     }
 
     /**
@@ -398,7 +376,7 @@ function performCalculations() {
             i += one;
         }
 
-        while (v.length < (MAX_BIT_VALUE - bits)) {
+        while (v.length < (BITS_MAX - bits)) {
             v += zero;
         }
 
@@ -437,15 +415,15 @@ function performCalculations() {
     var ipBase = (ipInput);
     var hosts = fhosts(base);
     var usable_hosts = 2 <= hosts ? hosts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0;
-    var _ip_32bit_int = qdotToInt(ipInputArray);
-    var _sm_32bit_int = qdotToInt(submaskInputArray);
-    var networkAddr = networkAddress(_ip_32bit_int, _sm_32bit_int);
-    var broadcastAddr = broadcastAddress(_ip_32bit_int, _sm_32bit_int);
+    var _ip32 = qdotToInt(ipInputArray);
+    var _sm32 = qdotToInt(submaskInputArray);
+    var networkAddr = networkAddress(_ip32, _sm32);
+    var broadcastAddr = broadcastAddress(_ip32, _sm32);
     var ipClass = findClass(+ipInputArray[0]);
     var subnet = fsubnets(base);
-    var wildcard = intToQdot(~_sm_32bit_int);
-    var hexAddress = addressToHex(_ip_32bit_int);
-    var hexMask = addressToHex(_sm_32bit_int);
+    var wildcard = intToQdot(~_sm32);
+    var hexAddress = addressToHex(_ip32);
+    //var hexMask = addressToHex(_sm32);
     var naa = networkAddr.split('.');
     var baa = broadcastAddr.split('.');
 
