@@ -1,22 +1,15 @@
 /*jslint node: true */
 
 /**
- * @preserve 
+ * @preserve
  * @copyright
- * Copyright 2014 Eric Lagergren
+ * Copyright 2015 Eric Lagergren
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This software is licensed under
+ * Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+ * A copy of said license should be found with the software;
+ * if not, a copy can be found here:
+ * https://creativecommons.org/licenses/by-sa/4.0/legalcode
  */
 
 "use strict";
@@ -50,8 +43,9 @@ var iOS = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 if (!iOS || window.navigator["standalone"]) {
     doc.getElementById("iphoneinstall").classList.toggle("hidden");
 } else {
-    doc.getElementsByTagName("body")[0].setAttribute("style", "margin-top:40px;");
-    doc.getElementsByTagName("body")[0].classList.toggle("no-touch");
+    var elem = doc.getElementsByTagName("body")[0]
+    elem.setAttribute("style", "margin-top:40px;");
+    elem.classList.toggle("no-touch");
 }
 
 // Per Apple, it swaps cache on page reload
@@ -68,13 +62,17 @@ window.applicationCache.addEventListener('updateready', updateSite, false);
  */
 function performCalculations() {
 
-    var submaskInput = doc.forms["valuebox"]["submask"].value;
+    // VARS, CONST, ETC.
+
+    var valbox = doc.forms["valuebox"]
+    var submaskInput = valbox["submask"].value;
+    //var networks = valbox["split"].value;
     var submask;
 
     /**
      * @type {string}
      */
-    var ipInput = doc.forms["valuebox"]["ip"].value;
+    var ipInput = valbox["ip"].value;
 
     /**
      * @type {number}
@@ -84,7 +82,7 @@ function performCalculations() {
     /**
      * Maximum number of "on" bits
      *
-     * @const 
+     * @const
      * @type {number}
      */
     var BITS_MAX = 32;
@@ -92,11 +90,34 @@ function performCalculations() {
     /**
      * Maximum octet number
      *
-     * @const 
+     * @const
      * @type {number}
      */
     var OCTET_MAX = 255;
 
+    /**
+     * Invalid IP address error message
+     *
+     * @const
+     * @type {string}
+     */
+    var INVAL_IP = "Invalid IP entered";
+
+    /**
+     * Invalid submask error message
+     *
+     * @const
+     * @type {string}
+     */
+    var INVAL_SM = "Invalid Submask entered";
+
+    /**
+     * Invalid base error message
+     *
+     * @const
+     * @type {string}
+     */
+    var INVAL_BASE = "Mask/CIDR/Hosts isn't a number or quad-dotted string";
 
     // Determine the type of input
     // if less than or equal 32 then CIDR
@@ -110,25 +131,18 @@ function performCalculations() {
         submask = submaskInput;
     }
     // greater than max CIDR value or checked checkbox then # hosts
-    if (doc.forms["valuebox"]["cb"].checked || submaskInput > BITS_MAX) {
+    if (valbox["cb"].checked || submaskInput > BITS_MAX) {
         base = getCidrFromHost(submaskInput);
         submask = intToQdot(mask(base));
+    }
+    if (notNum(base)) {
+        throwError(INVAL_BASE);
     }
     // no base entered default to using "default" submasks
     if (!base) {
         submask = defaultSubmask(+ipInput.split(".")[0])
         base = getCidr(submask)
     }
-    // if base isn't valid then do nothing
-    if (undefined === base || isNaN(base) || null === base) {
-        return null;
-    }
-
-    /** 
-     * Checks if base isNaN and throws error if true. Also will
-     * convert base to int -- not necessary, but prevents JS from switching types
-     */
-    if (isNaN(base)) {throwError();}
 
     // Splits our inputs into arrays to use later
     var ipInputArray = ipInput.split(".");
@@ -136,15 +150,15 @@ function performCalculations() {
 
     /**
      * Validates user inputs
-     * 
+     *
      * @param {string} item_to_val string to be validated
      */
-    function validate(item_to_val) {
+    function validate(item_to_val, ip) {
         var itv_arr = item_to_val.split(".");
         // If the ip/submask isn't quad-dotted, it must be invalid
         // Or if it's an empty string it's also invalid
         if (4 !== itv_arr.length || "" === item_to_val) {
-            throwError();
+            ip ? throwError(INVAL_IP) : throwError(INVAL_SM)
         }
 
         for (var j = 0; j < 4; j++) {
@@ -155,15 +169,46 @@ function performCalculations() {
             // 
             // If the integer element is < 0 or > 255 then it's invalid as well
             if (itv_int != itv_arr[j] || itv_int < 0 || itv_int > OCTET_MAX) {
-                throwError();
+                ip ? throwError(INVAL_IP) : throwError(INVAL_SM)
             }
-            //itv_arr[j] = itv_int;
         }
     }
 
     // Validate both submask and IP
-    validate(ipInput);
-    validate(submask);
+    validate(ipInput, true);
+    validate(submask, false);
+
+    // LIB FUNCS
+
+    /**
+     * @param {string} error message
+     * @throws generic error message
+     */
+    function throwError(error) {
+        var doc = document;
+
+        doc.getElementById("tablecidr").innerHTML = error;
+        doc.getElementById("tablesubmask").innerHTML = error;
+        doc.getElementById("tablebinarysub").innerHTML = error;
+        doc.getElementById("tablenumhosts").innerHTML = error;
+        doc.getElementById("tablewildcardmask").innerHTML = error;
+        doc.getElementById("tableipclass").innerHTML = error;
+        doc.getElementById("tableiptohex").innerHTML = error;
+        doc.getElementById("tablebinaryip").innerHTML = error;
+        doc.getElementById("tablenetworkid").innerHTML = error;
+        doc.getElementById("tablebroadcastaddress").innerHTML = error;
+        doc.getElementById("tablenetworkrange").innerHTML = error;
+
+        throw new Error(error);
+    }
+
+    /**
+     * @param {number} n
+     * @return {boolean} false if valid number
+     */
+    function notNum(n) {
+        return ('undefined' === typeof n || isNaN(n) || null === n);
+    }
 
     /**
      * Converts an IP/Submask into 32-bit int
@@ -172,13 +217,15 @@ function performCalculations() {
      * @return {number} a 32-bit integer representation of an IPv4 address
      */
     function qdotToInt(ip) {
-        var i, x;
-        for (x = 0, i = 0; i < 4; i++) {
-            x<<=8;
-            x += +ip[i];
+        var i = 0,
+            x = 0;
+
+        while (i < 4) {
+            x <<= 8
+            x += +ip[i++]
         }
 
-        return x>>>0;
+        return x >>> 0;
     }
 
     /**
@@ -228,7 +275,7 @@ function performCalculations() {
         while (i < 4) {
             x = (x << 8 | +arr[i++]) >> 0;
         }
-         
+
         // count bits
         // https://github.com/mikolalysenko/bit-twiddle/blob/master/twiddle.js#L63
         x -= (x >>> 1) & 0x55555555;
@@ -244,19 +291,21 @@ function performCalculations() {
      */
     function fhosts(hv) {
         hv = hv || 0; // zero out hv
-        if (hv >= 2) {
-            // 2^(total bits - on bits) = off bits -2 because of nwork/bcast addrs
-            hv = (Math.pow(2, (BITS_MAX - hv))) - 2;
-        }
-        return hv;
+        // 2^(total bits - on bits) == off bits -2 because of nwork/bcast addrs
+        return hv >= 2 ? (Math.pow(2, (BITS_MAX - hv))) - 2 : hv;
     }
 
     /**
      * Gets default submask from an IPv4 address
      * @param {number} ip is 0th element in IPv4 address array
+     * @throws throwError(); -- error func for invalid IP/submask
      * @return {string} string containing default mask
      */
-     function defaultSubmask(ip) {
+    function defaultSubmask(ip) {
+        if (notNum(ip)) {
+            throwError(INVAL_IP);
+        }
+
         if (ip < 128) {
             return "255.0.0.0";
         }
@@ -269,50 +318,45 @@ function performCalculations() {
         if (ip < 256) {
             return "255.255.255.255";
         }
-        if (!ip || ip < 0 || 'undefined' === typeof ip || isNaN(ip)) {
-            throwError();
-            // unreachable
-            return "";
-        } else {
-            throwError();
-            // unreachable
-            return "";
-        }
-     }
+
+        throwError(INVAL_IP);
+        // to quell JSDOC
+        // unreachable
+        return "";
+    }
 
     /**
      * Gets class of IPv4 address from arr[0]
      *
      * @param {number} ip is first (zero) element in array
      * @return {string} string containing class of address
+     * @throws throwError(); -- error func for invalid IP/submask
      */
     function findClass(ip) {
-        if (ip < 128) {
-            return "Class A";
+        if (notNum(ip)) {
+            throwError(INVAL_IP);
         }
-        if (ip < 192) {
-            return "Class B";
-        }
-        if (ip < 224) {
-            return "Class C";
-        }
-        if (ip < 240) {
-            return "Class D";
-        }
-        if (ip < 256) {
-            return "Class E";
-        }
-        if (!ip || ip < 0 || 'undefined' === typeof ip || isNaN(ip)) {
-            throwError();
 
-            // unreachable
-            return "";
-        } else {
-            // Is there anything else?
-            throwError();
-            // unreachable
-            return "";
+        if (ip < 224) {
+            if (ip < 192) {
+                if (ip < 128) {
+                    return "Class A"
+                }
+                return "Class B"
+            }
+            return "Class C"
+        } else if (ip < 256) {
+            if (ip < 240) {
+                return "Class D"
+            } else {
+                return "Class E"
+            }
         }
+
+        throwError(INVAL_IP);
+        // to quell JSDOC
+        // unreachable
+        return "";
     }
 
     /**
@@ -381,7 +425,7 @@ function performCalculations() {
      * @param {Array<string>} ip quad-dotted IPv4 address
      * @return {string} visual binary rep. of IPv4 address
      */
-     function ipToBin(ip) {
+    function ipToBin(ip) {
         var binstr = "",
             seg = "",
             zero = "0";
@@ -398,9 +442,9 @@ function performCalculations() {
         }
 
         return binstr.replace(/(.{8})(.{8})(.{8})/g, "$1.$2.$3.");
-     }
+    }
 
-    var ipBase = (ipInput);
+    var ipBase = ipInput;
     var hosts = fhosts(base);
     var usable_hosts = 2 <= hosts ? hosts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0;
     var _ip32 = qdotToInt(ipInputArray);
@@ -410,7 +454,6 @@ function performCalculations() {
     var ipClass = findClass(+ipInputArray[0]);
     var wildcard = intToQdot(~_sm32);
     var hexAddress = addressToHex(_ip32);
-    //var hexMask = addressToHex(_sm32);
     var naa = networkAddr.split('.');
     var baa = broadcastAddr.split('.');
 
@@ -419,7 +462,6 @@ function performCalculations() {
 
     var netMin = naa.join('.');
     var netMax = baa.join('.');
-
 
     // CIDR
     doc.getElementById("tablecidr").innerHTML = base;
@@ -443,26 +485,6 @@ function performCalculations() {
     doc.getElementById("tablebroadcastaddress").innerHTML = broadcastAddr;
     // Network ranges
     doc.getElementById("tablenetworkrange").innerHTML = netMin + " - " + netMax;
-
-    function throwError() {
-        var error = "Invalid IP/Submask entered.",
-            doc = document;
-
-        doc.getElementById("tablecidr").innerHTML = error;
-        doc.getElementById("tablesubmask").innerHTML = error;
-        doc.getElementById("tablebinarysub").innerHTML = error;
-        doc.getElementById("tablenumhosts").innerHTML = error;
-        doc.getElementById("tablewildcardmask").innerHTML = error;
-        doc.getElementById("tableipclass").innerHTML = error;
-        doc.getElementById("tableiptohex").innerHTML = error;
-        doc.getElementById("tablebinaryip").innerHTML = error;
-        doc.getElementById("tablenetworkid").innerHTML = error;
-        doc.getElementById("tablebroadcastaddress").innerHTML = error;
-        doc.getElementById("tablenetworkrange").innerHTML = error;
-
-        throw new Error('Invalid IP/Submask entered');
-    }
-
 }
 window.onload = function() {
     document.getElementsByTagName("form")[0].onsubmit = function(evt) {
